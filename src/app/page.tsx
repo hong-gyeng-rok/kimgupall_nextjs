@@ -1,65 +1,54 @@
+// app/page.tsx
 import Image from "next/image";
+import { prisma } from "@/lib/prisma"; // 1번에서 만든 파일 import
 
-export default function Home() {
+// GCP 버킷 기본 주소 (환경 변수로 관리)
+// 끝에 붙은 슬래시(/)가 있다면 제거하여 중복 방지
+const STORAGE_BASE_URL = (process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? "").replace(/\/$/, "");
+
+// 이 컴포넌트는 서버에서 동작합니다 (async 필수)
+export default async function Home() {
+  // 1. DB에서 모든 이미지 가져오기 (최신순 정렬)
+  const images = await prisma.image.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className="min-h-screen p-8 bg-black text-white">
+      <h1 className="text-3xl font-bold mb-8 text-center">My Gallery</h1>
+
+      {/* 2. 그리드 레이아웃 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {images.map((image) => (
+          <div
+            key={image.id}
+            className="relative group aspect-square bg-gray-900 rounded-lg overflow-hidden"
           >
+            {/* Next.js 이미지 컴포넌트 */}
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src={`${STORAGE_BASE_URL}/${image.publicUrl}`}
+              alt={image.title || "작품 이미지"}
+              fill // 부모 div(aspect-square)를 가득 채움
+              className="object-cover transition-transform duration-300 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+            {/* 호버 시 제목 표시 (선택사항) */}
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <p className="text-white font-bold">{image.title}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 데이터가 없을 때 안내 */}
+      {images.length === 0 && (
+        <div className="text-center text-gray-500 mt-20">
+          등록된 이미지가 없습니다.
         </div>
-      </main>
-    </div>
+      )}
+    </main>
   );
 }

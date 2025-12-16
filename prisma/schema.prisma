@@ -1,0 +1,66 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// 1. 이미지 모델 
+// ==========================================
+model Image {
+  id          String   @id @default(uuid()) // 나중을 위해 UUID 사용
+  
+  // 필수 정보
+  publicUrl   String   // <Image src={publicUrl} /> 에 넣을 주소
+  storagePath String?  // GCP 삭제/관리용 경로 (나중에 목표 2에서 사용)
+  
+  // 메타 데이터 
+  title       String?
+  description String?
+  group       String?  // 카테고리
+  season      String?
+
+  // 소셜 기능 연결 
+  // 여기 정의한다고 당장 써야 하는 거 아님. 그냥 "연결 가능성"을 열어두는 것.
+  comments    Comment[]
+  likes       Like[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==========================================
+// 2. 댓글 모델
+// ==========================================
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  sessionId String   // 익명 사용자 구분을 위한 세션 ID
+  
+  // Image와의 관계 설정
+  imageId   String
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+}
+
+// ==========================================
+// 3. 좋아요 모델 
+// ==========================================
+model Like {
+  id        String   @id @default(uuid())
+  sessionId String   // 익명 사용자 구분을 위한 세션 ID
+
+  // Image와의 관계 설정
+  imageId   String
+  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  // 한 세션이 한 이미지에 좋아요 1번만 가능 (중복 방지)
+  @@unique([imageId, sessionId])
+}

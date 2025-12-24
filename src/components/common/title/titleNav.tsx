@@ -21,7 +21,7 @@ const navLinks = [
 
 export default function TitleNav() {
   return (
-    <article className="sticky top-0 flex flex-raw gap-10 ml-6 ">
+    <article className="sticky top-10 flex flex-raw gap-10 ml-6 ">
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />
       ))}
@@ -32,7 +32,7 @@ export default function TitleNav() {
 function Nav({ link }: { link: Link }) {
   return (
     <InternalLink
-      className="text-black text-xl bg-white p-2 px-4 hover:bg-black hover:text-white hover:rounded-xl"
+      className="text-black text-3xl p-2 px-4 hover:bg-black hover:text-white hover:rounded-xl"
       href={link.url}
     >
       {link.title}

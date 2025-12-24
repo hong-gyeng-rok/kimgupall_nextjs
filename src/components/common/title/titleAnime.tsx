@@ -2,6 +2,12 @@
 
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
+import mainPatten from "../../../../public/sampleImages/mainPatten.png";
+import titlePattenTopLeft from "../../../../public/sampleImages/titlePatten_top_left.png";
+import titlePattenTopRight from "../../../../public/sampleImages/titlePatten_top_right.png";
+import titlePattenBottomLeft from "../../../../public/sampleImages/titlePatten_bottom_left.png";
+import titlePattenBottomRight from "../../../../public/sampleImages/titlePatton_bottom_right.png";
 
 export default function TitleAnime() {
   const creditsData = [
@@ -11,6 +17,11 @@ export default function TitleAnime() {
     { role: "Instagram", name: "@kimgupall_98" },
     { role: "Email", name: "kimgupall98@gmail.com" },
   ];
+  const mainBg = mainPatten;
+  const topLeft = titlePattenTopLeft;
+  const topRigt = titlePattenTopRight;
+  const bottomLeft = titlePattenBottomLeft;
+  const bottomRight = titlePattenBottomRight;
 
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -23,22 +34,50 @@ export default function TitleAnime() {
   const backgroundColor = useTransform(
     scrollYProgress,
     [0.5, 1],
-    ["#000000", "#ffffff"],
+    ["#000000", "rgba(255,255,255,0)"],
   );
   const textColor = useTransform(
     scrollYProgress,
     [0.5, 1],
-    ["#ffffff", "#000000"],
+    ["#ffffff", "#c4c47e"],
   );
+
+  const pattonOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const mainOpacity = useTransform(scrollYProgress, [0.9, 1], [1, 0]);
 
   return (
     // 높이를 넉넉히 주어 스크롤 공간 확보
-    <div ref={targetRef} className="h-[300vh] relative w-screen ">
+    <article ref={targetRef} className="h-[300vh] relative w-screen font-sans">
       <motion.div
-        style={{ backgroundColor: backgroundColor, color: textColor }}
+        style={{
+          backgroundColor: backgroundColor,
+          color: textColor,
+        }}
         className="items-center sticky top-0 left-0 h-screen flex flex-col justify-around font-bold transition-colors"
       >
-        <p className="text-[12rem]">GRADUATION 2026</p>
+        <motion.div className="absolute inset-0 w-full h-full pointer-events-none">
+          <Image
+            src={topLeft}
+            alt="titlePattenTopLeft"
+            className="absolute top-0 left-0 w-md z-10"
+          />
+          <Image
+            src={topRigt}
+            alt="titlePattenTopRight"
+            className="absolute top-0 right-0 w-md z-10"
+          />
+          <Image
+            src={bottomLeft}
+            alt="titlePattenBottomLeft"
+            className="absolute bottom-0 left-0 w-md z-10"
+          />
+          <Image
+            src={bottomRight}
+            alt="titlePattenBottomRight"
+            className="absolute bottom-0 right-0 w-md z-10"
+          />
+        </motion.div>
+        <p className="text-[12rem] z-20">GRADUATION 2026</p>
         {/* 움직이는 트랙 */}
         <motion.div
           className="flex gap-20 w-max" // w-max: 내용물만큼 너비 확보
@@ -71,6 +110,6 @@ export default function TitleAnime() {
           ))}
         </motion.div>
       </motion.div>
-    </div>
+    </article>
   );
 }

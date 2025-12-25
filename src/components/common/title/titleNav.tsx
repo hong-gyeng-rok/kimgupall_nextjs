@@ -5,23 +5,23 @@ const navLinks = [
   {
     id: 1,
     title: "작품소개",
-    url: "#",
+    url: "/intro",
   },
   {
     id: 2,
     title: "작업과정",
-    url: "#",
+    url: "/drawingCourse",
   },
   {
     id: 3,
     title: "앨범",
-    url: "#",
+    url: "/album",
   },
 ];
 
 export default function TitleNav() {
   return (
-    <article className="sticky top-10 flex flex-raw gap-10 ml-6 ">
+    <article className="sticky top-10 flex flex-raw gap-10 ml-6  ">
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />
       ))}
@@ -32,7 +32,7 @@ export default function TitleNav() {
 function Nav({ link }: { link: Link }) {
   return (
     <InternalLink
-      className="text-black text-3xl p-2 px-4 hover:bg-black hover:text-white hover:rounded-xl"
+      className="text-black text-3xl p-2 px-4 hover:bg-black hover:text-white hover:rounded-xl hover:animate-bounce"
       href={link.url}
     >
       {link.title}

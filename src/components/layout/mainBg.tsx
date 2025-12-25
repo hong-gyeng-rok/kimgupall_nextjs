@@ -11,7 +11,7 @@ export default function MainBg({ children }: MainBgProps) {
   const bgImg = mainPatten;
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full bg-white ">
       <div
         id="MainBg"
         className="absolute inset-0 z-0 opacity-20"

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import GalleryContents from "../common/gallery/galleryContents";
 import GalleryNavBtn from "../common/gallery/galleryNavBtn";

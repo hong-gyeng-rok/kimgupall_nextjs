@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import Image from "next/image";
 import Masonry from "react-masonry-css"; // react-masonry-css에서 임포트

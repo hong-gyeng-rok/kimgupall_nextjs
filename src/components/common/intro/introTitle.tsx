@@ -5,13 +5,11 @@ export default function IntroTitle() {
   const titleImg = yacha_font;
 
   return (
-    <div className="w-screen flex justify-center itmes-center">
+    <div className="w-full h-full flex items-center justify-center">
       <Image
         src={titleImg}
         alt="yacha_font"
-        width={600}
-        height={300}
-        className="w-[800px] h-[400px]"
+        className="w-[300px] md:w-[600px] h-auto object-contain"
       />
     </div>
   );

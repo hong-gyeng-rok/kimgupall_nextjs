@@ -1,7 +1,9 @@
 "use client";
 
 import { useScroll, useTransform, motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import Typewriter from "@/components/common/Typewriter";
+
 import Image from "next/image";
 import mainPatten from "../../../../public/sampleImages/mainPatten.png";
 import titlePattenTopLeft from "../../../../public/sampleImages/titlePatten_top_left.png";
@@ -24,6 +26,22 @@ export default function TitleAnime() {
   const bottomRight = titlePattenBottomRight;
 
   const targetRef = useRef<HTMLDivElement>(null);
+
+  // 애니메이션 루프 제어 상태
+  const [isShowing, setIsShowing] = useState(true);
+
+  useEffect(() => {
+    const loop = async () => {
+      while (true) {
+        setIsShowing(true); // 시작
+        await new Promise((resolve) => setTimeout(resolve, 9000)); // 9초간 유지 (타이핑 시간 포함)
+
+        setIsShowing(false); // 사라짐
+        await new Promise((resolve) => setTimeout(resolve, 1500)); // 1.5초간 사라지는 애니메이션 대기
+      }
+    };
+    loop();
+  }, []);
 
   // 1. 타겟 요소의 스크롤 진행률을 추적 (0 ~ 1)
   const { scrollYProgress } = useScroll({
@@ -53,31 +71,28 @@ export default function TitleAnime() {
           backgroundColor: backgroundColor,
           color: textColor,
         }}
-        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-around font-bold transition-colors"
+        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors"
       >
-        <motion.div className="absolute inset-0 w-full h-full pointer-events-none">
-          <Image
-            src={topLeft}
-            alt="titlePattenTopLeft"
-            className="absolute top-0 left-0 w-md z-10"
-          />
-          <Image
-            src={topRigt}
-            alt="titlePattenTopRight"
-            className="absolute top-0 right-0 w-md z-10"
-          />
-          <Image
-            src={bottomLeft}
-            alt="titlePattenBottomLeft"
-            className="absolute bottom-0 left-0 w-md z-10"
-          />
-          <Image
-            src={bottomRight}
-            alt="titlePattenBottomRight"
-            className="absolute bottom-0 right-0 w-md z-10"
-          />
-        </motion.div>
-        <p className="text-[12rem] z-20">GRADUATION 2026</p>
+        <Typewriter
+          className="text-7xl z-20 font-light italic"
+          text="ARTIST BY KIMGUPALL"
+          speed={0.1}
+          show={isShowing}
+        />
+        <Typewriter
+          className="text-[15rem] z-20"
+          text="GRADUATION"
+          speed={0.2}
+          delay={1}
+          show={isShowing}
+        />
+        <Typewriter
+          className="text-[10rem] z-20 "
+          text="2026"
+          speed={0.3}
+          delay={2}
+          show={isShowing}
+        />
         {/* 움직이는 트랙 */}
         <motion.div
           className="flex gap-20 w-max" // w-max: 내용물만큼 너비 확보
@@ -90,8 +105,6 @@ export default function TitleAnime() {
             duration: 25, // 속도 (숫자가 클수록 느림)
           }}
         >
-          {/* (옵션) 배경 그라데이션: 양쪽 끝을 자연스럽게 흐리게 만듦 */}
-          {/* 무한 루프를 위해 리스트를 2번 렌더링 (Original + Duplicate) */}
           {[...creditsData].map((item, idx) => (
             <div
               key={idx}

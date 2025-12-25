@@ -13,8 +13,19 @@ const config: Config = {
       fontFamily: {
         chosunGoosu: ["var(--font-goosu)"],
       },
+      animation: {
+        typewriter: "typewriter 2s steps(11) forwards",
+      },
+      keyframes: {
+        typewriter: {
+          to: {
+            left: "100%",
+          },
+        },
+      },
     },
   },
   plugins: [],
 };
+
 export default config;

@@ -26,33 +26,33 @@ export default function ScrollyTellingSequence() {
   // Image A: 처음엔 보이다가(1), 20% 지점에서 사라짐(0)
   const opacityA = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-  // Image B: 20%에서 나타나서(0->1), 30%에 완전히 보이고, 80%부터 사라짐
+  // Image B: 20%에서 나타나서(0->1), 30%에 완전히 보이고, 30%부터 사라짐
   const opacityB = useTransform(
     scrollYProgress,
     [0.2, 0.3, 0.3, 0.4],
     [0, 1, 1, 0],
   );
-  // Image C: 20%에서 나타나서(0->1), 30%에 완전히 보이고, 80%부터 사라짐
+  // Image C: 40%에서 나타나서(0->1), 50%에 완전히 보이고, 50%부터 사라짐
   const opacityC = useTransform(
     scrollYProgress,
     [0.4, 0.5, 0.5, 0.6],
     [0, 1, 1, 0],
   );
-  // Image D: 20%에서 나타나서(0->1), 30%에 완전히 보이고, 80%부터 사라짐
+  // Image D: 70%에서 나타나서(0->1),  80%에 완전히 보이고, 80%부터 사라짐
   const opacityD = useTransform(
     scrollYProgress,
     [0.7, 0.8, 0.8, 0.9],
     [0, 1, 1, 0],
   );
 
-  // Movie: 80%에서 나타남
+  // Movie: 90%에서 나타남
   const opacityMovie = useTransform(scrollYProgress, [0.9, 1.0], [0, 1]);
 
   // --- C. 비디오 자동 재생 트리거 ---
   // 스크롤이 끝부분(0.95 이상)에 도달하면 비디오 재생, 아니면 일시정지
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (videoRef.current) {
-      if (latest > 0.95) {
+      if (latest > 0.9) {
         videoRef.current.play();
       } else {
         videoRef.current.pause();
@@ -64,12 +64,13 @@ export default function ScrollyTellingSequence() {
     // 1. 스크롤 영역 (높이를 길게 잡음)
     <div
       ref={containerRef}
-      className=" h-[300vh] relative bg-white inset-0 w-full h-full pointer-events-none"
+      className=" h-[1000vh] relative bg-white  inset-0 w-full pointer-events-none"
     >
       {/* 2. 뷰포트 고정 영역 (Sticky) */}
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden gap-10">
+      <div className="sticky top-20 h-screen w-full flex flex-col items-center justify-center overflow-hidden gap-10">
         {/* --- 화살표 영역 --- */}
-        <div className="w-full px-10">
+        <div className="flex flex-row w-full px-10 items-center gap-4">
+          <p className="text-3xl font-sans font-bold">TOBE</p>
           <motion.div
             style={{ width: arrowWidth }} // 여기서 너비가 동적으로 바뀜
             className="h-2 bg-black relative"
@@ -77,6 +78,7 @@ export default function ScrollyTellingSequence() {
             {/* 화살표 머리 (CSS로 그림) */}
             <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-l-[15px] border-l-black border-b-[10px] border-b-transparent" />
           </motion.div>
+          <p className="text-3xl font-sans font-bold">ASIS</p>
         </div>
         <div className="relative w-screen h-[800px] mb-10 flex ">
           {/* Image A */}

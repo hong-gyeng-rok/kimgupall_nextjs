@@ -5,4 +5,5 @@ export interface InternalLinkProps {
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
+  onClick?: () => void;
 }

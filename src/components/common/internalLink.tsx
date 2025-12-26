@@ -9,12 +9,14 @@ export default function InternalLink({
   children, //ReactNode
   className, // string?
   style, //CSSProperties
+  onClick,
 }: InternalLinkProps) {
   return (
     <Link
       href={href}
       className={className}
       style={style}
+      onClick={onClick}
       target="_self"
       rel="noreferrer noopener"
     >

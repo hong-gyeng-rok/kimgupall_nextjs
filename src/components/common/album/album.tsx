@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import InternalLink from "../internalLink";
 
 import runner from "../../../../public/sampleImages/runner.jpg";
 import yacha from "../../../../public/sampleImages/yacha.jpg";
@@ -42,8 +42,8 @@ function Card({
   // 4단계 변환: [진입 시작, 홀드 시작, 홀드 끝, 퇴장 끝]
   const inputRange = [
     position - range,
-    position - hold / 3, // 여기서부터 중앙 정지
-    position + hold / 3, // 여기까지 중앙 정지
+    position - hold / 1, // 여기서부터 중앙 정지
+    position + hold / 1, // 여기까지 중앙 정지
     position + range,
   ];
 
@@ -94,7 +94,7 @@ function Card({
   return isInstagram ? (
     cardContent
   ) : (
-    <Link
+    <InternalLink
       href="/gallery"
       className="block"
       onClick={() => {
@@ -105,10 +105,9 @@ function Card({
       }}
     >
       {cardContent}
-    </Link>
+    </InternalLink>
   );
 }
-
 
 export default function Album() {
   const targetRef = useRef<HTMLDivElement>(null);

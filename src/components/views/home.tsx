@@ -1,11 +1,9 @@
-import Banner from "./banner";
-import Gallery from "./gallery";
-import TitleAnime from "../common/title/titleAnime";
-import TitleNav from "../common/title/titleNav";
-import SeparateLine from "../common/separateLine";
-import IntroLayout from "../layout/introLayout";
+import TitleView from "./titleView";
+import AlbumView from "./albumView";
+import IntroView from "./introView";
+import DrawingCourseView from "./drawingCourseView";
 import MainBg from "../layout/mainBg";
-import AlbumLayout from "../layout/albumLayout";
+import TitleNav from "../common/title/titleNav";
 
 import DrawingCourseLayout from "../layout/drawingCourseLayout";
 import { useEffect } from "react";
@@ -32,11 +30,11 @@ export default function HomeView() {
       className="text-black bg-white flex flex-col h-fit w-screen "
     >
       <MainBg>
-        <TitleAnime />
+        <TitleView />
         <TitleNav />
-        <IntroLayout />
-        <DrawingCourseLayout />
-        <AlbumLayout />
+        <IntroView />
+        <DrawingCourseView />
+        <AlbumView />
       </MainBg>
     </section>
   );

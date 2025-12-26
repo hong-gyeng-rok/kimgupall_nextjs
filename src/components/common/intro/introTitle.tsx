@@ -9,8 +9,8 @@ export default function IntroTitle() {
       <Image
         src={introTitleImg}
         alt="yacha_font"
-        width={1500}
-        height={800}
+        width={1350}
+        height={500}
         className="object-contain relative top-1/12"
       />
     </div>

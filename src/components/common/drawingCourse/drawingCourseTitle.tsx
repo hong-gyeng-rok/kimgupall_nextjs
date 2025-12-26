@@ -20,7 +20,7 @@ export default function ScrollyTellingSequence() {
 
   // --- A. 화살표 길이 변화 로직 ---
   // 스크롤 0 -> 1.0 에 따라 너비가 0% -> 100%로 변함
-  const arrowWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const arrowWidth = useTransform(scrollYProgress, [0, 1], ["0%", "87%"]);
 
   // --- B. 미디어 순차 등장 로직 (Opacity 제어) ---
   // Image A: 처음엔 보이다가(1), 20% 지점에서 사라짐(0)
@@ -69,16 +69,18 @@ export default function ScrollyTellingSequence() {
       {/* 2. 뷰포트 고정 영역 (Sticky) */}
       <div className="sticky top-20 h-screen w-full flex flex-col items-center justify-center overflow-hidden gap-10">
         {/* --- 화살표 영역 --- */}
-        <div className="flex flex-row w-full px-10 items-center gap-4">
-          <p className="text-3xl font-sans font-bold">TOBE</p>
+        <div className="text-black flex flex-row w-full px-10 items-center gap-4">
+          <p className="text-3xl font-chosunGoosu font-bold">작업 전</p>
           <motion.div
             style={{ width: arrowWidth }} // 여기서 너비가 동적으로 바뀜
-            className="h-2 bg-black relative"
+            className="h-1 bg-black relative"
           >
             {/* 화살표 머리 (CSS로 그림) */}
-            <div className="absolute right-[-10px] top-1/2 -translate-y-1/2 w-0 h-0 border-t-[10px] border-t-transparent border-l-[15px] border-l-black border-b-[10px] border-b-transparent" />
+            <div className="absolute right-[1px] top-1/2 -translate-y-1/2 w-[20px] h-[20px] border-t-3 border-r-3 border-solid rotate-45" />
           </motion.div>
-          <p className="text-3xl font-sans font-bold">ASIS</p>
+          <p className="text-black text-3xl font-chosunGoosu font-bold">
+            작업 후
+          </p>
         </div>
         <div className="relative w-screen h-[800px] mb-10 flex ">
           {/* Image A */}

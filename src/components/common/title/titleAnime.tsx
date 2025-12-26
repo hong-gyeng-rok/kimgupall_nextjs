@@ -65,7 +65,7 @@ export default function TitleAnime() {
 
   return (
     // 높이를 넉넉히 주어 스크롤 공간 확보
-    <article ref={targetRef} className="h-[300vh] relative w-screen font-sans">
+    <article ref={targetRef} className="h-[600vh] relative w-screen font-sans">
       <motion.div
         style={{
           backgroundColor: backgroundColor,

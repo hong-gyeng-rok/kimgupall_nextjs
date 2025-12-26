@@ -1,15 +1,17 @@
 import Image from "next/image";
-import yacha_font from "../../../../public/sampleImages/yacha_font.png";
+import yacha_font from "../../../../public/sampleImages/BG_DPI300.jpg";
 
 export default function IntroTitle() {
-  const titleImg = yacha_font;
+  const introTitleImg = yacha_font;
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-screen h-auto flex flex items-center justify-center">
       <Image
-        src={titleImg}
+        src={introTitleImg}
         alt="yacha_font"
-        className="w-[300px] md:w-[600px] h-auto object-contain"
+        width={1500}
+        height={800}
+        className="object-contain relative top-1/12"
       />
     </div>
   );

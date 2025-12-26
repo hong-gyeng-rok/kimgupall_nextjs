@@ -20,7 +20,7 @@ export default function IntroContext({ scrollYProgress }: IntroContextProps) {
   const y4 = useTransform(scrollYProgress, [0.7, 0.85], [20, 0]);
 
   return (
-    <div className="w-full text-black font-medium text-lg md:text-xl lg:text-2xl gap-8 flex flex-col font-chosunGoosu">
+    <div className="w-[70%] text-black font-medium text-lg md:text-xl lg:text-2xl gap-8 flex flex-col font-chosunGoosu mt-24">
       <motion.p style={{ opacity: opacity1, y: y1 }}>
         본 일러스트레이션 시리즈는 동양 설화 속 귀신이자 수호신인 야차(Yacha)를
         매개로 하여, 인간의 본성을 관통하는 7대 죄악(The Seven Deadly Sins)을

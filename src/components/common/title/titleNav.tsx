@@ -21,7 +21,7 @@ const navLinks = [
 
 export default function TitleNav() {
   return (
-    <article className="sticky top-10 flex flex-raw gap-10 ml-6  ">
+    <article className="sticky top-0 flex flex-raw gap-10 ml-6  z-30">
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />
       ))}

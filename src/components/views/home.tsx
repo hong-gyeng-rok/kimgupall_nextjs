@@ -29,7 +29,7 @@ export default function HomeView() {
   return (
     <section
       id="HomeView"
-      className="text-black bg-white flex flex-col h-fit w-screen"
+      className="text-black bg-white flex flex-col h-fit w-screen "
     >
       <MainBg>
         <TitleAnime />

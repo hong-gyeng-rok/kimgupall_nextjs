@@ -5,7 +5,6 @@ import DrawingCourseView from "./drawingCourseView";
 import MainBg from "../layout/mainBg";
 import TitleNav from "../common/title/titleNav";
 
-import DrawingCourseLayout from "../layout/drawingCourseLayout";
 import { useEffect } from "react";
 
 export default function HomeView() {

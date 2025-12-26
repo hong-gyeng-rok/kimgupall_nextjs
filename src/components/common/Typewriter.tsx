@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, Variants } from "framer-motion";
 import { useEffect } from "react";
 
 interface TypewriterProps {
@@ -57,14 +57,14 @@ export default function Typewriter({
     }
   }, [controls, delay, loop, text.length, speed, waitTime, show]);
 
-  const containerVariants = {
-    hidden: { 
+  const containerVariants: Variants = {
+    hidden: {
       opacity: 0,
       transition: {
         staggerChildren: 0.05, // 사라질 때는 빠르게
         staggerDirection: -1, // 뒤에서부터 사라짐 (선택사항)
         when: "afterChildren", // 자식들이 다 사라진 뒤 컨테이너 숨김
-      }
+      },
     },
     visible: {
       opacity: 1,
@@ -75,14 +75,14 @@ export default function Typewriter({
     },
   };
 
-  const childVariants = {
-    hidden: { 
-      opacity: 0, 
+  const childVariants: Variants = {
+    hidden: {
+      opacity: 0,
       y: 10,
-      transition: { 
+      transition: {
         duration: 0.3,
-        ease: "easeInOut"
-      }
+        ease: "easeInOut",
+      },
     },
     visible: {
       opacity: 1,
@@ -115,4 +115,3 @@ export default function Typewriter({
     </motion.div>
   );
 }
-

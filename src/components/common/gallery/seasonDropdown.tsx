@@ -54,7 +54,8 @@ export default function SeasonDropdown({
   };
 
   return (
-    <div
+    <nav
+      data-testid="SeasonDropdownSection"
       className="relative inline-block text-left min-[350px]:w-fit
             md:w-xs p-1 px-4 bg-white text-black shadow-xl/50 rounded"
       ref={dropDownRef}
@@ -70,13 +71,13 @@ export default function SeasonDropdown({
         {selectedSeason.label}
       </button>
       {isOpen && (
-        <div
+        <span
           className="relative"
           role="menu-button"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
         >
-          <div
+          <span
             className="absolute w-full bg-white flex flex-col justify-center py-1 mt-1"
             role="none"
           >
@@ -90,9 +91,9 @@ export default function SeasonDropdown({
                 {season.label}
               </button>
             ))}
-          </div>
-        </div>
+          </span>
+        </span>
       )}
-    </div>
+    </nav>
   );
 }

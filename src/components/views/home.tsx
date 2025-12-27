@@ -16,7 +16,7 @@ export default function HomeView() {
       setTimeout(() => {
         window.scrollTo({
           top: parseInt(savedPos),
-          behavior: "instant", // 부드러운 이동보다는 즉시 이동이 복구 느낌에 가까움
+          behavior: "auto", // 부드러운 이동보다는 즉시 이동이 복구 느낌에 가까움
         });
         sessionStorage.removeItem("home_scroll_pos"); // 한 번 사용 후 삭제
       }, 100);
@@ -24,17 +24,17 @@ export default function HomeView() {
   }, []);
 
   return (
-    <section
-      id="HomeView"
-      className="text-black bg-white flex flex-col h-fit w-screen "
-    >
-      <MainBg>
+    <MainBg>
+      <section
+        data-testid="HomeView"
+        className="text-black bg-white flex flex-col h-fit w-screen "
+      >
         <TitleView />
         <TitleNav />
         <IntroView />
         <DrawingCourseView />
         <AlbumView />
-      </MainBg>
-    </section>
+      </section>
+    </MainBg>
   );
 }

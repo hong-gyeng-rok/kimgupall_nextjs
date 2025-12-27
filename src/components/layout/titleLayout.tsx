@@ -2,8 +2,8 @@ import TitleAnime from "../common/title/titleAnime";
 
 export default function TitleLayout() {
   return (
-    <section>
+    <div data-testid="TitleLayout">
       <TitleAnime />
-    </section>
+    </div>
   );
 }

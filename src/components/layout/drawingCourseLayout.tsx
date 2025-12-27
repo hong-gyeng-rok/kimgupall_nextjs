@@ -1,10 +1,9 @@
 import DrawingCourseTitle from "../common/drawingCourse/drawingCourseTitle";
-import MainBg from "./mainBg";
 
 export default function DrawingCourseLayout() {
   return (
-    <MainBg>
+    <div data-testid="DrawingCourseLayout">
       <DrawingCourseTitle />
-    </MainBg>
+    </div>
   );
 }

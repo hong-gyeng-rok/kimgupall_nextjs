@@ -3,8 +3,10 @@ import MainBg from "../layout/mainBg";
 
 export default function TitleView() {
   return (
-    <MainBg>
-      <TitleLayout />
-    </MainBg>
+    <header data-testid="TitleView">
+      <MainBg>
+        <TitleLayout />
+      </MainBg>
+    </header>
   );
 }

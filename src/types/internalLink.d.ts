@@ -6,4 +6,5 @@ export interface InternalLinkProps {
   className?: string;
   style?: CSSProperties;
   onClick?: () => void;
+  ariaLabel?: string;
 }

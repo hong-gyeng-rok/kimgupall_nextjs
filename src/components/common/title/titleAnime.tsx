@@ -4,13 +4,6 @@ import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import Typewriter from "@/components/common/Typewriter";
 
-import Image from "next/image";
-import mainPatten from "../../../../public/sampleImages/mainPatten.png";
-import titlePattenTopLeft from "../../../../public/sampleImages/titlePatten_top_left.png";
-import titlePattenTopRight from "../../../../public/sampleImages/titlePatten_top_right.png";
-import titlePattenBottomLeft from "../../../../public/sampleImages/titlePatten_bottom_left.png";
-import titlePattenBottomRight from "../../../../public/sampleImages/titlePatton_bottom_right.png";
-
 export default function TitleAnime() {
   const creditsData = [
     { role: "Project Management", name: "HONG GYEONG ROK" },
@@ -19,11 +12,6 @@ export default function TitleAnime() {
     { role: "Instagram", name: "@kimgupall_98" },
     { role: "Email", name: "kimgupall98@gmail.com" },
   ];
-  const mainBg = mainPatten;
-  const topLeft = titlePattenTopLeft;
-  const topRigt = titlePattenTopRight;
-  const bottomLeft = titlePattenBottomLeft;
-  const bottomRight = titlePattenBottomRight;
 
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -60,12 +48,13 @@ export default function TitleAnime() {
     ["#ffffff", "#c4c47e"],
   );
 
-  const pattonOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const mainOpacity = useTransform(scrollYProgress, [0.9, 1], [1, 0]);
-
   return (
     // 높이를 넉넉히 주어 스크롤 공간 확보
-    <article ref={targetRef} className="h-[600vh] relative w-screen font-sans">
+    <article
+      id="TitleAnime"
+      ref={targetRef}
+      className="h-[600vh] relative w-screen font-sans"
+    >
       <motion.div
         style={{
           backgroundColor: backgroundColor,
@@ -73,55 +62,69 @@ export default function TitleAnime() {
         }}
         className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors"
       >
-        <Typewriter
-          className="text-7xl z-20 font-light italic"
-          text="ARTIST BY KIMGUPALL"
-          speed={0.1}
-          show={isShowing}
-        />
-        <Typewriter
-          className="text-[15rem] z-20"
-          text="GRADUATION"
-          speed={0.2}
-          delay={1}
-          show={isShowing}
-        />
-        <Typewriter
-          className="text-[10rem] z-20 "
-          text="2026"
-          speed={0.3}
-          delay={2}
-          show={isShowing}
-        />
+        <h3 className="contents">
+          <Typewriter
+            className="text-7xl z-20 font-light italic"
+            text="ARTIST BY KIMGUPALL"
+            speed={0.1}
+            show={isShowing}
+          />
+        </h3>
+        <h1 className="contents">
+          <Typewriter
+            className="text-[15rem] z-20"
+            text="GRADUATION"
+            speed={0.2}
+            delay={1}
+            show={isShowing}
+          />
+        </h1>
+        <h2 className="contents">
+          <Typewriter
+            className="text-[10rem] z-20 "
+            text="2026"
+            speed={0.3}
+            delay={2}
+            show={isShowing}
+          />
+        </h2>
         {/* 움직이는 트랙 */}
-        <motion.div
-          className="flex gap-20 w-max" // w-max: 내용물만큼 너비 확보
-          animate={{
-            x: ["120%", "-120%"], // 전체 길이의 절반만큼만 이동하고 0으로 순간이동
-          }}
-          transition={{
-            repeat: Infinity,
-            ease: "linear",
-            duration: 25, // 속도 (숫자가 클수록 느림)
-          }}
-        >
-          {[...creditsData].map((item, idx) => (
-            <div
-              key={idx}
-              className="flex flex-col items-start justify-center min-w-[200px]"
-            >
-              {/* 역할 (작은 회색 글씨) */}
-              <span className="text-xs md:text-sm text-white font-medium tracking-widest uppercase mb-1">
-                {item.role}
-              </span>
+        <aside aria-label="Project Credits" className="w-full overflow-hidden">
+          <motion.ul
+            className="flex gap-20 w-max" // w-max: 내용물만큼 너비 확보
+            animate={{
+              x: ["120%", "-120%"], // 전체 길이의 절반만큼만 이동하고 0으로 순간이동
+            }}
+            transition={{
+              repeat: Infinity,
+              ease: "linear",
+              duration: 25, // 속도 (숫자가 클수록 느림)
+            }}
+          >
+            {[...creditsData].map((item, idx) => (
+              <li
+                key={idx}
+                className="flex flex-col items-start justify-center min-w-[200px]"
+              >
+                {/* 역할 (작은 회색 글씨) */}
+                <span
+                  data-testid="Title_role"
+                  className="text-xs md:text-sm text-white font-medium tracking-widest uppercase mb-1"
+                >
+                  {item.role}
+                </span>
 
-              {/* 이름 (큰 흰색 글씨) */}
-              <span className="text-xl md:text-3xl text-white font-black tracking-tight font-serif italic">
-                {item.name}
-              </span>
-            </div>
-          ))}
-        </motion.div>
+                {/* 이름 (큰 흰색 글씨) */}
+                <span
+                  data-testid="title_name"
+                  className="text-xl md:text-3xl text-white font-black tracking-tight font-serif italic"
+                >
+                  {item.name}
+                </span>
+              </li>
+            ))}
+          </motion.ul>
+        </aside>
       </motion.div>
     </article>
   );

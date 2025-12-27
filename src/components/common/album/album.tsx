@@ -59,7 +59,8 @@ function Card({
   ]);
 
   const cardContent = (
-    <motion.div
+    <motion.span
+      data-testid="CardContent"
       style={{
         scale,
         boxShadow,
@@ -70,11 +71,17 @@ function Card({
         !isInstagram ? "cursor-pointer" : ""
       }`}
     >
-      <p className="text-black text-xl font-bold mb-4 w-full text-center">
+      <p
+        data-testid="AlbumTitle"
+        className="text-black text-xl font-bold mb-4 w-full text-center"
+      >
         {card.title}
       </p>
 
-      <div className="relative flex-1 w-full overflow-hidden rounded-lg">
+      <figure
+        data-testid="CardImage"
+        className="relative flex-1 w-full overflow-hidden rounded-lg"
+      >
         <Image
           src={card.url}
           alt={card.alt}
@@ -82,13 +89,13 @@ function Card({
           className="object-contain"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-end p-6">
+        <figcaption className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-end p-6">
           <h3 className="text-2xl font-bold text-white translate-y-4 transition-transform duration-300 group-hover:translate-y-0 font-chosunGoosu">
             {card.alt}
           </h3>
-        </div>
-      </div>
-    </motion.div>
+        </figcaption>
+      </figure>
+    </motion.span>
   );
 
   return isInstagram ? (
@@ -146,9 +153,9 @@ export default function Album() {
   // 생성된 배열로 트랙 이동 제어
   const x = useTransform(scrollYProgress, xInput, xOutput);
   return (
-    <section ref={targetRef} className="relative h-[400vh]">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex gap-40 items-center">
+    <article data-testid="Album" ref={targetRef} className="relative h-[400vh]">
+      <span className="sticky top-0 flex h-screen items-center overflow-hidden">
+        <motion.span style={{ x }} className="flex gap-40 items-center">
           {cards.map((card, index) => (
             <Card
               key={card.id}
@@ -159,8 +166,8 @@ export default function Album() {
               hold={HOLD_DURATION}
             />
           ))}
-        </motion.div>
-      </div>
-    </section>
+        </motion.span>
+      </span>
+    </article>
   );
 }

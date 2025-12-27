@@ -19,17 +19,17 @@ export default function GalleryContents() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen p-8 bg-black text-white flex items-center justify-center">
+      <div className="min-w-screen min-h-screen p-8 bg-none text-black flex items-center justify-center">
         <p>이미지 불러오는 중...</p>
-      </main>
+      </div>
     );
   }
 
   if (isError) {
     return (
-      <main className="min-h-screen p-8 bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen p-8 bg-black text-white flex items-center justify-center">
         <p>에러 발생: {error?.message}</p>
-      </main>
+      </div>
     );
   }
 
@@ -43,30 +43,34 @@ export default function GalleryContents() {
   };
 
   return (
-    <div>
-      <div className=" min-[350px]:max-h-[85vh] md:max-h-[90vh] overflow-y-auto ">
+    <article
+      data-testid="GalleryContents"
+      className="w-full h-full flex justify-center"
+    >
+      <div className="w-full min-[350px]:max-h-[85vh] md:max-h-[90vh] overflow-y-auto p-6 no-scrollbar rounded-xl backdrop-blur-sm shadow-inner">
         {images && images.length > 0 ? ( //filteredImages라는 값은 GalleryContainer 함수에서 받아옴, 이를 통해 특정 시즌 이미지만 출력되도록함
           <Masonry
             breakpointCols={breakpointColumnsObj}
             className="my-masonry-grid flex gap-4" // flex 컨테이너 클래스 이미지 열 갭
-            columnClassName="my-masonry-grid_column gap-4 bg-clip-padding " // 각 컬럼에 적용될 클래스 (gap-4는 gutter 역할)
+            columnClassName="my-masonry-grid_column gap-4 bg-clip-padding" // 각 컬럼에 적용될 클래스 (gap-4는 gutter 역할)
           >
             {images.map((image) => (
-              <div
+              <button
                 key={image.id}
-                className=" rounded shadow-xl mb-4 "
+                className="rounded-lg shadow-lg mb-4 transition-all duration-300 hover:scale-110 hover:z-50 hover:shadow-2xl relative block"
                 onClick={() => setSelectedImage(image)}
+                aria-label={`${image.title || "작품"} 크게 보기`}
               >
                 <Image
                   src={`${STORAGE_BASE_URL}/${image.publicUrl}`}
                   alt={image.title || "작품 이미지"}
-                  width={600}
-                  height={800}
+                  width={300}
+                  height={400}
                   priority={true}
                   placeholder="empty"
-                  className="w-full  object-cover transition hover:-translate-y-1 hover:scale-110 hover:shadow-xl/70"
+                  className="w-full object-cover rounded-lg"
                 />
-              </div>
+              </button>
             ))}
           </Masonry>
         ) : (
@@ -75,24 +79,27 @@ export default function GalleryContents() {
       </div>
       {selectedImage && !isMobile && (
         <Modal
+          ariaHideApp={false}
           isOpen={selectedImage !== null}
           onRequestClose={() => setSelectedImage(null)} // 4. 모달 닫기
-          className="w-auto max-w-2xl flex flex-col items-center justify-center focus:outline-none gap-8"
-          overlayClassName=" fixed inset-0 bg-white flex items-center justify-center"
+          className="w-screen h-screen flex flex-col items-center justify-center focus:outline-none gap-8"
+          overlayClassName=" fixed inset-0 bg-white flex items-center justify-center z-30"
         >
           <Image
-            src={`${selectedImage.publicUrl}`} // 5. 선택된 이미지의 원본 URL 사용
+            src={`${STORAGE_BASE_URL}/${selectedImage.publicUrl}`} // 5. 선택된 이미지의 원본 URL 사용
             alt={"그림"}
-            className="w-full h-full object-contain "
+            width={1920}
+            height={800}
+            className="w-full h-full max-h-200 object-contain "
           />
           <button
-            className="bg-white text-black ring-3 ring-black rounded-xl p-5 text-7xl w-3xl"
+            className="bg-none text-black ring-3 ring-black rounded-xl p-5 text-7xl w-3xl font-sans"
             onClick={() => setSelectedImage(null)}
           >
             나가기
           </button>
         </Modal>
       )}
-    </div>
+    </article>
   );
 }

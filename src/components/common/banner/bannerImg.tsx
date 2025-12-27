@@ -42,9 +42,12 @@ export default function BannerImg() {
   }
 
   return (
-    <article className=" w-xs flex justify-center items-center">
+    <article
+      data-testid="BannerImg"
+      className=" w-xs flex justify-center items-center"
+    >
       {images && images.length > 0 ? (
-        <div className="rounded-lg p-2 shadow-xl/50">
+        <figure className="rounded-lg p-2 shadow-xl/50">
           <Image
             src={`${STORAGE_BASE_URL}/${images[count].publicUrl}`}
             alt={images[count].title || "작품 이미지"}
@@ -54,7 +57,7 @@ export default function BannerImg() {
             placeholder="empty"
             className=" w-xs rounded object-cover"
           />
-        </div>
+        </figure>
       ) : (
         <p className="h-150">표시할 배너 데이터가 없습니다.</p>
       )}

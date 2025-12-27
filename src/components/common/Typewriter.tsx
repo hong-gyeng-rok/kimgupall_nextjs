@@ -97,6 +97,7 @@ export default function Typewriter({
 
   return (
     <motion.div
+      data-testid="Typewriter"
       variants={containerVariants}
       initial="hidden"
       animate={controls}

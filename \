@@ -1,0 +1,11 @@
+import GoToHomeBtn from "@/components/common/goToHomeBtn";
+import IntroView from "@/components/views/introView";
+
+export default function IntroPage() {
+  return (
+    <main data-testid="IntroPage">
+      <GoToHomeBtn />
+      <IntroView />
+    </main>
+  );
+}

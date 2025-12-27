@@ -3,8 +3,10 @@ import MainBg from "../layout/mainBg";
 
 export default function AlbumView() {
   return (
-    <MainBg>
-      <AlbumLayout />
-    </MainBg>
+    <section data-testid="AlbumView">
+      <MainBg>
+        <AlbumLayout />
+      </MainBg>
+    </section>
   );
 }

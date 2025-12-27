@@ -9,6 +9,7 @@ export default function ExternalLink({
 }: ExternalLinkProps) {
   return (
     <a
+      data-testid="ExternalLink"
       href={href}
       className={className}
       style={style}

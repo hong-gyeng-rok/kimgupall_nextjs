@@ -10,15 +10,18 @@ export default function InternalLink({
   className, // string?
   style, //CSSProperties
   onClick,
+  ariaLabel,
 }: InternalLinkProps) {
   return (
     <Link
+      data-testid="InternalBtn"
       href={href}
       className={className}
       style={style}
       onClick={onClick}
       target="_self"
       rel="noreferrer noopener"
+      aria-label={ariaLabel}
     >
       {children}
     </Link>

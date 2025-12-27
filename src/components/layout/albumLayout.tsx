@@ -1,10 +1,9 @@
 import Album from "../common/album/album";
-import MainBg from "./mainBg";
 
 export default function AlbumLayout() {
   return (
-    <MainBg>
+    <div data-testid="AlbumLayout">
       <Album />
-    </MainBg>
+    </div>
   );
 }

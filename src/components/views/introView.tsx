@@ -3,8 +3,10 @@ import MainBg from "../layout/mainBg";
 
 export default function IntroView() {
   return (
-    <MainBg>
-      <IntroLayout />
-    </MainBg>
+    <section data-testid="IntroView">
+      <MainBg>
+        <IntroLayout />
+      </MainBg>
+    </section>
   );
 }

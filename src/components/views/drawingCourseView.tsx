@@ -3,8 +3,10 @@ import MainBg from "../layout/mainBg";
 
 export default function DrawingCourseView() {
   return (
-    <MainBg>
-      <DrawingCourseLayout />
-    </MainBg>
+    <section data-testid="DrawingCourseView">
+      <MainBg>
+        <DrawingCourseLayout />
+      </MainBg>
+    </section>
   );
 }

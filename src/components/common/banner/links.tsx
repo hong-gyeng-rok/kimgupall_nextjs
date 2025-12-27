@@ -72,19 +72,19 @@ function Links() {
   );
 
   return (
-    <article className="flex flex-col gap-y-6">
+    <nav className="flex flex-col gap-y-6">
       {/* 'default' 스타일 링크 렌더링 */}
       {defaultStyleLinks.map((link) => (
         <StyledLink key={link.id} link={link} />
       ))}
 
       {/* 'subtle' 스타일 링크 렌더링 */}
-      <div className="flex flex-row justify-around">
+      <span className="flex flex-row justify-around">
         {subtleStyleLinks.map((link) => (
           <StyledLink key={link.id} link={link} />
         ))}
-      </div>
-    </article>
+      </span>
+    </nav>
   );
 }
 

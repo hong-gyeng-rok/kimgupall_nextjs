@@ -20,7 +20,10 @@ export default function IntroContext({ scrollYProgress }: IntroContextProps) {
   const y4 = useTransform(scrollYProgress, [0.7, 0.85], [20, 0]);
 
   return (
-    <div className="w-[70%] text-black font-medium text-lg md:text-xl lg:text-2xl gap-5 flex flex-col font-chosunGoosu mt-20">
+    <figcaption
+      data-testid="IntroContext"
+      className="w-[70%] text-black font-medium text-lg md:text-xl lg:text-2xl gap-4 flex flex-col font-chosunGoosu relative mt-16"
+    >
       <motion.p style={{ opacity: opacity1, y: y1 }}>
         본 일러스트레이션 시리즈는 동양 설화 속 귀신이자 수호신인 야차(Yacha)를
         매개로 하여, 인간의 본성을 관통하는 7대 죄악(The Seven Deadly Sins)을
@@ -42,6 +45,6 @@ export default function IntroContext({ scrollYProgress }: IntroContextProps) {
         욕망의 민낯을 감각적이고 힙(Hip)한 비주얼로 풀어낸 현대판
         야차도(夜叉圖)입니다.
       </motion.p>
-    </div>
+    </figcaption>
   );
 }

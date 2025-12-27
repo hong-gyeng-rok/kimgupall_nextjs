@@ -30,4 +30,31 @@ body {
   font-family: var(--font-goosu), Arial, Helvetica, sans-serif;
   overflow-x: hidden;
   width: 100%;
+
+  /* 스크롤바 숨김 */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+@layer utilities {
+
+  /* 크롬, 사파리, 오페라, 엣지용 */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 파이어폭스, IE용 */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }

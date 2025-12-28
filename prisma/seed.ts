@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
-import fs from 'fs';
-import path from 'path';
-import sizeOf from 'image-size';
-import dotenv from 'dotenv';
+import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+import fs from "fs";
+import path from "path";
+import sizeOf from "image-size";
+import dotenv from "dotenv";
 
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: ".env.local" });
 dotenv.config();
 
 const connectionString = process.env.POSTGRES_URL;
@@ -14,11 +14,11 @@ const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
-const DATA_FILE = path.join(process.cwd(), 'gallery_data.json');
-const PUBLIC_DIR = path.join(process.cwd(), 'public');
+const DATA_FILE = path.join(process.cwd(), "gallery_data.json");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
 
 async function main() {
-  console.log('🚀 DB Migration & Seeding started...');
+  console.log("🚀 DB Migration & Seeding started...");
 
   // 1. Clean up existing data
   // Note: Order matters due to foreign key constraints
@@ -26,28 +26,32 @@ async function main() {
   await prisma.media.deleteMany();
   await prisma.collection.deleteMany();
   await prisma.user.deleteMany();
-  
-  console.log('🗑️  Existing data cleared.');
+
+  console.log("🗑️  Existing data cleared.");
 
   // 2. Create Admin User
   await prisma.user.create({
     data: {
-      email: 'admin@example.com',
-      passwordHash: 'temp_password', // TODO: Use real hashing in production
-      name: 'Admin',
-      role: 'ADMIN',
+      email: "admin@example.com",
+      passwordHash: "temp_password", // TODO: Use real hashing in production
+      name: "Admin",
+      role: "ADMIN",
     },
   });
-  console.log('👤 Admin user created (admin@example.com)');
+  console.log("👤 Admin user created (admin@example.com)");
 
   // 3. Read Data
   if (!fs.existsSync(DATA_FILE)) {
-    throw new Error(`Data file not found at ${DATA_FILE}. Please run extract-metadata.js first.`);
+    throw new Error(
+      `Data file not found at ${DATA_FILE}. Please run extract-metadata.js first.`,
+    );
   }
-  const rawData = fs.readFileSync(DATA_FILE, 'utf-8');
+  const rawData = fs.readFileSync(DATA_FILE, "utf-8");
   const data = JSON.parse(rawData);
-  
-  console.log(`📦 Processing ${data.collections.length} collections and ${data.media.length} media items...`);
+
+  console.log(
+    `📦 Processing ${data.collections.length} collections and ${data.media.length} media items...`,
+  );
 
   // 4. Create Collections
   for (const col of data.collections) {
@@ -73,23 +77,29 @@ async function main() {
 
     // Try to calculate dimensions if missing and it's an image
     if (!width || !height) {
-      if (media.type === 'IMAGE') {
+      if (media.type === "IMAGE") {
         // publicUrl starts with /, e.g., /temp_assets/...
         // construct full path: /path/to/project/public/temp_assets/...
         // remove leading slash from publicUrl to join correctly
-        const relativePath = media.publicUrl.startsWith('/') ? media.publicUrl.slice(1) : media.publicUrl;
+        const relativePath = media.publicUrl.startsWith("/")
+          ? media.publicUrl.slice(1)
+          : media.publicUrl;
         const filePath = path.join(PUBLIC_DIR, relativePath);
 
         try {
           if (fs.existsSync(filePath)) {
-            const dims = sizeOf(filePath);
+            const buffer = fs.readFileSync(filePath);
+            const dims = sizeOf(buffer);
             width = dims.width;
             height = dims.height;
           } else {
             console.warn(`⚠️  File not found: ${filePath}`);
           }
         } catch (err) {
-          console.warn(`⚠️  Could not read dimensions for ${media.publicUrl}:`, err);
+          console.warn(
+            `⚠️  Could not read dimensions for ${media.publicUrl}:`,
+            err,
+          );
         }
       }
     }
@@ -117,14 +127,15 @@ async function main() {
   }
   console.log(`✅ ${successCount} Media items created.`);
 
-  console.log('🎉 Seeding completed successfully!');
+  console.log("🎉 Seeding completed successfully!");
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seeding failed:', e);
+    console.error("❌ Seeding failed:", e);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
+

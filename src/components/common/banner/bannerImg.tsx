@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useBannerImages } from "../../../hooks/useImages";
+import { useIntroImages } from "../../../hooks/useImages";
 
 const STORAGE_BASE_URL = (
   process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
 ).replace(/\/$/, "");
 
 export default function BannerImg() {
-  const { data: images, isLoading, isError, error } = useBannerImages();
+  const { data: images, isLoading, isError, error } = useIntroImages();
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -49,13 +49,15 @@ export default function BannerImg() {
       {images && images.length > 0 ? (
         <figure className="rounded-lg p-2 shadow-xl/50">
           <Image
-            src={`${STORAGE_BASE_URL}/${images[count].publicUrl}`}
+            src={`${STORAGE_BASE_URL}${images[count].publicUrl}`}
             alt={images[count].title || "작품 이미지"}
-            width={300}
-            height={400}
+            // DB에 저장된 치수 사용 (없을 경우 기본값)
+            width={images[count].width ?? 300}
+            height={images[count].height ?? 400}
             priority={true}
             placeholder="empty"
-            className=" w-xs rounded object-cover"
+            // w-xs: Tailwind w-80 (320px) 등 특정 너비 제한
+            className="w-xs rounded object-cover h-auto"
           />
         </figure>
       ) : (

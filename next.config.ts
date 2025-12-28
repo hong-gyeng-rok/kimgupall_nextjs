@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    formats: ["image/avif", "image/webp"], // AVIF 우선 사용
     remotePatterns: [
       {
         protocol: "https",

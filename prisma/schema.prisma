@@ -9,58 +9,83 @@ datasource db {
 }
 
 // ==========================================
-// 1. 이미지 모델 
+// 1. Users (관리자/사용자)
 // ==========================================
-model Image {
-  id          String   @id @default(uuid()) // 나중을 위해 UUID 사용
-  
-  // 필수 정보
-  publicUrl   String   // <Image src={publicUrl} /> 에 넣을 주소
-  storagePath String?  // GCP 삭제/관리용 경로 (나중에 목표 2에서 사용)
-  
-  // 메타 데이터 
-  title       String?
-  description String?
-  group       String?  // 카테고리
-  season      String?
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String?
+  role         String   @default("USER")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  // 소셜 기능 연결 
-  // 여기 정의한다고 당장 써야 하는 거 아님. 그냥 "연결 가능성"을 열어두는 것.
-  comments    Comment[]
-  likes       Like[]
+  likes Like[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  @@map("users")
 }
 
 // ==========================================
-// 2. 댓글 모델
+// 2. Collections (그룹/컨셉)
 // ==========================================
-model Comment {
-  id        String   @id @default(uuid())
-  content   String
-  sessionId String   // 익명 사용자 구분을 위한 세션 ID
-  
-  // Image와의 관계 설정
-  imageId   String
-  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
-  
-  createdAt DateTime @default(now())
+model Collection {
+  id           String   @id @default(uuid()) @db.Uuid
+  slug         String   @unique
+  title        String
+  description  String?  @db.VarChar(500)
+  thumbnailUrl String?  @map("thumbnail_url")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  media Media[]
+
+  @@map("collections")
 }
 
 // ==========================================
-// 3. 좋아요 모델 
+// 3. Media (미디어 리소스 - 이미지/비디오)
+// ==========================================
+model Media {
+  id           String   @id @default(uuid()) @db.Uuid
+  collectionId String?  @map("collection_id") @db.Uuid
+  type         String   // 'IMAGE' | 'VIDEO'
+  location     String   @default("GALLERY")
+  publicUrl    String   @map("public_url")
+  storagePath  String?  @map("storage_path")
+  title        String?
+  description  String?  @db.Text
+  altText      String?  @map("alt_text")
+  width        Int?     @db.SmallInt
+  height       Int?     @db.SmallInt
+  posterUrl    String?  @map("poster_url")
+  orderIndex   Int      @map("order_index")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  collection Collection? @relation(fields: [collectionId], references: [id])
+  likes      Like[]
+
+  // 인덱스 전략
+  @@index([location], map: "idx_media_location")
+  @@index([collectionId, orderIndex], map: "idx_media_collection_order")
+  @@map("media")
+}
+
+// ==========================================
+// 4. Likes (좋아요)
 // ==========================================
 model Like {
-  id        String   @id @default(uuid())
-  sessionId String   // 익명 사용자 구분을 위한 세션 ID
+  id        String   @id @default(uuid()) @db.Uuid
+  mediaId   String   @map("media_id") @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  sessionId String?  @map("session_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  // Image와의 관계 설정
-  imageId   String
-  image     Image    @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  media Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  user  User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-
-  // 한 세션이 한 이미지에 좋아요 1번만 가능 (중복 방지)
-  @@unique([imageId, sessionId])
+  // 복합 유니크 인덱스
+  @@unique([mediaId, userId])
+  @@unique([mediaId, sessionId])
+  @@map("likes")
 }

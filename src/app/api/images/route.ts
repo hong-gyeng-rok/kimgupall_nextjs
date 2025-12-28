@@ -8,10 +8,13 @@ export async function GET() {
   console.log("🔍 API: /api/images 요청 시작");
   
   try {
-    const images = await prisma.image.findMany({
+    const images = await prisma.media.findMany({
       orderBy: {
-        createdAt: "asc", 
+        orderIndex: "desc", 
       },
+      include: {
+        collection: true, // 컬렉션 정보도 함께 가져오기
+      }
     });
 
     console.log(`✅ API: 이미지 ${images.length}개 조회 성공`);

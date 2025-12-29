@@ -1,37 +1,55 @@
-import Image from "next/image";
 import { useRef, useState } from "react";
-import yacha_font from "../../../../public/sampleImages/BG_DPI300.jpg";
+import { useIntroImages } from "@/hooks/useImages";
+
+const STORAGE_BASE_URL = (
+  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
+).replace(/\/$/, "");
+
+const DEFAULT_WIDTH = 1300;
+const DEFAULT_HEIGHT = 500;
 
 export default function IntroTitle() {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const introTitleImg = yacha_font;
+
+  const { data: medias, isLoading, isError, error } = useIntroImages();
+
+  const targetMedia = medias?.find(
+    (media) => media.title === "introMv" && media.type === "VIDEO",
+  );
+
+  const introMvSrc = targetMedia?.publicUrl
+    ? `${STORAGE_BASE_URL}${targetMedia.publicUrl}`
+    : undefined;
+
+  if (isLoading) {
+    return (
+      <div
+        className="relative top-12 w-8/12 bg-gray-200 animate-pulse rounded-lg"
+        style={{
+          aspectRatio: `${DEFAULT_WIDTH} / ${DEFAULT_HEIGHT}`,
+          maxWidth: "100%",
+        }}
+      />
+    );
+  }
+  if (isError) return <p>에러 발생 : {error?.message}</p>;
 
   return (
     <>
-      {/**
-
-      <Image
-        data-testid="IntronTitle"
-        src={introTitleImg}
-        alt="yacha_font"
-        width={1350}
-        height={500}
-        className="object-contain relative top-1/12 w-9/12"
-      />
-      */}
-
-      <video
-        ref={videoRef}
-        src="/sampleImages/introMv.mp4"
-        className="relative top-12 w-9/12 object-contain"
-        width={1300}
-        height={500}
-        muted
-        loop
-        preload="auto"
-        autoPlay
-        playsInline
-      />
+      {introMvSrc && (
+        <video
+          ref={videoRef}
+          src={introMvSrc}
+          className="relative top-12 w-8/12 object-contain"
+          width={targetMedia?.width ?? DEFAULT_WIDTH}
+          height={targetMedia?.height ?? DEFAULT_HEIGHT}
+          muted
+          loop
+          preload="auto"
+          autoPlay
+          playsInline
+        />
+      )}
     </>
   );
 }

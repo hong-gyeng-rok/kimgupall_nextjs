@@ -67,17 +67,17 @@ export default function ScrollyTellingSequence() {
 
   return (
     // 1. 스크롤 영역 (높이를 길게 잡음)
-    <div ref={containerRef} className=" h-[1000vh] relative inset-0 w-full ">
+    <div
+      ref={containerRef}
+      className=" h-[1000vh] relative bg-white  inset-0 w-full pointer-events-none"
+    >
       {/* 2. 뷰포트 고정 영역 (Sticky) */}
-      <motion.div
-        style={{ backgroundColor: MovieBg }}
-        className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
-      >
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden gap-10">
         {/* --- 화살표 영역 --- */}
 
         <motion.div
           style={{ opacity: arrowOpacity }}
-          className="text-black flex flex-row w-full px-10 items-center gap-4 absolute top-10 z-50 h-0"
+          className="text-black flex flex-row w-full px-10 items-center gap-4 absolute top-10"
         >
           <p className="text-3xl font-chosunGoosu font-bold">작업 전</p>
           <motion.div
@@ -120,11 +120,11 @@ export default function ScrollyTellingSequence() {
           />
           {/* Movie */}
           <motion.div
-            style={{ opacity: opacityMovie }}
-            className=" inset-0 w-screen h-screen flex items-center justify-center overflow-hidden"
+            style={{ opacity: opacityMovie, backgroundColor: MovieBg }}
+            className="inset-0 w-screen h-screen flex items-center justify-center overflow-hidden z-50"
           >
             {/* 3. 동영상 컨테이너 (Spatial UI: 3D 효과 및 반사) */}
-            <div className="relative w-full max-w-xl px-4 groupr">
+            <div className="relative z-20 w-full max-w-lg px-4 group perspective-1000">
               <div className="relative transform-style-3d transition-transform duration-700 hover:scale-[1.02] hover:rotate-x-2">
                 {/* 메인 비디오 프레임 */}
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5),0_20px_40px_rgba(0,0,0,0.4)] bg-black/80 backdrop-blur-sm">
@@ -137,11 +137,23 @@ export default function ScrollyTellingSequence() {
                     playsInline
                   />
                   {/* 유리 질감 오버레이 */}
-                  <div className="absolute inset-0 pointer-events-none  bg-linear-to-tr from-white/5 via-transparent to-transparent opacity-40" />
+                  <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-white/5 via-transparent to-transparent opacity-40" />
                 </div>
 
                 {/* 4. 바닥면 리얼 타임 반사 효과 (반사 + 빛 확산) */}
                 <div className="relative">
+                  {/* 형태가 보이는 반사 레이어 (절반 크기) */}
+                  <div className="absolute top-full left-0 w-full h-1/2 -z-10 origin-top transform scale-y-[-1] opacity-30 pointer-events-none overflow-hidden">
+                    <div className="w-full h-full bg-linear-to-t from-black via-black/20 to-transparent absolute inset-0 z-10" />
+                    <video
+                      src="/sampleImages/yacha_sketch/yachaMv.mp4"
+                      className="w-full h-auto object-cover blur-md"
+                      muted
+                      loop
+                      playsInline
+                    />
+                  </div>
+
                   {/* 주변으로 넓게 퍼지는 빛 확산 레이어 (Glow) */}
                   <div className="absolute top-full left-1/2 -translate-x-1/2 w-[130%] h-full -z-20 origin-top transform scale-y-[-1] opacity-30 pointer-events-none blur-3xl">
                     <video
@@ -157,7 +169,7 @@ export default function ScrollyTellingSequence() {
             </div>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

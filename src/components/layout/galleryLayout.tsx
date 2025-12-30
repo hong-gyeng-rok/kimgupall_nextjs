@@ -32,11 +32,11 @@ export default function GalleryLayout({ isShow = true }: IsShow) {
       {isShow && (
         <div className="flex mb-4">
           {/*<SeasonDropdown onSelectSeason={handleSeasonChange} />*/}
-          <GoToHomeBtn />
         </div>
       )}
       {/*<GalleryContents filteredImages={filteredImages} />*/}
       <GalleryContents />
+      <GoToHomeBtn />
     </article>
   );
 }

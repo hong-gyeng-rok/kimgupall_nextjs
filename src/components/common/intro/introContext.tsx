@@ -22,7 +22,7 @@ export default function IntroContext({ scrollYProgress }: IntroContextProps) {
   return (
     <figcaption
       data-testid="IntroContext"
-      className="w-[65%] text-black font-medium text-lg md:textxl lg:text-2xl gap-4 flex flex-col font-chosunGoosu absolute bottom-10"
+      className="w-[65%] text-black font-medium text-lg md:textxl lg:text-2xl gap-4 flex flex-col font-chosunGoosu relative"
     >
       <motion.p style={{ opacity: opacity1, y: y1 }}>
         본 일러스트레이션 시리즈는 동양 설화 속 귀신이자 수호신인 야차(Yacha)를

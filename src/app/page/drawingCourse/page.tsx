@@ -5,10 +5,8 @@ import MainBg from "@/components/layout/mainBg";
 export default function DrawingCoursePage() {
   return (
     <main data-testid="DrawingCoursePage">
-      <MainBg>
-        <GoToHomeBtn />
-        <DrawingCourseView />
-      </MainBg>
+      <DrawingCourseView />
+      <GoToHomeBtn />
     </main>
   );
 }

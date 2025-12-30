@@ -30,11 +30,11 @@ export default function HomeView() {
         className="text-black bg-white flex flex-col h-fit w-screen "
       >
         <TitleView />
-        <TitleNav />
         <IntroView />
         <DrawingCourseView />
         <AlbumView />
       </section>
+      <TitleNav />
     </MainBg>
   );
 }

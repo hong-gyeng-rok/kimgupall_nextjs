@@ -11,7 +11,10 @@ const navLinks = [
 
 export default function GoToHomeBtn() {
   return (
-    <nav id="GoToHomeBtnNav" className="sticky top-0 z-30 ">
+    <nav
+      id="GoToHomeBtnNav"
+      className="fixed bottom-10 w-full z-30 bg-none flex justify-center items-center pb-safe h-0 "
+    >
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />
       ))}
@@ -23,7 +26,7 @@ function Nav({ link }: { link: Link }) {
   return (
     <InternalLink
       data-testid="GoToHomeBtn"
-      className="text-black text-3xl ml-10 p-2 px-10 hover:bg-black hover:text-white hover:rounded-xl hover:animate-bounce"
+      className="text-black text-3xl ml-10 p-2 px-10 ring-2 rounded-full hover:bg-black hover:text-white hover:rounded-full hover:animate-bounce"
       href={link.url}
       ariaLabel={`${link.title}으로 이동`}
     >

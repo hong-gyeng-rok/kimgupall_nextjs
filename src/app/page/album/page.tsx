@@ -6,8 +6,8 @@ export default function AlbumPage() {
   return (
     <main data-testid="AlbumPage">
       <MainBg>
-        <GoToHomeBtn />
         <AlbumView />
+        <GoToHomeBtn />
       </MainBg>
     </main>
   );

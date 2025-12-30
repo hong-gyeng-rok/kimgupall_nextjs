@@ -6,8 +6,8 @@ export default function IntroPage() {
   return (
     <main data-testid="IntroPage">
       <MainBg>
-        <GoToHomeBtn />
         <IntroView />
+        <GoToHomeBtn />
       </MainBg>
     </main>
   );

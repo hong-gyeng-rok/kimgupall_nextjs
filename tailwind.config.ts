@@ -1,5 +1,6 @@
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
+import tailwindcssSafeArea from "tailwindcss-safe-area";
 
 const config: Config = {
   content: [
@@ -25,7 +26,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [tailwindcssSafeArea],
 };
 
 export default config;

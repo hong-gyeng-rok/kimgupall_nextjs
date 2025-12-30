@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useIntroImages } from "@/hooks/useImages";
 
 const STORAGE_BASE_URL = (

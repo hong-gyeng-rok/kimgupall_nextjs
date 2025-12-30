@@ -68,10 +68,10 @@ export default function GalleryContents() {
                   width={image.width ?? 300}
                   height={image.height ?? 400}
                   // 초기 8장만 우선 로딩(LCP 최적화), 나머지는 Lazy Loading
-                  priority={index < 8}
                   // 반응형 이미지 최적화: Masonry 컬럼 수에 맞춰 힌트 제공
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   placeholder="empty"
+                  loading="lazy"
                   // h-auto: 원본 비율 유지하며 너비에 맞게 높이 자동 조절
                   className="w-full h-auto object-cover rounded-lg"
                 />
@@ -92,10 +92,11 @@ export default function GalleryContents() {
         >
           <Image
             src={`${STORAGE_BASE_URL}${selectedImage.publicUrl}`}
-            alt={"그림"}
+            alt={selectedImage.title || "작품 이미지"}
             // 모달에서는 원본 크기 또는 큰 해상도 사용
             width={selectedImage.width ?? 1920}
             height={selectedImage.height ?? 800}
+            priority={true}
             className="w-full h-full max-h-200 object-contain"
           />
           <button
@@ -109,4 +110,3 @@ export default function GalleryContents() {
     </article>
   );
 }
-

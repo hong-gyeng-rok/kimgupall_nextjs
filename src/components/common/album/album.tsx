@@ -67,7 +67,7 @@ function Card({
         opacity,
         zIndex: scale.get() > 1.05 ? 10 : 1,
       }}
-      className={`group relative h-[600px] w-[350px] flex flex-col items-center flex-shrink-0 bg-white rounded-xl p-4 transition-colors ${
+      className={`group relative h-150 w-87.5 flex flex-col items-center shrink-0 bg-white rounded-xl p-4 transition-colors ${
         !isInstagram ? "cursor-pointer" : ""
       }`}
     >
@@ -127,7 +127,7 @@ export default function Album() {
   // 설정값
   const START_X = 25; // 시작 위치 (%)
   const END_X = -60; // 끝 위치 (%)
-  const HOLD_DURATION = 0.08; // 멈추는 구간 비율 (0.08 = 8% 구간 동안 멈춤)
+  const HOLD_DURATION = 0; // 멈추는 구간 비율 (0.08 = 8% 구간 동안 멈춤)
 
   // X축 이동을 위한 Input/Output 배열 생성
   const xInput: number[] = [];

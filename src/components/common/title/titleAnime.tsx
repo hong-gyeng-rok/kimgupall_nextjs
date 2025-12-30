@@ -104,7 +104,7 @@ export default function TitleAnime() {
             {[...creditsData].map((item, idx) => (
               <li
                 key={idx}
-                className="flex flex-col items-start justify-center min-w-[200px]"
+                className="flex flex-col items-start justify-center min-w-50"
               >
                 {/* 역할 (작은 회색 글씨) */}
                 <span

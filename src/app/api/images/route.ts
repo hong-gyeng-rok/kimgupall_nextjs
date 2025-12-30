@@ -20,12 +20,17 @@ export async function GET() {
     console.log(`✅ API: 이미지 ${images.length}개 조회 성공`);
     return NextResponse.json(images);
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ API Error 발생:", error);
     
+    let errorMessage = "알 수 없는 에러";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     // 에러 내용을 클라이언트에도 전달하여 화면에서 확인 가능하게 함
     return NextResponse.json(
-      { error: "이미지 조회 실패", message: error.message },
+      { error: "이미지 조회 실패", message: errorMessage },
       { status: 500 }
     );
   }

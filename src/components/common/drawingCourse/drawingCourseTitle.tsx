@@ -40,20 +40,22 @@ export default function ScrollyTellingSequence() {
   );
 
   // 스냅 포인트 (0~500vh)
-  const snapPoints = [0, 1, 2, 3, 4, 5];
+  //const snapPoints = [0, 1, 2, 3, 4, 5];
 
   return (
-    <div ref={containerRef} className="h-[600vh] relative w-full">
-      {/* CSS 네이티브 스냅 포인트 레이어 */}
+    <div ref={containerRef} className="h-[600vh] relative w-full ">
+      {/* CSS 네이티브 스냅 포인트 레이어 
+
       <div className="absolute inset-0 pointer-events-none">
         {snapPoints.map((p) => (
           <div
             key={p}
-            className="h-screen w-full snap-start scroll-snap-stop-always"
+            className="h-screen w-full snap-start snap-normal"
             style={{ top: `${p * 100}vh`, position: "absolute" }}
           />
         ))}
       </div>
+        */}
 
       <motion.div
         style={{ backgroundColor: MovieBg }}
@@ -74,31 +76,31 @@ export default function ScrollyTellingSequence() {
           <p className="text-black text-xl md:text-3xl  font-bold">작업 후</p>
         </motion.div>
 
-        <div className="relative flex w-full h-full justify-center snap-x snap-proximity">
+        <div className="relative flex w-full h-full justify-center">
           <motion.img
             src="/sampleImages/yacha_sketch/야차1.jpg"
             style={{ opacity: opacityA }}
-            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-2/12  w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-2/12  w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
           <motion.img
             src="/sampleImages/yacha_sketch/야차2.jpg"
             style={{ opacity: opacityB }}
-            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-5/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-5/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
           <motion.img
             src="/sampleImages/yacha_sketch/야차3.jpg"
             style={{ opacity: opacityC }}
-            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-7/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-7/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
           <motion.img
             src="/sampleImages/yacha_sketch/야차4.jpg"
             style={{ opacity: opacityD }}
-            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-10/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-10/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
 
           <motion.div
             style={{ opacity: opacityMovie }}
-            className="snap-center absolute inset-0 flex items-center justify-center"
+            className=" absolute inset-0 flex items-center justify-center"
           >
             <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">

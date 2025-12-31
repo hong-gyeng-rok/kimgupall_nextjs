@@ -117,7 +117,7 @@ export default function Album() {
     window.addEventListener("resize", checkMobile);
 
     // 스크롤 스냅 설정
-    document.documentElement.style.scrollSnapType = "y proximity"; // 감옥 방지용 proximity 추천
+    document.documentElement.style.scrollSnapType = "y mandatory"; // mandatory + snap-normal 조합 추천
     document.documentElement.style.scrollBehavior = "smooth";
 
     return () => {
@@ -138,7 +138,7 @@ export default function Album() {
           {cards.map((_, i) => (
             <div
               key={i}
-              className="w-full h-screen snap-start snap-always"
+              className="w-full h-screen "
               style={{
                 top: `${(i / (cards.length - 1)) * 500}vh`,
                 position: "absolute",
@@ -172,7 +172,7 @@ export default function Album() {
             <div
               key={card.id}
               className={`
-                          ${isMobile ? "h-[70vh] w-full snap-center snap-proximity flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
+                          ${isMobile ? "h-[70vh] w-full  flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
                         `}
             >
               <Card

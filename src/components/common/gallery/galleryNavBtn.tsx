@@ -36,7 +36,7 @@ export default function GalleryNavBtn() {
           <InternalLink
             key={nav.id}
             href={nav.url}
-            className=" bg-stone-200 text-stone-950 text-center p-1 px-4 text-xl shadow-xl/40 rounded 
+            className=" bg-stone-200 text-stone-950 text-center p-1 px-4 text-lg md:text-xl shadow-xl/40 rounded 
           hover:bg-zinc-400 hover:ring-2 hover:ring-blue-400 min-[350px]:w-fit md:w-xs
           "
             ariaLabel={`${nav.title === "Exit" ? "갤러리 나가기" : nav.title}`}

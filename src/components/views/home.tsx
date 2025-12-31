@@ -8,31 +8,48 @@ import TitleNav from "../common/title/titleNav";
 import { useEffect } from "react";
 
 export default function HomeView() {
-  // 스크롤 위치 복구 로직
+  // 스크롤 스냅 및 위치 복구 로직
   useEffect(() => {
+    // 페이지 전체에 스냅 적용 (네이티브 기능 활용)
+    document.documentElement.style.scrollSnapType = "y mandatory";
+    document.documentElement.style.scrollBehavior = "smooth";
+
     const savedPos = sessionStorage.getItem("home_scroll_pos");
     if (savedPos) {
-      // 약간의 지연을 주어 레이아웃이 잡힌 뒤 스크롤 이동
       setTimeout(() => {
         window.scrollTo({
           top: parseInt(savedPos),
-          behavior: "auto", // 부드러운 이동보다는 즉시 이동이 복구 느낌에 가까움
+          behavior: "auto",
         });
-        sessionStorage.removeItem("home_scroll_pos"); // 한 번 사용 후 삭제
+        sessionStorage.removeItem("home_scroll_pos");
       }, 100);
     }
+
+    return () => {
+      // 언마운트 시 초기화
+      document.documentElement.style.scrollSnapType = "";
+      document.documentElement.style.scrollBehavior = "";
+    };
   }, []);
 
   return (
     <MainBg>
       <section
         data-testid="HomeView"
-        className="text-black bg-white flex flex-col h-fit w-screen "
+        className="text-black bg-white flex flex-col h-fit w-screen"
       >
-        <TitleView />
-        <IntroView />
-        <DrawingCourseView />
-        <AlbumView />
+        <div className="snap-start">
+          <TitleView />
+        </div>
+        <div className="snap-start">
+          <IntroView />
+        </div>
+        <div className="snap-start">
+          <DrawingCourseView />
+        </div>
+        <div className="snap-start">
+          <AlbumView />
+        </div>
       </section>
       <TitleNav />
     </MainBg>

@@ -24,10 +24,10 @@ export default function IntroTitle() {
   if (isLoading) {
     return (
       <div
-        className="relative top-12 w-8/12 bg-gray-200 animate-pulse rounded-lg"
+        className="w-full h-full bg-gray-200 animate-pulse rounded-lg"
         style={{
           aspectRatio: `${DEFAULT_WIDTH} / ${DEFAULT_HEIGHT}`,
-          maxWidth: "100%",
+          maxHeight: "100%",
         }}
       />
     );
@@ -40,7 +40,7 @@ export default function IntroTitle() {
         <video
           ref={videoRef}
           src={introMvSrc}
-          className="relative top-12 w-8/12 object-contain"
+          className="w-auto h-full max-h-full object-contain rounded-lg shadow-xl"
           width={targetMedia?.width ?? DEFAULT_WIDTH}
           height={targetMedia?.height ?? DEFAULT_HEIGHT}
           muted

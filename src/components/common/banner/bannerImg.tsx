@@ -44,7 +44,7 @@ export default function BannerImg() {
   return (
     <article
       data-testid="BannerImg"
-      className=" w-xs flex justify-center items-center"
+      className=" w-full max-w-xs flex justify-center items-center"
     >
       {images && images.length > 0 ? (
         <figure className="rounded-lg p-2 shadow-xl/50">
@@ -57,7 +57,7 @@ export default function BannerImg() {
             priority={true}
             placeholder="empty"
             // w-xs: Tailwind w-80 (320px) 등 특정 너비 제한
-            className="w-xs rounded object-cover h-auto"
+            className="w-full max-w-xs rounded object-cover h-auto"
           />
         </figure>
       ) : (

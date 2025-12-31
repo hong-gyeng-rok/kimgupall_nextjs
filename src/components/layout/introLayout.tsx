@@ -18,12 +18,15 @@ export default function IntroLayout() {
       ref={targetRef}
       className="relative h-[300vh]"
     >
-      {/* Sticky 컨테이너: 화면에 고정된 상태로 내용물만 변경되는 느낌 */}
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center overflow-hidden">
-        <figure className="w-full h-full flex flex-col items-center gap-25">
+      {/* Sticky 컨테이너: 화면 전체 높이 사용 */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden pb-10 gap-10">
+        {/* 비디오 영역: 화면 높이의 최대 45%까지만 차지하도록 제한 */}
+        <div className="flex-none w-full flex justify-center max-h-[40vh] md:max-h-[50vh] px-4">
           <IntroTitle />
-          <IntroContext scrollYProgress={scrollYProgress} />
-        </figure>
+        </div>
+
+        {/* 텍스트 영역: 남은 공간을 자연스럽게 채우거나 적절한 간격 유지 */}
+        <IntroContext scrollYProgress={scrollYProgress} />
       </div>
     </article>
   );

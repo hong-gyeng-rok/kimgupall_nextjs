@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import Image from "next/image";
 import InternalLink from "../internalLink";
@@ -21,96 +21,78 @@ const cards = [
   { id: 6, url: instaQR, title: "INSTAGRAM", alt: "INSTAGRAM QR" },
 ];
 
-// 개별 카드 컴포넌트
 function Card({
   card,
   index,
   total,
   scrollYProgress,
-  hold,
+  isMobile,
 }: {
   card: (typeof cards)[0];
   index: number;
   total: number;
   scrollYProgress: MotionValue<number>;
-  hold: number;
+  isMobile: boolean;
 }) {
   const isInstagram = card.alt === "INSTAGRAM QR";
-  const position = index / (total - 1); // 이 카드의 중앙 시점 (0 ~ 1)
-  const range = 1 / total; // 변환이 일어나는 전체 구간 크기
+  const position = index / (total - 1);
+  const range = 1 / total;
+  const inputRange = [position - range, position, position + range];
 
-  // 4단계 변환: [진입 시작, 홀드 시작, 홀드 끝, 퇴장 끝]
-  const inputRange = [
-    position - range,
-    position - hold / 1, // 여기서부터 중앙 정지
-    position + hold / 1, // 여기까지 중앙 정지
-    position + range,
-  ];
-
-  // 중앙에 머무는 동안(hold 구간) 크기와 그림자 유지
-  const scale = useTransform(scrollYProgress, inputRange, [1, 1.15, 1.15, 1]);
-  const opacity = useTransform(scrollYProgress, inputRange, [0.6, 1, 1, 0.6]);
-
-  const boxShadow = useTransform(scrollYProgress, inputRange, [
-    "0px 5px 10px rgba(0,0,0,0.1)",
-    "0px 20px 50px rgba(0,0,0,0.7)",
-    "0px 20px 50px rgba(0,0,0,0.7)",
-    "0px 5px 10px rgba(0,0,0,0.1)",
-  ]);
+  // 데스크탑 전용 애니메이션 (모바일은 1로 고정)
+  const scale = useTransform(
+    scrollYProgress,
+    inputRange,
+    isMobile ? [1, 1, 1] : [0.8, 1.2, 0.8],
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    inputRange,
+    isMobile ? [1, 1, 1] : [0.3, 1, 0.3],
+  );
 
   const cardContent = (
-    <motion.span
-      data-testid="CardContent"
-      style={{
-        scale,
-        boxShadow,
-        opacity,
-        zIndex: scale.get() > 1.05 ? 10 : 1,
-      }}
-      className={`group relative h-150 w-87.5 flex flex-col items-center shrink-0 bg-white rounded-xl p-4 transition-colors ${
-        !isInstagram ? "cursor-pointer" : ""
-      }`}
+    <motion.div
+      style={{ scale, opacity }}
+      className={`
+        relative flex flex-col items-center justify-center bg-white group
+        /* Mobile: Full Screen, No Shadow/Round initially */
+        h-full w-full 
+        /* Desktop: Card Style */
+        md:h-150 md:w-87.5 md:rounded-xl md:shadow-xl md:p-4 md:justify-start transition-all duration-300
+      `}
     >
-      <p
-        data-testid="AlbumTitle"
-        className="text-black text-xl font-bold mb-4 w-full text-center"
-      >
+      {/* 상단 제목 (호버 시 데스크탑에서 페이드 아웃) */}
+      <p className="text-black text-2xl md:text-xl font-bold mb-4 md:mb-4 drop-shadow-sm md:drop-shadow-none z-10 md:group-hover:opacity-0 transition-opacity duration-300">
         {card.title}
       </p>
 
-      <figure
-        data-testid="CardImage"
-        className="relative flex-1 w-full overflow-hidden rounded-lg"
-      >
+      <div className="relative flex-1 w-full h-fit overflow-hidden rounded-lg">
         <Image
           src={card.url}
           alt={card.alt}
           fill
           className="object-contain"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 345px) 100vw, 33vw"
+          priority={index < 2} // 상위 이미지는 우선 로딩
         />
-        <figcaption className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-end p-6">
-          <h3 className="text-2xl font-bold text-white translate-y-4 transition-transform duration-300 group-hover:translate-y-0 font-chosunGoosu">
-            {card.alt}
-          </h3>
-        </figcaption>
-      </figure>
-    </motion.span>
+        
+        {/* 데스크탑 호버 오버레이 (이미지 어둡게 + 흰색 글자) */}
+        {!isMobile && (
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+            <p className="text-white text-2xl font-bold px-4 text-center">
+              {card.title}
+            </p>
+          </div>
+        )}
+      </div>
+    </motion.div>
   );
 
   return isInstagram ? (
     cardContent
   ) : (
-    <InternalLink
-      href="/gallery"
-      className="block"
-      onClick={() => {
-        // 갤러리로 이동하기 전 현재 스크롤 위치 저장
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem("home_scroll_pos", window.scrollY.toString());
-        }
-      }}
-    >
+    <InternalLink href="/gallery" className="w-full h-full block">
       {cardContent}
     </InternalLink>
   );
@@ -118,56 +100,92 @@ function Card({
 
 export default function Album() {
   const targetRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"],
   });
 
-  // 설정값
-  const START_X = 25; // 시작 위치 (%)
-  const END_X = -60; // 끝 위치 (%)
-  const HOLD_DURATION = 0; // 멈추는 구간 비율 (0.08 = 8% 구간 동안 멈춤)
+  const x = useTransform(scrollYProgress, [0, 1], ["25%", "-60%"]);
 
-  // X축 이동을 위한 Input/Output 배열 생성
-  const xInput: number[] = [];
-  const xOutput: string[] = [];
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-  const stepX = (END_X - START_X) / (cards.length - 1);
+    // 스크롤 스냅 설정
+    document.documentElement.style.scrollSnapType = "y proximity"; // 감옥 방지용 proximity 추천
+    document.documentElement.style.scrollBehavior = "smooth";
 
-  cards.forEach((_, i) => {
-    const position = i / (cards.length - 1);
-    const targetX = START_X + i * stepX;
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      document.documentElement.style.scrollSnapType = "";
+      document.documentElement.style.scrollBehavior = "";
+    };
+  }, []);
 
-    // 각 카드의 중앙 시점 전후로 '멈춤 구간' 삽입
-    const startHold = Math.max(0, position - HOLD_DURATION / 2);
-    const endHold = Math.min(1, position + HOLD_DURATION / 2);
-
-    xInput.push(startHold);
-    xOutput.push(`${targetX}%`);
-
-    xInput.push(endHold);
-    xOutput.push(`${targetX}%`);
-  });
-
-  // 생성된 배열로 트랙 이동 제어
-  const x = useTransform(scrollYProgress, xInput, xOutput);
   return (
-    <article data-testid="Album" ref={targetRef} className="relative h-[400vh]">
-      <span className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.span style={{ x }} className="flex gap-40 items-center">
-          {cards.map((card, index) => (
-            <Card
-              key={card.id}
-              card={card}
-              index={index}
-              total={cards.length}
-              scrollYProgress={scrollYProgress}
-              hold={HOLD_DURATION}
+    <article
+      ref={targetRef}
+      className={`relative w-full ${isMobile ? "h-auto snap-y snap-mandatory" : "h-[600vh]"}`}
+    >
+      {/* [Desktop] Ghost Snap Points */}
+      {!isMobile && (
+        <div className="absolute inset-0 pointer-events-none z-0">
+          {cards.map((_, i) => (
+            <div
+              key={i}
+              className="w-full h-screen snap-start snap-always"
+              style={{
+                top: `${(i / (cards.length - 1)) * 500}vh`,
+                position: "absolute",
+              }}
             />
           ))}
-        </motion.span>
-      </span>
+        </div>
+      )}
+
+      {/* 
+        Container 
+        - Mobile: Normal Flow (relative), Vertical Stack
+        - Desktop: Sticky, Horizontal Flow
+      */}
+      <div
+        className={`
+        w-full
+        ${isMobile ? "relative flex flex-col" : "sticky top-0 h-screen flex items-center overflow-hidden z-10"}
+      `}
+      >
+        <motion.div
+          // 모바일에서는 x축 이동 없음 (0), 데스크탑은 x 변수 적용
+          style={{ x: isMobile ? 0 : x }}
+          className={`
+            flex 
+            ${isMobile ? "flex-col w-full" : "flex-row gap-40 items-center"}
+          `}
+        >
+          {cards.map((card, index) => (
+            // Wrapper for Mobile Snap
+            <div
+              key={card.id}
+              className={`
+                          ${isMobile ? "h-[70vh] w-full snap-center flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
+                        `}
+            >
+              <Card
+                card={card}
+                index={index}
+                total={cards.length}
+                scrollYProgress={scrollYProgress}
+                isMobile={isMobile}
+              />
+            </div>
+          ))}{" "}
+        </motion.div>
+      </div>
     </article>
   );
 }

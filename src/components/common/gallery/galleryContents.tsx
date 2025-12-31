@@ -100,7 +100,7 @@ export default function GalleryContents() {
             className="w-full h-full max-h-200 object-contain"
           />
           <button
-            className="bg-none text-black ring-3 ring-black rounded-xl p-5 text-7xl w-3xl font-sans"
+            className="bg-none text-black ring-3 ring-black rounded-xl p-5 text-7xl w-full max-w-md font-sans"
             onClick={() => setSelectedImage(null)}
           >
             나가기

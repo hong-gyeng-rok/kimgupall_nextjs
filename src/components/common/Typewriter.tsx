@@ -18,7 +18,7 @@ export default function Typewriter({
   speed = 0.1,
   className = "",
   delay = 0,
-  loop = true,
+  loop = false,
   waitTime = 3,
   show, // 외부에서 제어할 때 사용
 }: TypewriterProps) {

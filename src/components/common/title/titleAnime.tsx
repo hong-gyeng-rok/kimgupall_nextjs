@@ -1,7 +1,7 @@
 "use client";
 
 import { useScroll, useTransform, motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import Typewriter from "@/components/common/Typewriter";
 
 export default function TitleAnime() {
@@ -14,22 +14,6 @@ export default function TitleAnime() {
   ];
 
   const targetRef = useRef<HTMLDivElement>(null);
-
-  // 애니메이션 루프 제어 상태
-  const [isShowing, setIsShowing] = useState(true);
-
-  useEffect(() => {
-    const loop = async () => {
-      while (true) {
-        setIsShowing(true); // 시작
-        await new Promise((resolve) => setTimeout(resolve, 9000)); // 9초간 유지 (타이핑 시간 포함)
-
-        setIsShowing(false); // 사라짐
-        await new Promise((resolve) => setTimeout(resolve, 1500)); // 1.5초간 사라지는 애니메이션 대기
-      }
-    };
-    loop();
-  }, []);
 
   // 1. 타겟 요소의 스크롤 진행률을 추적 (0 ~ 1)
   const { scrollYProgress } = useScroll({
@@ -53,45 +37,45 @@ export default function TitleAnime() {
     <article
       id="TitleAnime"
       ref={targetRef}
-      className="h-[600vh] relative w-screen font-sans"
+      className="h-[200vh] relative w-screen font-sans"
     >
       <motion.div
         style={{
           backgroundColor: backgroundColor,
           color: textColor,
         }}
-        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors"
+        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors gap-[2vh] md:gap-8 px-4 overflow-hidden"
       >
         <h3 className="contents">
           <Typewriter
-            className="text-7xl z-20 font-light italic"
+            className="text-[clamp(1.2rem,4vw,5rem)] z-20 font-light italic text-center whitespace-nowrap"
             text="ARTIST BY KIMGUPALL"
             speed={0.1}
-            show={isShowing}
+            show={true}
           />
         </h3>
         <h1 className="contents">
           <Typewriter
-            className="text-[15rem] z-20"
+            className="text-[clamp(3rem,13vw,16rem)] z-20 leading-none text-center whitespace-nowrap"
             text="GRADUATION"
             speed={0.2}
             delay={1}
-            show={isShowing}
+            show={true}
           />
         </h1>
         <h2 className="contents">
           <Typewriter
-            className="text-[10rem] z-20 "
+            className="text-[clamp(2rem,10vw,11rem)] z-20 leading-none text-center whitespace-nowrap"
             text="2026"
             speed={0.3}
+            show={true}
             delay={2}
-            show={isShowing}
           />
         </h2>
         {/* 움직이는 트랙 */}
         <aside aria-label="Project Credits" className="w-full overflow-hidden">
           <motion.ul
-            className="flex gap-20 w-max" // w-max: 내용물만큼 너비 확보
+            className="flex gap-8 md:gap-20 w-max" // w-max: 내용물만큼 너비 확보
             animate={{
               x: ["120%", "-120%"], // 전체 길이의 절반만큼만 이동하고 0으로 순간이동
             }}
@@ -104,7 +88,7 @@ export default function TitleAnime() {
             {[...creditsData].map((item, idx) => (
               <li
                 key={idx}
-                className="flex flex-col items-start justify-center min-w-50"
+                className="flex flex-col items-start justify-center min-w-40 md:min-w-50"
               >
                 {/* 역할 (작은 회색 글씨) */}
                 <span
@@ -125,6 +109,30 @@ export default function TitleAnime() {
             ))}
           </motion.ul>
         </aside>
+
+        {/* 스크롤 가이드 */}
+        <motion.div
+          style={{
+            opacity: useTransform(scrollYProgress, [0, 0.05], [1, 0]),
+          }}
+          className="mt-[4vh] flex flex-col items-center gap-2 md:gap-4"
+        >
+          <span className="text-xs md:text-sm tracking-[0.4em] font-light">
+            SCROLL DOWN
+          </span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{
+              repeat: Infinity,
+              duration: 1.5,
+              ease: "easeInOut",
+            }}
+            className="flex flex-col items-center"
+          >
+            <div className="w-px h-12 bg-current opacity-60" />
+            <div className="w-2 h-2 border-b border-r border-current rotate-45 -mt-1.5 opacity-60" />
+          </motion.div>{" "}
+        </motion.div>
       </motion.div>
     </article>
   );

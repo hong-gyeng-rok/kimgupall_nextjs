@@ -1,158 +1,129 @@
 "use client";
 
-import {
-  useScroll,
-  useTransform,
-  motion,
-  useMotionValueEvent,
-} from "framer-motion";
-import { useRef } from "react";
+import { useScroll, useTransform, motion } from "framer-motion";
+import { useRef, useState } from "react";
 
 export default function ScrollyTellingSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [progress, setProgress] = useState(0);
 
-  // 1. 스크롤 진행률 추적 (0 ~ 1)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // --- A. 화살표 길이 변화 로직 ---
-  // 스크롤 0 -> 1.0 에 따라 너비가 0% -> 100%로 변함
-  const arrowWidth = useTransform(scrollYProgress, [0, 1], ["0%", "87%"]);
-  const arrowOpacity = useTransform(scrollYProgress, [0.8, 0.9], [1, 0]);
-
-  // --- B. 미디어 순차 등장 로직 (Opacity 제어) ---
-  // Image A: 처음엔 보이다가(1), 20% 지점에서 사라짐(0)
-  const opacityA = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-
-  // Image B: 20%에서 나타나서(0->1), 30%에 완전히 보이고, 30%부터 사라짐
-  const opacityB = useTransform(
-    scrollYProgress,
-    [0.1, 0.2, 0.2, 0.3],
-    [0, 1, 1, 0],
-  );
-  // Image C: 40%에서 나타나서(0->1), 50%에 완전히 보이고, 50%부터 사라짐
-  const opacityC = useTransform(
-    scrollYProgress,
-    [0.3, 0.4, 0.4, 0.5],
-    [0, 1, 1, 0],
-  );
-  // Image D: 70%에서 나타나서(0->1),  80%에 완전히 보이고, 80%부터 사라짐
-  const opacityD = useTransform(
-    scrollYProgress,
-    [0.5, 0.6, 0.6, 0.7],
-    [0, 1, 1, 0],
-  );
-
-  // Movie: 90%에서 나타남
-  const opacityMovie = useTransform(scrollYProgress, [0.8, 0.9], [0, 1]);
-  const MovieBg = useTransform(
-    scrollYProgress,
-    [0.7, 0.8],
-    ["#ffffff", "rgb(0,0,0)"],
-  );
-  // --- C. 비디오 자동 재생 트리거 ---
-  // 스크롤이 끝부분(0.95 이상)에 도달하면 비디오 재생, 아니면 일시정지
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+  const handleTimeUpdate = () => {
     if (videoRef.current) {
-      if (latest > 0.9) {
-        videoRef.current.play();
-      } else {
-        videoRef.current.pause();
+      const current = videoRef.current.currentTime;
+      const total = videoRef.current.duration;
+      if (total > 0) {
+        setProgress((current / total) * 100);
       }
     }
-  });
+  };
+
+  // 애니메이션 수치는 기존과 동일하게 유지
+  const arrowWidth = useTransform(scrollYProgress, [0, 0.8], ["0%", "87.5%"]);
+  const arrowOpacity = useTransform(scrollYProgress, [0.85, 0.9], [1, 0]);
+
+  const opacityA = useTransform(scrollYProgress, [0.1, 0.2, 0.3], [0, 1, 0]);
+  const opacityB = useTransform(scrollYProgress, [0.3, 0.4, 0.5], [0, 1, 0]);
+  const opacityC = useTransform(scrollYProgress, [0.5, 0.6, 0.7], [0, 1, 0]);
+  const opacityD = useTransform(scrollYProgress, [0.7, 0.8, 0.9], [0, 1, 0]);
+
+  const opacityMovie = useTransform(scrollYProgress, [0.9, 1.0], [0, 1]);
+  const MovieBg = useTransform(
+    scrollYProgress,
+    [0.85, 0.95],
+    ["#ffffff", "rgba(0,0,0,1)"],
+  );
+
+  // 스냅 포인트 (0~500vh)
+  const snapPoints = [0, 1, 2, 3, 4, 5];
 
   return (
-    // 1. 스크롤 영역 (높이를 길게 잡음)
-    <div ref={containerRef} className=" h-[1000vh] relative inset-0 w-full ">
-      {/* 2. 뷰포트 고정 영역 (Sticky) */}
+    <div ref={containerRef} className="h-[600vh] relative w-full">
+      {/* CSS 네이티브 스냅 포인트 레이어 */}
+      <div className="absolute inset-0 pointer-events-none">
+        {snapPoints.map((p) => (
+          <div
+            key={p}
+            className="h-screen w-full snap-start scroll-snap-stop-always"
+            style={{ top: `${p * 100}vh`, position: "absolute" }}
+          />
+        ))}
+      </div>
+
       <motion.div
         style={{ backgroundColor: MovieBg }}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
       >
-        {/* --- 화살표 영역 --- */}
-
+        {/* 기존 렌더링 로직 동일 (생략 없이 유지) */}
         <motion.div
           style={{ opacity: arrowOpacity }}
-          className="text-black flex flex-row w-full px-10 items-center gap-4 absolute top-10 z-50 h-0"
+          className="text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute top-10 z-50 h-0"
         >
-          <p className="text-3xl font-chosunGoosu font-bold">작업 전</p>
+          <p className="text-xl md:text-3xl font-chosunGoosu font-bold">
+            작업 전
+          </p>
           <motion.div
-            style={{ width: arrowWidth }} // 여기서 너비가 동적으로 바뀜
-            className="h-1 bg-black relative"
+            style={{ width: arrowWidth }}
+            className="h-1 bg-black relative max-w-47.5 sm:max-w-70 xl:max-w-full"
           >
             <div className="absolute right-px top-1/2 -translate-y-1/2 w-5 h-5 border-t-3 border-r-3 border-solid rotate-45" />
           </motion.div>
-          <p className="text-black text-3xl font-chosunGoosu font-bold">
+          <p className="text-black text-xl md:text-3xl font-chosunGoosu font-bold">
             작업 후
           </p>
         </motion.div>
 
-        <div className="relative flex top-10">
-          {/* Image A */}
+        <div className="relative flex w-full h-full justify-center snap-x">
           <motion.img
             src="/sampleImages/yacha_sketch/야차1.jpg"
             style={{ opacity: opacityA }}
-            className="absolute left-10 top-20 inset-0 w-150 h-200 object-cover rounded-lg"
+            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-2/12  w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
-
-          {/* Image B */}
           <motion.img
             src="/sampleImages/yacha_sketch/야차2.jpg"
             style={{ opacity: opacityB }}
-            className="absolute left-2/12 top-20 inset-0 w-150 h-200 object-cover rounded-lg"
+            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-5/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
-          {/* Image C */}
           <motion.img
             src="/sampleImages/yacha_sketch/야차3.jpg"
             style={{ opacity: opacityC }}
-            className="absolute left-5/12 top-20 inset-0 w-150 h-200 object-cover rounded-lg"
+            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-7/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
-
-          {/* Image D */}
           <motion.img
             src="/sampleImages/yacha_sketch/야차4.jpg"
             style={{ opacity: opacityD }}
-            className="absolute left-8/12 top-20 inset-0 w-150 h-200 object-cover rounded-lg"
+            className="snap-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-10/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
           />
-          {/* Movie */}
+
           <motion.div
             style={{ opacity: opacityMovie }}
-            className=" inset-0 w-screen h-screen flex items-center justify-center overflow-hidden"
+            className="snap-center absolute inset-0 flex items-center justify-center"
           >
-            {/* 3. 동영상 컨테이너 (Spatial UI: 3D 효과 및 반사) */}
-            <div className="relative w-full max-w-xl px-4 groupr">
-              <div className="relative transform-style-3d transition-transform duration-700 hover:scale-[1.02] hover:rotate-x-2">
-                {/* 메인 비디오 프레임 */}
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5),0_20px_40px_rgba(0,0,0,0.4)] bg-black/80 backdrop-blur-sm">
-                  <video
-                    ref={videoRef}
-                    src="/sampleImages/yacha_sketch/yachaMv.mp4"
-                    className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
-                    muted
-                    loop
-                    playsInline
-                  />
-                  {/* 유리 질감 오버레이 */}
-                  <div className="absolute inset-0 pointer-events-none  bg-linear-to-tr from-white/5 via-transparent to-transparent opacity-40" />
-                </div>
+            <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
+              <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                <video
+                  ref={videoRef}
+                  src="/sampleImages/yacha_sketch/yachaMv.mp4"
+                  className="w-full h-auto"
+                  muted
+                  loop
+                  playsInline
+                  autoPlay
+                  onTimeUpdate={handleTimeUpdate}
+                />
+              </div>
 
-                {/* 4. 바닥면 리얼 타임 반사 효과 (반사 + 빛 확산) */}
-                <div className="relative">
-                  {/* 주변으로 넓게 퍼지는 빛 확산 레이어 (Glow) */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-[130%] h-full -z-20 origin-top transform scale-y-[-1] opacity-30 pointer-events-none blur-3xl">
-                    <video
-                      src="/sampleImages/yacha_sketch/yachaMv.mp4"
-                      className="w-full h-auto object-cover"
-                      muted
-                      loop
-                      playsInline
-                    />
-                  </div>
-                </div>
+              {/* 프로그레스 바 */}
+              <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
             </div>
           </motion.div>

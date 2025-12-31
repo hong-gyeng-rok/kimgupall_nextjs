@@ -31,6 +31,7 @@ export default function TitleAnime() {
     [0.5, 1],
     ["#ffffff", "#c4c47e"],
   );
+  const trapOpacity = useTransform(scrollYProgress, [0.5, 1], [1, 0]);
 
   return (
     // 높이를 넉넉히 주어 스크롤 공간 확보
@@ -84,6 +85,7 @@ export default function TitleAnime() {
               ease: "linear",
               duration: 25, // 속도 (숫자가 클수록 느림)
             }}
+            style={{ opacity: trapOpacity }}
           >
             {[...creditsData].map((item, idx) => (
               <li

@@ -76,7 +76,7 @@ function Card({
           sizes="(max-width: 345px) 100vw, 33vw"
           priority={index < 2} // 상위 이미지는 우선 로딩
         />
-        
+
         {/* 데스크탑 호버 오버레이 (이미지 어둡게 + 흰색 글자) */}
         {!isMobile && (
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
@@ -172,7 +172,7 @@ export default function Album() {
             <div
               key={card.id}
               className={`
-                          ${isMobile ? "h-[70vh] w-full snap-center flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
+                          ${isMobile ? "h-[70vh] w-full snap-center snap-proximity flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
                         `}
             >
               <Card

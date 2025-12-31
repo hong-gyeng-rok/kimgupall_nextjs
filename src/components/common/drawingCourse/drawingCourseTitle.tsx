@@ -62,23 +62,19 @@ export default function ScrollyTellingSequence() {
         {/* 기존 렌더링 로직 동일 (생략 없이 유지) */}
         <motion.div
           style={{ opacity: arrowOpacity }}
-          className="text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute top-10 z-50 h-0"
+          className="font-sans text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute top-10 z-50 h-0"
         >
-          <p className="text-xl md:text-3xl font-chosunGoosu font-bold">
-            작업 전
-          </p>
+          <p className="text-xl md:text-3xl  font-bold">작업 전</p>
           <motion.div
             style={{ width: arrowWidth }}
             className="h-1 bg-black relative max-w-47.5 sm:max-w-70 xl:max-w-full"
           >
             <div className="absolute right-px top-1/2 -translate-y-1/2 w-5 h-5 border-t-3 border-r-3 border-solid rotate-45" />
           </motion.div>
-          <p className="text-black text-xl md:text-3xl font-chosunGoosu font-bold">
-            작업 후
-          </p>
+          <p className="text-black text-xl md:text-3xl  font-bold">작업 후</p>
         </motion.div>
 
-        <div className="relative flex w-full h-full justify-center snap-x">
+        <div className="relative flex w-full h-full justify-center snap-x snap-proximity">
           <motion.img
             src="/sampleImages/yacha_sketch/야차1.jpg"
             style={{ opacity: opacityA }}

@@ -1,10 +1,10 @@
-import { ReactNode, CSSProperties } from "react"; // CSSProperties import
+import { ReactNode, CSSProperties, MouseEventHandler } from "react"; // CSSProperties import
 
 export interface InternalLinkProps {
   href: string;
   children: ReactNode;
   className?: string;
   style?: CSSProperties;
-  onClick?: () => void;
+  onClick?: MouseEventHandler;
   ariaLabel?: string;
 }

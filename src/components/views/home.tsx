@@ -38,16 +38,16 @@ export default function HomeView() {
         data-testid="HomeView"
         className="text-black bg-white flex flex-col h-fit w-screen"
       >
-        <div className="snap-start">
+        <div className="snap-start snap-proximity">
           <TitleView />
         </div>
-        <div className="snap-start">
+        <div className="snap-start snap-proximity">
           <IntroView />
         </div>
-        <div className="snap-start">
+        <div className="snap-start snap-proximity">
           <DrawingCourseView />
         </div>
-        <div className="snap-start">
+        <div className="snap-start snap-proximity">
           <AlbumView />
         </div>
       </section>

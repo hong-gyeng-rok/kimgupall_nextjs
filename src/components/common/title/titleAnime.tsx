@@ -45,7 +45,7 @@ export default function TitleAnime() {
           backgroundColor: backgroundColor,
           color: textColor,
         }}
-        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors gap-[2vh] md:gap-8 px-4 overflow-hidden"
+        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors gap-[2vh] md:gap-[4vh] px-4 overflow-hidden"
       >
         <h3 className="contents">
           <Typewriter

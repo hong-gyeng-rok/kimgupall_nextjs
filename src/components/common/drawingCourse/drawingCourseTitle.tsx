@@ -80,22 +80,22 @@ export default function ScrollyTellingSequence() {
           <motion.img
             src="/sampleImages/yacha_sketch/야차1.jpg"
             style={{ opacity: opacityA }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-2/12  w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-2/12  w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
           />
           <motion.img
             src="/sampleImages/yacha_sketch/야차2.jpg"
             style={{ opacity: opacityB }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-5/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-5/12 w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
           />
           <motion.img
             src="/sampleImages/yacha_sketch/야차3.jpg"
             style={{ opacity: opacityC }}
-            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-7/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-7/12 w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
           />
           <motion.img
             src="/sampleImages/yacha_sketch/야차4.jpg"
             style={{ opacity: opacityD }}
-            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-10/12 w-full max-w-xl px-4 md:w-150 md:h-200 object-contain rounded-lg"
+            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-10/12 w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
           />
 
           <motion.div

@@ -59,7 +59,7 @@ function Card({
         /* Mobile: Full Screen, No Shadow/Round initially */
         h-full w-full 
         /* Desktop: Card Style */
-        md:h-150 md:w-87.5 md:rounded-xl md:shadow-xl md:p-4 md:justify-start transition-all duration-300
+        md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-xl md:shadow-xl md:p-4 md:justify-start transition-all duration-300
       `}
     >
       {/* 상단 제목 (호버 시 데스크탑에서 페이드 아웃) */}
@@ -116,38 +116,16 @@ export default function Album() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
-    // 스크롤 스냅 설정
-    document.documentElement.style.scrollSnapType = "y mandatory"; // mandatory + snap-normal 조합 추천
-    document.documentElement.style.scrollBehavior = "smooth";
-
     return () => {
       window.removeEventListener("resize", checkMobile);
-      document.documentElement.style.scrollSnapType = "";
-      document.documentElement.style.scrollBehavior = "";
     };
   }, []);
 
   return (
     <article
       ref={targetRef}
-      className={`relative w-full ${isMobile ? "h-auto snap-y snap-mandatory" : "h-[600vh]"}`}
+      className={`relative w-full ${isMobile ? "h-auto" : "h-[600vh]"}`}
     >
-      {/* [Desktop] Ghost Snap Points */}
-      {!isMobile && (
-        <div className="absolute inset-0 pointer-events-none z-0">
-          {cards.map((_, i) => (
-            <div
-              key={i}
-              className="w-full h-screen "
-              style={{
-                top: `${(i / (cards.length - 1)) * 500}vh`,
-                position: "absolute",
-              }}
-            />
-          ))}
-        </div>
-      )}
-
       {/* 
         Container 
         - Mobile: Normal Flow (relative), Vertical Stack
@@ -172,7 +150,7 @@ export default function Album() {
             <div
               key={card.id}
               className={`
-                          ${isMobile ? "h-[70vh] w-full  flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
+                          ${isMobile ? "h-[70vh] w-full flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
                         `}
             >
               <Card
@@ -183,7 +161,7 @@ export default function Album() {
                 isMobile={isMobile}
               />
             </div>
-          ))}{" "}
+          ))}
         </motion.div>
       </div>
     </article>

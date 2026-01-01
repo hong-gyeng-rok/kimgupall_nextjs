@@ -6,23 +6,22 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   console.log("🔍 API: /api/images 요청 시작");
-  
+
   try {
     const images = await prisma.media.findMany({
       orderBy: {
-        orderIndex: "desc", 
+        orderIndex: "desc",
       },
       include: {
         collection: true, // 컬렉션 정보도 함께 가져오기
-      }
+      },
     });
 
     console.log(`✅ API: 이미지 ${images.length}개 조회 성공`);
     return NextResponse.json(images);
-
   } catch (error: unknown) {
     console.error("❌ API Error 발생:", error);
-    
+
     let errorMessage = "알 수 없는 에러";
     if (error instanceof Error) {
       errorMessage = error.message;
@@ -31,7 +30,8 @@ export async function GET() {
     // 에러 내용을 클라이언트에도 전달하여 화면에서 확인 가능하게 함
     return NextResponse.json(
       { error: "이미지 조회 실패", message: errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
+

@@ -10,10 +10,6 @@ import { useEffect } from "react";
 export default function HomeView() {
   // 스크롤 스냅 및 위치 복구 로직
   useEffect(() => {
-    // 페이지 전체에 스냅 적용 (네이티브 기능 활용)
-    document.documentElement.style.scrollSnapType = "y mandatory";
-    document.documentElement.style.scrollBehavior = "smooth";
-
     const savedPos = sessionStorage.getItem("home_scroll_pos");
     if (savedPos) {
       setTimeout(() => {
@@ -24,12 +20,6 @@ export default function HomeView() {
         sessionStorage.removeItem("home_scroll_pos");
       }, 100);
     }
-
-    return () => {
-      // 언마운트 시 초기화
-      document.documentElement.style.scrollSnapType = "";
-      document.documentElement.style.scrollBehavior = "";
-    };
   }, []);
 
   return (

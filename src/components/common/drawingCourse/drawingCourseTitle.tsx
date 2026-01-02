@@ -43,7 +43,7 @@ export default function ScrollyTellingSequence() {
   //const snapPoints = [0, 1, 2, 3, 4, 5];
 
   return (
-    <div ref={containerRef} className="h-[600vh] relative w-full ">
+    <div ref={containerRef} className="h-[300vh] relative w-full ">
       {/* CSS 네이티브 스냅 포인트 레이어 
 
       <div className="absolute inset-0 pointer-events-none">

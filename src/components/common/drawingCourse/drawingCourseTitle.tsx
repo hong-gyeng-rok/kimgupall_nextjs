@@ -44,19 +44,6 @@ export default function ScrollyTellingSequence() {
 
   return (
     <div ref={containerRef} className="h-[300vh] relative w-full ">
-      {/* CSS 네이티브 스냅 포인트 레이어 
-
-      <div className="absolute inset-0 pointer-events-none">
-        {snapPoints.map((p) => (
-          <div
-            key={p}
-            className="h-screen w-full snap-start snap-normal"
-            style={{ top: `${p * 100}vh`, position: "absolute" }}
-          />
-        ))}
-      </div>
-        */}
-
       <motion.div
         style={{ backgroundColor: MovieBg }}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"

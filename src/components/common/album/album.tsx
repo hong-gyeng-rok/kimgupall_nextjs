@@ -146,7 +146,6 @@ export default function Album() {
           `}
         >
           {cards.map((card, index) => (
-            // Wrapper for Mobile Snap
             <div
               key={card.id}
               className={`

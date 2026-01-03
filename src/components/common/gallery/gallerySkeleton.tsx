@@ -5,7 +5,7 @@ import Masonry from "react-masonry-css";
 import { motion } from "framer-motion";
 
 interface GallerySkeletonProps {
-  breakpointCols?: { [key: string]: number };
+  breakpointCols?: { default: number; [key: number]: number };
 }
 
 const defaultBreakpointColumnsObj = {

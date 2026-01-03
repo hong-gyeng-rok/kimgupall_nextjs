@@ -13,12 +13,30 @@ import newyear from "../../../../public/sampleImages/2025years.jpg";
 import instaQR from "../../../../public/sampleImages/instagramLink.png";
 
 const cards = [
-  { id: 1, url: yacha, title: "야차 시리즈", alt: "YACHA" },
-  { id: 2, url: runner, title: "빈칸 전시회", alt: "RUNNER" },
-  { id: 3, url: wave, title: "2025 서울 일러스트 페어", alt: "ON THE WAVE" },
-  { id: 4, url: baseball, title: "2024 서울 일러스트 페어", alt: "BASEBALL" },
-  { id: 5, url: newyear, title: "모든 작품", alt: "2025 NEW YEAR" },
-  { id: 6, url: instaQR, title: "INSTAGRAM", alt: "INSTAGRAM QR" },
+  { id: 1, url: yacha, title: "야차 시리즈", alt: "YACHA", slug: "yacha" },
+  { id: 2, url: runner, title: "빈칸 전시회", alt: "RUNNER", slug: "binkan" },
+  {
+    id: 3,
+    url: wave,
+    title: "2025 서울 일러스트 페어",
+    alt: "ON THE WAVE",
+    slug: "seoul",
+  },
+  {
+    id: 4,
+    url: baseball,
+    title: "2024 서울 일러스트 페어",
+    alt: "BASEBALL",
+    slug: "conceptArt",
+  },
+  { id: 5, url: newyear, title: "모든 작품", alt: "2025 NEW YEAR", slug: null },
+  {
+    id: 6,
+    url: instaQR,
+    title: "INSTAGRAM",
+    alt: "INSTAGRAM QR",
+    slug: "instagram",
+  },
 ];
 
 function Card({
@@ -67,11 +85,11 @@ function Card({
       `}
     >
       {/* 상단 제목 (호버 시 데스크탑에서 페이드 아웃) */}
-      <p className="text-black text-2xl md:text-xl font-bold mb-4 md:mb-6 drop-shadow-md md:drop-shadow-none z-10 md:group-hover:opacity-0 transition-opacity duration-300">
+      <p className={`text-black text-2xl md:text-xl font-bold mb-4 md:mb-6 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300 ${!isInstagram ? "md:group-hover:opacity-0" : ""}`}>
         {card.title}
       </p>
 
-      <div className="relative flex-1 w-full h-fit overflow-hidden rounded-lg bg-gray-100 group-hover:ring-2 group-hover:ring-black/50 transition-all duration-300">
+      <div className={`relative flex-1 w-full h-fit overflow-hidden rounded-lg bg-gray-100 transition-all duration-300 ${!isInstagram ? "group-hover:ring-2 group-hover:ring-black/50" : ""}`}>
         <FallbackImage
           src={card.url}
           alt={card.alt}
@@ -83,7 +101,7 @@ function Card({
         />
 
         {/* 데스크탑 호버 오버레이 (이미지 어둡게 + 흰색 글자 + CTA 버튼) */}
-        {!isMobile && (
+        {!isMobile && !isInstagram && (
           <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-4 z-20">
             <p className="text-white text-2xl font-bold px-4 text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
               {card.title}
@@ -132,10 +150,13 @@ function Card({
     </motion.div>
   );
 
+  // 링크 URL 결정 (slug가 있으면 쿼리 스트링 추가, 없으면 전체 갤러리)
+  const href = card.slug ? `/gallery?collection=${card.slug}` : "/gallery";
+
   return isInstagram ? (
     cardContent
   ) : (
-    <InternalLink href="/gallery" className="w-full h-full block">
+    <InternalLink href={href} className="w-full h-full block">
       {cardContent}
     </InternalLink>
   );
@@ -177,7 +198,7 @@ export default function Album() {
       <div
         className={`
         w-full
-        ${isMobile ? "relative flex flex-col" : "sticky top-0 h-screen flex items-center overflow-hidden z-10"}
+        ${isMobile ? "relative flex flex-col pb-safe" : "sticky top-0 h-screen flex items-center overflow-hidden z-10"}
       `}
       >
         <motion.div
@@ -185,7 +206,7 @@ export default function Album() {
           style={{ x: isMobile ? 0 : x }}
           className={`
             flex 
-            ${isMobile ? "flex-col w-full" : "flex-row gap-40 items-center"}
+            ${isMobile ? "flex-col w-full " : "flex-row gap-40 items-center"}
           `}
         >
           {cards.map((card, index) => (

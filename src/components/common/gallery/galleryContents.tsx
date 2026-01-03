@@ -5,6 +5,7 @@ import Masonry from "react-masonry-css"; // react-masonry-css에서 임포트
 import Modal from "react-modal";
 import { useMediaQuery } from "react-responsive"; // 모바일. PC 판독 플러그인
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import { useGalleryImages, MediaType } from "../../../hooks/useImages";
 import FallbackImage from "../fallbackImage";
 import GallerySkeleton from "./gallerySkeleton";
@@ -15,13 +16,17 @@ const STORAGE_BASE_URL = (
 
 //Modal.setAppElement("#root"); // 또는 앱의 최상위 DOM ID
 export default function GalleryContents() {
+  const searchParams = useSearchParams();
+  const collectionSlug = searchParams.get("collection"); // URL에서 ?collection=... 값 읽기
+
   const {
     data: images,
     isLoading,
     isError,
     error,
     refetch,
-  } = useGalleryImages();
+  } = useGalleryImages(collectionSlug);
+
   const isMobile = useMediaQuery({ maxWidth: 767 }); //모바일 조건 적용
   const [selectedImage, setSelectedImage] = useState<MediaType | null>(null);
 
@@ -162,7 +167,7 @@ function ModalContent({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative max-w-[90vw] max-h-[80vh] min-w-[300px] min-h-[400px] flex items-center justify-center"
+        className="relative max-w-[90vw] max-h-[80vh] min-w-75 min-h-10URL Query String0 flex items-center justify-center"
       >
         {/* 로딩 스피너 */}
         {isImageLoading && (

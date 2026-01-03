@@ -30,9 +30,22 @@ export const useImages = <T = MediaType[]>(
 
 // --- 편의용 훅 ---
 
-// 갤러리 이미지 (INTRO 제외)
-export const useGalleryImages = () => {
-  return useImages((data) => data.filter((img) => img.location === "GALLERY"));
+// 갤러리 이미지 (INTRO 제외) + 선택적 컬렉션 필터링
+export const useGalleryImages = (collectionSlug?: string | null) => {
+  return useImages((data) => {
+    // 1. 기본적으로 GALLERY 위치의 이미지만 필터링
+    const galleryImages = data.filter((img) => img.location === "GALLERY");
+
+    // 2. 컬렉션 슬러그가 있다면 추가 필터링
+    if (collectionSlug) {
+      return galleryImages.filter(
+        (img) => img.collection?.slug === collectionSlug,
+      );
+    }
+
+    // 3. 슬러그가 없으면 전체 갤러리 이미지 반환
+    return galleryImages;
+  });
 };
 
 // 인트로(배너) 이미지

@@ -35,12 +35,12 @@ export default function IntroTitle() {
   if (isError) return <p>에러 발생 : {error?.message}</p>;
 
   return (
-    <>
+    <div className="w-full h-full flex items-center justify-center px-4 md:px-0 max-w-7xl mx-auto">
       {introMvSrc && (
         <video
           ref={videoRef}
           src={introMvSrc}
-          className="w-auto h-full max-h-full object-contain rounded-lg shadow-xl max-w-6xl"
+          className="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-xl md:max-w-5xl lg:max-w-6xl"
           width={targetMedia?.width ?? DEFAULT_WIDTH}
           height={targetMedia?.height ?? DEFAULT_HEIGHT}
           muted
@@ -50,6 +50,6 @@ export default function IntroTitle() {
           playsInline
         />
       )}
-    </>
+    </div>
   );
 }

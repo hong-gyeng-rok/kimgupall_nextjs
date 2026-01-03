@@ -61,15 +61,15 @@ export default function ScrollyTellingSequence() {
     <div ref={containerRef} className="h-[300vh] relative w-full">
       <motion.div
         style={{ backgroundColor: MovieBg }}
-        className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+        className="sticky top-0 h-screen w-full  overflow-hidden"
       >
-        <div className="flex w-full h-full max-h-[80vh] justify-center items-center px-10 relative">
+        <div className="flex w-full h-full max-h-[80vh] justify-center items-center px-10 ">
           {[...(medias ?? [])].reverse().map((media, index) =>
             media.type === "IMAGE" ? (
               <motion.span
                 key={media.id}
                 style={{ opacity: opacities[index] }}
-                className="flex flex-col items-center justify-center"
+                className="absolute sm:flex sm:flex-col items-center"
               >
                 <Image
                   src={`${STORAGE_BASE_URL}${media.publicUrl}`}
@@ -78,7 +78,7 @@ export default function ScrollyTellingSequence() {
                   height={400}
                   className="w-full max-w-xl px-4 md:px-0 h-[60vh] object-contain"
                 />
-                <p className="font-sans font-bold text-3xl mt-4">
+                <p className="font-sans font-bold text-3xl mt-4 text-center">
                   STEP {index + 1}
                 </p>
               </motion.span>
@@ -115,7 +115,7 @@ export default function ScrollyTellingSequence() {
         </div>
         <motion.div
           style={{ opacity: arrowOpacity }}
-          className="font-sans text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute bottom-15 z-50 h-0"
+          className="font-sans text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute bottom-15 z-50 h-0 pb-safe"
         >
           <p className="text-xl md:text-3xl  font-bold">작업 전</p>
           <motion.div

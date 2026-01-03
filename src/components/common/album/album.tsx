@@ -2,8 +2,8 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import Image from "next/image";
 import InternalLink from "../internalLink";
+import FallbackImage from "../fallbackImage";
 
 import runner from "../../../../public/sampleImages/runner.jpg";
 import yacha from "../../../../public/sampleImages/yacha.jpg";
@@ -53,7 +53,11 @@ function Card({
 
   const cardContent = (
     <motion.div
-      style={{ scale, opacity }}
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      style={{ scale: isMobile ? 1 : scale, opacity: isMobile ? 1 : opacity }}
       className={`
         relative flex flex-col items-center justify-center bg-white/20 backdrop-blur-xl border border-white/30 group
         /* Mobile: Full Screen, No Shadow/Round initially */
@@ -67,22 +71,61 @@ function Card({
         {card.title}
       </p>
 
-      <div className="relative flex-1 w-full h-fit overflow-hidden rounded-lg">
-        <Image
+      <div className="relative flex-1 w-full h-fit overflow-hidden rounded-lg bg-gray-100 group-hover:ring-2 group-hover:ring-black/50 transition-all duration-300">
+        <FallbackImage
           src={card.url}
           alt={card.alt}
           fill
           className="object-contain"
           sizes="(max-width: 345px) 100vw, 33vw"
           priority={index < 2} // 상위 이미지는 우선 로딩
+          placeholder="blur" // 로컬 이미지 블러 처리
         />
 
-        {/* 데스크탑 호버 오버레이 (이미지 어둡게 + 흰색 글자) */}
+        {/* 데스크탑 호버 오버레이 (이미지 어둡게 + 흰색 글자 + CTA 버튼) */}
         {!isMobile && (
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
-            <p className="text-white text-2xl font-bold px-4 text-center">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-4 z-20">
+            <p className="text-white text-2xl font-bold px-4 text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
               {card.title}
             </p>
+            <div className="flex items-center gap-2 px-6 py-2 border border-white/50 rounded-full text-white text-sm font-medium tracking-wider hover:bg-white hover:text-black transition-colors duration-300 translate-y-4 group-hover:translate-y-0 delay-75">
+              <span>VIEW {card.title}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* 모바일 전용 CTA 버튼 (우측 하단) */}
+        {isMobile && !isInstagram && (
+          <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-lg z-20 pointer-events-none">
+            <span className="text-xs font-bold">VIEW {card.title}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-3 h-3"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+              />
+            </svg>
           </div>
         )}
       </div>

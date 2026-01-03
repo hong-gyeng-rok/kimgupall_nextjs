@@ -17,6 +17,9 @@ export default function ScrollyTellingSequence() {
     error,
   } = useCollectionImages("drawing-course-yacha_sketch");
 
+  //동영상 URL (로컬 public 폴더 경로 사용)
+  const yachatMvSrc = "/sampleImages/yacha_sketch/yachaMv.mp4";
+
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
@@ -86,11 +89,11 @@ export default function ScrollyTellingSequence() {
             style={{ opacity: opacityMovie }}
             className=" absolute inset-0 flex items-center justify-center z-10"
           >
-            <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
+            <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
                 <video
                   ref={videoRef}
-                  src="/sampleImages/yacha_sketch/yachaMv.mp4"
+                  src={yachatMvSrc}
                   className="w-full h-auto"
                   muted
                   loop

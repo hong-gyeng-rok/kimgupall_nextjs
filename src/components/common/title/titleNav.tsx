@@ -29,14 +29,27 @@ const navLinks = [
 export default function TitleNav() {
   const { scrollY } = useScroll();
   const [activeSection, setActiveSection] = useState<string>("");
+  const [viewportHeight, setViewportHeight] = useState(0);
 
-  // 0px ~ 100px 스크롤 구간 동안 투명도가 0 -> 1로 변함
-  const opacity = useTransform(scrollY, [0, 100], [0, 1]);
-  // 0px ~ 100px 스크롤 구간 동안 Y축 위치가 20px -> 0px (살짝 아래에서 올라옴)
-  const y = useTransform(scrollY, [0, 100], [20, 0]);
-  // 투명도가 0일 때 클릭 방지
+  // 뷰포트 높이 감지
+  useEffect(() => {
+    const handleResize = () => setViewportHeight(window.innerHeight);
+    handleResize(); // 초기값 설정
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 200vh 시점 계산 (뷰포트 높이가 0일 땐 0 처리)
+  const startPoint = viewportHeight * 2;
+  const endPoint = viewportHeight * 2.5;
+
+  // 200vh까지는 0, 200vh~250vh 구간에서 서서히 1로 변함
+  const opacity = useTransform(scrollY, [startPoint, endPoint], [0, 1]);
+  // 200vh~250vh 구간에서 위에서 아래로 내려오는 효과
+  const y = useTransform(scrollY, [startPoint, endPoint], [-20, 0]);
+  // 200vh 이전에는 클릭 불가능
   const pointerEvents = useTransform(scrollY, (value) =>
-    value > 0 ? "auto" : "none",
+    value > startPoint ? "auto" : "none",
   );
 
   useEffect(() => {
@@ -66,7 +79,7 @@ export default function TitleNav() {
     <motion.nav
       data-testid="TitleNav"
       style={{ opacity, y, pointerEvents }}
-      className="font-mono fixed top-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-5 md:gap-8 z-50 pb-safe w-fit px-4 py-2 rounded-full bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl"
+      className="font-mono fixed top-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-2 md:gap-8 z-50 pb-safe w-max max-w-[90vw] px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl"
     >
       {navLinks.map((link) => (
         <Nav
@@ -84,11 +97,13 @@ function Nav({ link, isActive }: { link: Link; isActive: boolean }) {
     <InternalLink
       data-testid="HomeViewNavBtn"
       className={`
-        flex items-center justify-center text-center md:w-25 md:h-10 relative text-md md:text-lg p-2 rounded-full transition-all duration-300
+        flex items-center justify-center text-center relative rounded-full transition-all duration-300
+        px-3 py-1.5 text-xs min-w-[60px]
+        md:w-25 md:h-10 md:text-lg md:p-2
         ${
           isActive
-            ? "bg-black  scale-105 shadow-xl text-white  "
-            : " text-black "
+            ? "bg-black scale-105 shadow-xl text-white"
+            : "text-black"
         }
       `}
       href={link.url}
@@ -99,7 +114,7 @@ function Nav({ link, isActive }: { link: Link; isActive: boolean }) {
       }}
     >
       <span
-        className={`font-medium ${isActive ? "text-white font-bold" : "mix-blend-difference text-white"}`}
+        className={`font-medium whitespace-nowrap ${isActive ? "text-white font-bold" : "mix-blend-difference text-white"}`}
       >
         {link.title}
       </span>

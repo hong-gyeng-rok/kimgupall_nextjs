@@ -30,7 +30,7 @@ export default function GalleryLayout({ isShow = true }: IsShow) {
   return (
     <article className="w-full mx-auto px-4" data-testid="GalleyLatout">
       {isShow && (
-        <div className="flex mb-4">
+        <div className="flex">
           {/*<SeasonDropdown onSelectSeason={handleSeasonChange} />*/}
         </div>
       )}

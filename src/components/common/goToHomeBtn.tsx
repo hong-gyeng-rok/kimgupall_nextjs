@@ -26,9 +26,7 @@ export default function GoToHomeBtn() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed bottom-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center z-50
-      pb-safe w-fit px-4 py-2 rounded-full bg-black/20 backdrop-blur-lg border border-white/10 shadow-2xl
-      gap-5"
+      className="font-mono fixed bottom-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-5 md:gap-8 z-50 pb-safe w-fit px-4 py-2 rounded-full bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl"
     >
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />
@@ -50,15 +48,12 @@ function Nav({ link }: { link: Link }) {
   return (
     <InternalLink
       data-testid="GoToHomeBtn"
-      className="w-42 h-10 font-mono flex items-center justify-center text-center md:w-40 md:h-10 relative 
-      text-stone-900 text-lg md:text-2xl py-2   rounded-full 
-      border border-white/40 bg-gradient-to-b from-white/60 to-white/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] transition-all duration-300 
-      hover:scale-105 hover:from-white/80 hover:to-white/50 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:font-bold hover:animate-bounce"
+      className="flex items-center justify-center text-center md:w-25 md:h-10 relative text-black text-md md:text-lg p-2 rounded-full transition-all duration-300 hover:bg-black hover:text-white hover:scale-105 hover:shadow-xl"
       href={link.url}
       ariaLabel={`${link.title}으로 이동`}
       onClick={handleOnClick}
     >
-      {link.title}
+      <span className="font-medium mix-blend-difference">{link.title}</span>
     </InternalLink>
   );
 }

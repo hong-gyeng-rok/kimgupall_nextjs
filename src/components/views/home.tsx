@@ -15,7 +15,7 @@ export default function HomeView() {
       setTimeout(() => {
         window.scrollTo({
           top: parseInt(savedPos),
-          behavior: "auto",
+          behavior: "instant",
         });
         sessionStorage.removeItem("home_scroll_pos");
       }, 100);
@@ -24,16 +24,21 @@ export default function HomeView() {
 
   return (
     <MainBg>
+      <TitleNav />
       <section
         data-testid="HomeView"
         className="text-black bg-white flex flex-col h-fit w-screen"
       >
-          <TitleView />
-          <IntroView />
-          <DrawingCourseView />
-          <AlbumView />
-      </section>
-      <TitleNav />
+                  <TitleView />
+                  <div id="section-intro" className="w-full">
+                    <IntroView />
+                  </div>
+                  <div id="section-drawing" className="w-full">
+                    <DrawingCourseView />
+                  </div>
+                  <div id="section-album" className="w-full">
+                    <AlbumView />
+                  </div>      </section>
     </MainBg>
   );
 }

@@ -1,9 +1,22 @@
 "use client";
 
 import { useScroll, useTransform, motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
+import Image from "next/image";
+import { useCollectionImages } from "@/hooks/useImages";
+
+const STORAGE_BASE_URL = (
+  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
+).replace(/\/$/, "");
 
 export default function ScrollyTellingSequence() {
+  const {
+    data: medias,
+    isLoading,
+    isError,
+    error,
+  } = useCollectionImages("drawing-course-yacha_sketch");
+
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
@@ -36,58 +49,42 @@ export default function ScrollyTellingSequence() {
   const MovieBg = useTransform(
     scrollYProgress,
     [0.85, 0.95],
-    ["#ffffff", "rgba(0,0,0,1)"],
+    ["#ffffff", "rgba(255,255,255,1)"],
   );
 
-  // 스냅 포인트 (0~500vh)
-  //const snapPoints = [0, 1, 2, 3, 4, 5];
+  const opacities = [opacityA, opacityB, opacityC, opacityD];
 
   return (
-    <div ref={containerRef} className="h-[300vh] relative w-full ">
+    <div ref={containerRef} className="h-[300vh] relative w-full">
       <motion.div
         style={{ backgroundColor: MovieBg }}
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
       >
-        {/* 기존 렌더링 로직 동일 (생략 없이 유지) */}
-        <motion.div
-          style={{ opacity: arrowOpacity }}
-          className="font-sans text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute top-10 z-50 h-0"
-        >
-          <p className="text-xl md:text-3xl  font-bold">작업 전</p>
-          <motion.div
-            style={{ width: arrowWidth }}
-            className="h-1 bg-black relative max-w-47.5 sm:max-w-70 xl:max-w-full"
-          >
-            <div className="absolute right-px top-1/2 -translate-y-1/2 w-5 h-5 border-t-3 border-r-3 border-solid rotate-45" />
-          </motion.div>
-          <p className="text-black text-xl md:text-3xl  font-bold">작업 후</p>
-        </motion.div>
-
-        <div className="relative flex w-full h-full justify-center">
-          <motion.img
-            src="/sampleImages/yacha_sketch/야차1.jpg"
-            style={{ opacity: opacityA }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-2/12  w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
-          />
-          <motion.img
-            src="/sampleImages/yacha_sketch/야차2.jpg"
-            style={{ opacity: opacityB }}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-5/12 w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
-          />
-          <motion.img
-            src="/sampleImages/yacha_sketch/야차3.jpg"
-            style={{ opacity: opacityC }}
-            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-7/12 w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
-          />
-          <motion.img
-            src="/sampleImages/yacha_sketch/야차4.jpg"
-            style={{ opacity: opacityD }}
-            className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:left-10/12 w-full max-w-xl px-4 md:px-0 md:w-auto md:h-auto md:max-h-[60vh] md:max-w-[40vw] object-contain rounded-lg"
-          />
+        <div className="flex w-full h-full max-h-[80vh] justify-center items-center px-10 relative">
+          {[...(medias ?? [])].reverse().map((media, index) =>
+            media.type === "IMAGE" ? (
+              <motion.span
+                key={media.id}
+                style={{ opacity: opacities[index] }}
+                className="flex flex-col items-center justify-center"
+              >
+                <Image
+                  src={`${STORAGE_BASE_URL}${media.publicUrl}`}
+                  alt={media.description ?? "sketch Image"}
+                  width={300}
+                  height={400}
+                  className="w-full max-w-xl px-4 md:px-0 h-[60vh] object-contain"
+                />
+                <p className="font-sans font-bold text-3xl mt-4">
+                  STEP {index + 1}
+                </p>
+              </motion.span>
+            ) : null,
+          )}
 
           <motion.div
             style={{ opacity: opacityMovie }}
-            className=" absolute inset-0 flex items-center justify-center"
+            className=" absolute inset-0 flex items-center justify-center z-10"
           >
             <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
@@ -106,13 +103,26 @@ export default function ScrollyTellingSequence() {
               {/* 프로그레스 바 */}
               <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
                 <motion.div
-                  className="h-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                  className="h-full bg-black shadow-[0_0_8px_rgba(0,0,0,0.8)]"
                   style={{ width: `${progress}%` }}
                 />
               </div>
             </div>
           </motion.div>
         </div>
+        <motion.div
+          style={{ opacity: arrowOpacity }}
+          className="font-sans text-black flex flex-row w-full px-4 md:px-10 items-center gap-4 absolute bottom-15 z-50 h-0"
+        >
+          <p className="text-xl md:text-3xl  font-bold">작업 전</p>
+          <motion.div
+            style={{ width: arrowWidth }}
+            className="h-1 bg-black relative max-w-47.5 sm:max-w-70 xl:max-w-full"
+          >
+            <div className="absolute right-px top-1/2 -translate-y-1/2 w-5 h-5 border-t-3 border-r-3 border-solid rotate-45" />
+          </motion.div>
+          <p className="text-black text-xl md:text-3xl  font-bold">작업 후</p>
+        </motion.div>
       </motion.div>
     </div>
   );

@@ -55,15 +55,15 @@ function Card({
     <motion.div
       style={{ scale, opacity }}
       className={`
-        relative flex flex-col items-center justify-center bg-white group
+        relative flex flex-col items-center justify-center bg-white/20 backdrop-blur-xl border border-white/30 group
         /* Mobile: Full Screen, No Shadow/Round initially */
         h-full w-full 
         /* Desktop: Card Style */
-        md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-xl md:shadow-xl md:p-4 md:justify-start transition-all duration-300
+        md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6 md:justify-start transition-all duration-300
       `}
     >
       {/* 상단 제목 (호버 시 데스크탑에서 페이드 아웃) */}
-      <p className="text-black text-2xl md:text-xl font-bold mb-4 md:mb-4 drop-shadow-sm md:drop-shadow-none z-10 md:group-hover:opacity-0 transition-opacity duration-300">
+      <p className="text-black text-2xl md:text-xl font-bold mb-4 md:mb-6 drop-shadow-md md:drop-shadow-none z-10 md:group-hover:opacity-0 transition-opacity duration-300">
         {card.title}
       </p>
 
@@ -124,7 +124,7 @@ export default function Album() {
   return (
     <article
       ref={targetRef}
-      className={`relative w-full ${isMobile ? "h-auto" : "h-[600vh]"}`}
+      className={`relative w-full ${isMobile ? "h-auto" : "h-[300vh]"}`}
     >
       {/* 
         Container 

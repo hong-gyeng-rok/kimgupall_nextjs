@@ -32,13 +32,9 @@ export default function QueryProvider({
     setPersister(p);
   }, []);
 
-  // persister가 준비되기 전(서버 렌더링 포함)에도 QueryClientProvider는 반드시 있어야 함
+  // persister가 준비되기 전에는 렌더링을 하지 않음 (API 중복 호출 방지)
   if (!persister) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
-    );
+    return null;
   }
 
   return (

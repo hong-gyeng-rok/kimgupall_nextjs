@@ -40,12 +40,12 @@ export default function IntroTitle() {
         <video
           ref={videoRef}
           src={introMvSrc}
-          className="w-auto h-full max-h-full object-contain rounded-lg shadow-xl"
+          className="w-auto h-full max-h-full object-contain rounded-lg shadow-xl max-w-6xl"
           width={targetMedia?.width ?? DEFAULT_WIDTH}
           height={targetMedia?.height ?? DEFAULT_HEIGHT}
           muted
           loop
-          preload="auto"
+          preload="none"
           autoPlay
           playsInline
         />

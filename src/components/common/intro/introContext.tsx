@@ -22,7 +22,7 @@ export default function IntroContext({ scrollYProgress }: IntroContextProps) {
   return (
     <figcaption
       data-testid="IntroContext"
-      className="h-fit w-[90%] md:w-[65%] xl:w-[75%] max-w-6xl mx-auto text-black font-medium text-base sm:text-lg md:text-lg lg:text-xl gap-[2vh] md:gap-[2vh] flex flex-col font-chosunGoosu relative"
+      className="font-bold h-fit w-[90%] md:w-[65%] xl:w-[75%] max-w-6xl mx-auto text-black text-base sm:text-lg md:text-lg lg:text-xl gap-[2vh] md:gap-[2vh] flex flex-col font-chosunGoosu relative"
     >
       <motion.p style={{ opacity: opacity1, y: y1 }}>
         본 일러스트레이션 시리즈는 동양 설화 속 귀신이자 수호신인 야차(Yacha)를

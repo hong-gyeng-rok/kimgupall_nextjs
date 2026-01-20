@@ -79,7 +79,7 @@ export default function TitleNav() {
     <motion.nav
       data-testid="TitleNav"
       style={{ opacity, y, pointerEvents }}
-      className="font-mono fixed top-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-2 md:gap-8 z-50 pb-safe w-max max-w-[90vw] px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl"
+      className="font-sans fixed top-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-2 md:gap-8 z-50 pb-safe w-max max-w-[90vw] px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl"
     >
       {navLinks.map((link) => (
         <Nav
@@ -100,10 +100,9 @@ function Nav({ link, isActive }: { link: Link; isActive: boolean }) {
         flex items-center justify-center text-center relative rounded-full transition-all duration-300
         px-3 py-1.5 text-xs min-w-[60px]
         md:w-25 md:h-10 md:text-lg md:p-2
-        ${
-          isActive
-            ? "bg-black scale-105 shadow-xl text-white"
-            : "text-black"
+        ${isActive
+          ? "bg-black scale-105 shadow-xl text-white "
+          : "text-black"
         }
       `}
       href={link.url}

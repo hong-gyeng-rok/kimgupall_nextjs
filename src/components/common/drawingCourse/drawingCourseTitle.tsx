@@ -10,15 +10,11 @@ const STORAGE_BASE_URL = (
 ).replace(/\/$/, "");
 
 export default function ScrollyTellingSequence() {
-  const {
-    data: medias,
-    isLoading,
-    isError,
-    error,
-  } = useCollectionImages("drawing-course-yacha_sketch");
 
-  //동영상 URL (로컬 public 폴더 경로 사용)
-  const yachatMvSrc = "/sampleImages/yacha_sketch/yachaMv.mp4";
+  const { data: images } = useCollectionImages("drawing-course-yacha_sketch")
+  const { data: movies } = useCollectionImages("drawing-course-yacha_mv")
+  const allMedias = images?.reverse().concat(movies)
+
 
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -64,10 +60,10 @@ export default function ScrollyTellingSequence() {
         className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
       >
         <div className="flex w-full h-full max-h-[80vh] justify-center items-center px-10 relative">
-          {[...(medias ?? [])].reverse().map((media, index) =>
+          {[...(allMedias ?? [])].map((media, index) =>
             media.type === "IMAGE" ? (
               <motion.span
-                key={media.id}
+                key={index}
                 style={{ opacity: opacities[index] }}
                 className="flex flex-col items-center justify-center"
               >
@@ -82,36 +78,38 @@ export default function ScrollyTellingSequence() {
                   STEP {index + 1}
                 </p>
               </motion.span>
-            ) : null,
+            ) :
+              <motion.div
+                key={index}
+                style={{ opacity: opacityMovie }}
+                className=" absolute inset-0 flex items-center justify-center z-10"
+              >
+                <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl">
+                  <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                    <video
+                      ref={videoRef}
+                      src={`${STORAGE_BASE_URL}${media.publicUrl}`}
+                      className="w-full h-auto"
+                      muted
+                      loop
+                      playsInline
+                      autoPlay
+                      onTimeUpdate={handleTimeUpdate}
+                    />
+                  </div>
+
+                  {/* 프로그레스 바 */}
+                  <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+                    <motion.div
+                      className="h-full bg-black shadow-[0_0_8px_rgba(0,0,0,0.8)]"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+
           )}
 
-          <motion.div
-            style={{ opacity: opacityMovie }}
-            className=" absolute inset-0 flex items-center justify-center z-10"
-          >
-            <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl">
-              <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                <video
-                  ref={videoRef}
-                  src={yachatMvSrc}
-                  className="w-full h-auto"
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  onTimeUpdate={handleTimeUpdate}
-                />
-              </div>
-
-              {/* 프로그레스 바 */}
-              <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full bg-black shadow-[0_0_8px_rgba(0,0,0,0.8)]"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-          </motion.div>
         </div>
         <motion.div
           style={{ opacity: arrowOpacity }}

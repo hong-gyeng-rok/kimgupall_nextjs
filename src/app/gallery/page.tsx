@@ -4,11 +4,12 @@ import GalleryContextProvider from "@/contexts/GalleryContextProvider";
 export default async function GalleryPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const slug =
-    searchParams?.collection && typeof searchParams.collection === "string"
-      ? searchParams.collection
+    resolvedSearchParams?.collection && typeof resolvedSearchParams.collection === "string"
+      ? resolvedSearchParams.collection
       : undefined;
   return (
     <GalleryContextProvider slug={slug}>

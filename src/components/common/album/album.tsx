@@ -87,7 +87,7 @@ function Card({
         /* Mobile: Full Screen, No Shadow/Round initially */
         h-full w-full 
         /* Desktop: Card Style */
-        md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6 md:justify-start transition-all duration-300
+        md:h-[65vh] md:max-h-150 md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6 md:justify-start transition-all duration-300
       `}
     >
       {/* 상단 제목 (호버 시 데스크탑에서 페이드 아웃) */}
@@ -156,7 +156,7 @@ function Card({
   );
 
   const href =
-    !card.slug || card.slug === "all"
+    card.slug === "all"
       ? "/gallery"
       : `/gallery?collection=${card.slug}`;
 

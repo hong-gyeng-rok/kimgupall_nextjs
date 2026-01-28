@@ -6,7 +6,8 @@ import Modal from "react-modal";
 import { useMediaQuery } from "react-responsive"; // 모바일. PC 판독 플러그인
 import { motion, AnimatePresence } from "framer-motion";
 import { useGalleryImages, MediaType } from "../../../hooks/useImages";
-import FallbackImage from "../fallbackImage";
+import { useGalleryContext } from "@/contexts/GalleryContext";
+import FallbackImage from "../fallbackImage"; // Missing import
 import GallerySkeleton from "./gallerySkeleton";
 
 const STORAGE_BASE_URL = (
@@ -15,13 +16,14 @@ const STORAGE_BASE_URL = (
 
 //Modal.setAppElement("#root"); // 또는 앱의 최상위 DOM ID
 export default function GalleryContents() {
+  const { slug } = useGalleryContext();
   const {
     data: images,
     isLoading,
     isError,
     error,
     refetch,
-  } = useGalleryImages();
+  } = useGalleryImages(slug);
   const isMobile = useMediaQuery({ maxWidth: 767 }); //모바일 조건 적용
   const [selectedImage, setSelectedImage] = useState<MediaType | null>(null);
 

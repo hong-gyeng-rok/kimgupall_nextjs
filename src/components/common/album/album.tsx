@@ -13,11 +13,35 @@ import newyear from "../../../../public/sampleImages/2025years.jpg";
 import instaQR from "../../../../public/sampleImages/instagramLink.png";
 
 const cards = [
-  { id: 1, url: yacha, title: "야차 시리즈", alt: "YACHA" },
-  { id: 2, url: runner, title: "빈칸 전시회", alt: "RUNNER" },
-  { id: 3, url: wave, title: "2025 서울 일러스트 페어", alt: "ON THE WAVE" },
-  { id: 4, url: baseball, title: "2024 서울 일러스트 페어", alt: "BASEBALL" },
-  { id: 5, url: newyear, title: "모든 작품", alt: "2025 NEW YEAR" },
+  {
+    id: 1,
+    url: yacha,
+    title: "야차 시리즈",
+    alt: "YACHA",
+    slug: "gallery-yacha",
+  },
+  {
+    id: 2,
+    url: runner,
+    title: "빈칸 전시회",
+    alt: "RUNNER",
+    slug: "gallery-binkan",
+  },
+  {
+    id: 3,
+    url: wave,
+    title: "2025 서울 일러스트 페어",
+    alt: "ON THE WAVE",
+    slug: "gallery-seoul",
+  },
+  {
+    id: 4,
+    url: baseball,
+    title: "2024 서울 일러스트 페어",
+    alt: "BASEBALL",
+    slug: "gallery-binkan",
+  },
+  { id: 5, url: newyear, title: "모든 작품", alt: "2025 NEW YEAR", slug: "all" },
   { id: 6, url: instaQR, title: "INSTAGRAM", alt: "INSTAGRAM QR" },
 ];
 
@@ -78,7 +102,6 @@ function Card({
           fill
           className="object-contain"
           sizes="(max-width: 345px) 100vw, 33vw"
-          priority={index < 2} // 상위 이미지는 우선 로딩
           placeholder="blur" // 로컬 이미지 블러 처리
         />
 
@@ -132,10 +155,15 @@ function Card({
     </motion.div>
   );
 
+  const href =
+    !card.slug || card.slug === "all"
+      ? "/gallery"
+      : `/gallery?collection=${card.slug}`;
+
   return isInstagram ? (
     cardContent
   ) : (
-    <InternalLink href="/gallery" className="w-full h-full block">
+    <InternalLink href={href} className="w-full h-full block">
       {cardContent}
     </InternalLink>
   );

@@ -13,7 +13,7 @@ export default function ScrollyTellingSequence() {
 
   const { data: images } = useCollectionImages("drawing-course-yacha_sketch")
   const { data: movies } = useCollectionImages("drawing-course-yacha_mv")
-  const allMedias = [...(images ?? [])].reverse().concat(movies ?? []);
+  const allMedias = [...(images ?? [])].concat(movies ?? []);
 
 
   const containerRef = useRef<HTMLDivElement>(null);

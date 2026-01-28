@@ -8,8 +8,24 @@ export type MediaType = Prisma.MediaGetPayload<{
 }>;
 
 // API 호출 함수
-const fetchImages = async (): Promise<MediaType[]> => {
-  const response = await fetch("/api/images");
+const fetchImages = async ({
+  location,
+  slug,
+}: {
+  location?: string;
+  slug?: string;
+}): Promise<MediaType[]> => {
+  const params = new URLSearchParams();
+  if (location) {
+    params.set("location", location);
+  }
+  if (slug) {
+    params.set("collection", slug);
+  }
+  const queryString = params.toString();
+  const url = queryString ? `/api/images?${queryString}` : "/api/images";
+
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error("이미지를 불러오는데 실패했습니다.");
@@ -18,31 +34,28 @@ const fetchImages = async (): Promise<MediaType[]> => {
   return response.json();
 };
 
-export const useImages = <T = MediaType[]>(
-  select?: (data: MediaType[]) => T,
-) => {
-  return useQuery<MediaType[], Error, T>({
-    queryKey: ["images"],
-    queryFn: fetchImages,
-    select,
-  });
-};
-
 // --- 편의용 훅 ---
 
 // 갤러리 이미지 (INTRO 제외)
-export const useGalleryImages = () => {
-  return useImages((data) => data.filter((img) => img.location === "GALLERY"));
+export const useGalleryImages = (slug?: string) => {
+  return useQuery<MediaType[], Error>({
+    queryKey: ["images", { location: "GALLERY", slug }],
+    queryFn: () => fetchImages({ location: "GALLERY", slug }),
+  });
 };
 
 // 인트로(배너) 이미지
 export const useIntroImages = () => {
-  return useImages((data) => data.filter((img) => img.location === "INTRO"));
+  return useQuery<MediaType[], Error>({
+    queryKey: ["images", { location: "INTRO" }],
+    queryFn: () => fetchImages({ location: "INTRO" }),
+  });
 };
 
 // 특정 컬렉션 이미지 (slug 기준)
 export const useCollectionImages = (slug: string) => {
-  return useImages((data) =>
-    data.filter((img) => img.collection?.slug === slug),
-  );
+  return useQuery<MediaType[], Error>({
+    queryKey: ["images", { slug }],
+    queryFn: () => fetchImages({ slug }),
+  });
 };

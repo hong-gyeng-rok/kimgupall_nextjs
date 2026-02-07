@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { Prisma } from "@prisma/client";
 
-// Prisma가 생성한 타입을 사용하여 DB 스키마와 100% 일치시킴
-// include: { collection: true } 옵션을 사용했으므로, 그에 맞는 타입을 가져옵니다.
 export type MediaType = Prisma.MediaGetPayload<{
   include: { collection: true };
 }>;
 
 // API 호출 함수
 const fetchImages = async ({
-  location,
-  slug,
+  location, //GCP Cloud Storage 내 이미지 경로
+  slug, //이미지 분류(collection)
 }: {
   location?: string;
   slug?: string;
@@ -38,9 +36,13 @@ const fetchImages = async ({
 
 // 갤러리 이미지 (INTRO 제외)
 export const useGalleryImages = (slug?: string) => {
+  // slug가 있으면 slug만, 없으면 location: "GALLERY"를 파라미터로 사용
+  const queryParams = slug ? { slug } : { location: "GALLERY" };
+
   return useQuery<MediaType[], Error>({
-    queryKey: ["images", { location: "GALLERY", slug }],
-    queryFn: () => fetchImages({ location: "GALLERY", slug }),
+    // queryKey도 동적 파라미터에 맞춰서 설정
+    queryKey: ["images", queryParams],
+    queryFn: () => fetchImages(queryParams),
   });
 };
 

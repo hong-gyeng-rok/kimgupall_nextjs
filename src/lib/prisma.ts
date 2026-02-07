@@ -8,7 +8,7 @@ const createPrismaClient = () => {
   const connectionString = process.env.POSTGRES_URL;
   const pool = new Pool({ connectionString });
   const adapter = new PrismaPg(pool);
-  
+
   return new PrismaClient({
     adapter,
     log: ["query", "error", "warn"], // 로그에 에러와 경고도 추가

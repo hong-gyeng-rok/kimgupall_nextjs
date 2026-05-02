@@ -4,40 +4,94 @@ import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import InternalLink from "../internalLink";
 import FallbackImage from "../fallbackImage";
+import { MediaType, useImages } from "@/hooks/useImages";
 
-import runner from "../../../../public/sampleImages/runner.jpg";
-import yacha from "../../../../public/sampleImages/yacha.jpg";
-import wave from "../../../../public/sampleImages/ON_THE_WAVE 1.jpg";
-import baseball from "../../../../public/sampleImages/baseball.jpg";
-import newyear from "../../../../public/sampleImages/2025years.jpg";
-import instaQR from "../../../../public/sampleImages/instagramLink.png";
 
-const cards = [
-  { id: 1, url: yacha, title: "야차 시리즈", alt: "YACHA", slug: "yacha" },
-  { id: 2, url: runner, title: "빈칸 전시회", alt: "RUNNER", slug: "binkan" },
-  {
-    id: 3,
-    url: wave,
-    title: "2025 서울 일러스트 페어",
-    alt: "ON THE WAVE",
-    slug: "seoul",
-  },
-  {
-    id: 4,
-    url: baseball,
-    title: "2024 서울 일러스트 페어",
-    alt: "BASEBALL",
-    slug: "conceptArt",
-  },
-  { id: 5, url: newyear, title: "모든 작품", alt: "2025 NEW YEAR", slug: null },
-  {
-    id: 6,
-    url: instaQR,
-    title: "INSTAGRAM",
-    alt: "INSTAGRAM QR",
-    slug: "instagram",
-  },
-];
+const STORAGE_BASE_URL = (
+  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
+).replace(/\/$/, "");
+
+type AlbumCard = {
+  id: string;
+  url: string;
+  title: string;
+  alt: string;
+  slug: string | null;
+  isExternal?: boolean;
+};
+
+type OrderedAlbumCard = AlbumCard & { order: number };
+
+const albumCardMeta: Record<string, { title: string; order: number }> = {
+  "gallery-yacha": { title: "야차 시리즈", order: 1 },
+  "gallery-binkan": { title: "빈칸 전시회", order: 2 },
+  "gallery-seoul": { title: "서울 일러스트 페어", order: 3 },
+  "gallery-conceptart": { title: "컨샙아트", order: 4 },
+  "gallery-slug": { title: "모든 작품", order: 5 }
+};
+
+const getPublicImageUrl = (path?: string | null) => {
+  if (!path) return null;
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return `${STORAGE_BASE_URL}${path}`;
+};
+
+const toGalleryQuerySlug = (collectionSlug: string) =>
+  collectionSlug.replace(/^gallery-/, "");
+
+const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
+  const collections = new Map<
+    string,
+    NonNullable<MediaType["collection"]>
+  >();
+
+  medias.forEach((media) => {
+    if (media.location === "GALLERY" && media.collection) {
+      collections.set(media.collection.slug, media.collection);
+    }
+  });
+
+  const collectionCards = [...collections.values()]
+    .reduce<OrderedAlbumCard[]>((cards, collection) => {
+      const meta = albumCardMeta[collection.slug];
+      const thumbnailUrl = getPublicImageUrl(collection.thumbnailUrl);
+
+      if (!thumbnailUrl || !meta) return cards;
+
+      cards.push({
+        id: collection.id,
+        url: thumbnailUrl,
+        title: meta.title,
+        alt: collection.title,
+        slug: toGalleryQuerySlug(collection.slug),
+        order: meta.order,
+      });
+
+      return cards;
+    }, [])
+    .sort((a, b) => a.order - b.order);
+
+
+  const instagramImage = medias.find(
+    (media) => media.location === "ALBUM" && media.type === "IMAGE",
+  );
+  const instagramCard: AlbumCard | null = instagramImage
+    ? {
+      id: instagramImage.id,
+      url: getPublicImageUrl(instagramImage.publicUrl) ?? "",
+      title: "INSTAGRAM",
+      alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
+      slug: null,
+      isExternal: true,
+    }
+    : null;
+
+  return [...collectionCards, instagramCard].filter(
+    (card): card is AlbumCard => Boolean(card?.url),
+  );
+};
+
+const albumSkeletonCards = Array.from({ length: 6 }, (_, index) => index);
 
 function Card({
   card,
@@ -46,14 +100,14 @@ function Card({
   scrollYProgress,
   isMobile,
 }: {
-  card: (typeof cards)[0];
+  card: AlbumCard;
   index: number;
   total: number;
   scrollYProgress: MotionValue<number>;
   isMobile: boolean;
 }) {
-  const isInstagram = card.alt === "INSTAGRAM QR";
-  const position = index / (total - 1);
+  const isInstagram = card.isExternal;
+  const position = total > 1 ? index / (total - 1) : 0;
   const range = 1 / total;
   const inputRange = [position - range, position, position + range];
 
@@ -97,7 +151,7 @@ function Card({
           className="object-contain"
           sizes="(max-width: 345px) 100vw, 33vw"
           priority={index < 2} // 상위 이미지는 우선 로딩
-          placeholder="blur" // 로컬 이미지 블러 처리
+          placeholder="empty"
         />
 
         {/* 데스크탑 호버 오버레이 (이미지 어둡게 + 흰색 글자 + CTA 버튼) */}
@@ -165,6 +219,7 @@ function Card({
 export default function Album() {
   const targetRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const { data: cards = [], isLoading } = useImages(buildAlbumCards);
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -209,22 +264,38 @@ export default function Album() {
             ${isMobile ? "flex-col w-full " : "flex-row gap-40 items-center"}
           `}
         >
-          {cards.map((card, index) => (
-            <div
-              key={card.id}
-              className={`
+          {isLoading
+            ? albumSkeletonCards.map((index) => (
+              <div
+                key={index}
+                className={`
+                    ${isMobile ? "h-[70vh] w-full flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
+                  `}
+              >
+                <div
+                  className="
+                      h-full w-full animate-pulse bg-white/20 backdrop-blur-xl border border-white/30
+                      md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6
+                    "
+                />
+              </div>
+            ))
+            : cards.map((card, index) => (
+              <div
+                key={card.id}
+                className={`
                           ${isMobile ? "h-[70vh] w-full flex items-center justify-center p-4 border-b border-gray-100 last:border-0" : ""}
                         `}
-            >
-              <Card
-                card={card}
-                index={index}
-                total={cards.length}
-                scrollYProgress={scrollYProgress}
-                isMobile={isMobile}
-              />
-            </div>
-          ))}
+              >
+                <Card
+                  card={card}
+                  index={index}
+                  total={cards.length}
+                  scrollYProgress={scrollYProgress}
+                  isMobile={isMobile}
+                />
+              </div>
+            ))}
         </motion.div>
       </div>
     </article>

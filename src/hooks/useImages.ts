@@ -39,7 +39,9 @@ export const useGalleryImages = (collectionSlug?: string | null) => {
     // 2. 컬렉션 슬러그가 있다면 추가 필터링
     if (collectionSlug) {
       return galleryImages.filter(
-        (img) => img.collection?.slug === collectionSlug,
+        (img) =>
+          img.collection?.slug === collectionSlug ||
+          img.collection?.slug === `gallery-${collectionSlug}`,
       );
     }
 

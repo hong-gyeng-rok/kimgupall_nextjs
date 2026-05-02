@@ -21,6 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kimgupall-nextjs.vercel.app"),
   title: "kimgupall | 일러스트 작가 포트폴리오",
   description:
     "일러스트 작가 kimgupall의 다양한 작품과 프로젝트를 소개하는 포트폴리오 사이트입니다.",

@@ -9,13 +9,10 @@
     "lint": "eslint",
     "postinstall": "prisma generate"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
-  },
   "dependencies": {
-    "@google-cloud/storage": "^7.18.0",
+    "@google-cloud/storage": "^5.20.4",
     "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
+    "@prisma/client": "^7.8.0",
     "@tanstack/query-sync-storage-persister": "^5.90.14",
     "@tanstack/react-query": "^5.90.12",
     "@tanstack/react-query-devtools": "^5.91.1",
@@ -46,8 +43,9 @@
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.0",
     "image-size": "^2.0.2",
-    "prisma": "^7.2.0",
+    "prisma": "^7.8.0",
     "tailwindcss": "^4",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vercel": "^50.41.0"
   }
 }

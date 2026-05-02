@@ -5,25 +5,30 @@ import Masonry from "react-masonry-css"; // react-masonry-css에서 임포트
 import Modal from "react-modal";
 import { useMediaQuery } from "react-responsive"; // 모바일. PC 판독 플러그인
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 import { useGalleryImages, MediaType } from "../../../hooks/useImages";
-import { useGalleryContext } from "@/contexts/GalleryContext";
-import FallbackImage from "../fallbackImage"; // Missing import
+import FallbackImage from "../fallbackImage";
 import GallerySkeleton from "./gallerySkeleton";
 
 const STORAGE_BASE_URL = (
   process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
 ).replace(/\/$/, "");
 
+const getImageUrl = (path: string) => `${STORAGE_BASE_URL}${path}`;
+
 //Modal.setAppElement("#root"); // 또는 앱의 최상위 DOM ID
 export default function GalleryContents() {
-  const { slug } = useGalleryContext();
+  const searchParams = useSearchParams();
+  const collectionSlug = searchParams.get("collection"); // URL에서 ?collection=... 값 읽기
+
   const {
     data: images,
     isLoading,
     isError,
     error,
     refetch,
-  } = useGalleryImages(slug);
+  } = useGalleryImages(collectionSlug);
+
   const isMobile = useMediaQuery({ maxWidth: 767 }); //모바일 조건 적용
   const [selectedImage, setSelectedImage] = useState<MediaType | null>(null);
 
@@ -82,22 +87,22 @@ export default function GalleryContents() {
               <motion.button
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
+                transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.03 }}
                 key={image.id}
                 className="rounded-lg shadow-lg mb-4 transition-all duration-300 hover:scale-105 hover:z-50 hover:shadow-2xl relative block w-full group"
                 onClick={() => setSelectedImage(image)}
                 aria-label={`${image.title || "작품"} 크게 보기`}
               >
                 <FallbackImage
-                  src={`${STORAGE_BASE_URL}${image.publicUrl}`}
-                  alt={image.title || "작품 이미지"}
-                  // DB에 저장된 치수 사용 (없을 경우 기본값)
-                  width={300}
-                  height={400}
-                  // 초기 8장만 우선 로딩(LCP 최적화), 나머지는 Lazy Loading
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  src={getImageUrl(image.publicUrl)}
+                  alt={image.altText || image.title || "작품 이미지"}
+                  width={image.width ?? 300}
+                  height={image.height ?? 400}
+                  sizes="(max-width: 800px) calc(100vw - 48px), (max-width: 1024px) calc((100vw - 64px) / 2), (max-width: 1280px) calc((100vw - 80px) / 3), calc((100vw - 96px) / 4)"
+                  quality={45}
                   placeholder="empty"
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-auto object-cover rounded-lg bg-gray-100"
                 />
                 {/* 호버 시 살짝 어두워지는 효과 */}
@@ -164,7 +169,7 @@ function ModalContent({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative max-w-[90vw] max-h-[80vh] min-w-[300px] min-h-[400px] flex items-center justify-center"
+        className="relative max-w-[90vw] max-h-[80vh] min-w-75 min-h-0 flex items-center justify-center"
       >
         {/* 로딩 스피너 */}
         {isImageLoading && (
@@ -173,13 +178,15 @@ function ModalContent({
           </div>
         )}
 
-        <FallbackImage
-          src={`${STORAGE_BASE_URL}${selectedImage.publicUrl}`}
-          alt={selectedImage.title || "작품 이미지"}
-          width={1200}
-          height={1000}
-          priority={true}
+        {/* eslint-disable-next-line @next/next/no-img-element -- Expanded view must use the original high-resolution file. */}
+        <img
+          src={getImageUrl(selectedImage.publicUrl)}
+          alt={selectedImage.altText || selectedImage.title || "작품 이미지"}
+          width={selectedImage.width ?? undefined}
+          height={selectedImage.height ?? undefined}
+          decoding="async"
           onLoad={() => setIsImageLoading(false)}
+          onError={() => setIsImageLoading(false)}
           className={`w-auto h-auto max-h-[80vh] object-contain shadow-2xl rounded-lg transition-opacity duration-300 ${
             isImageLoading ? "opacity-0" : "opacity-100"
           }`}

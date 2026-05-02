@@ -21,19 +21,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NODE_ENV === 'production'
-      ? 'https://kimgupall98.com' // 실제 배포될 도메인
-      : 'http://localhost:3000'
-  ),
-  alternates: {
-    canonical: '/',
-    languages: {
-      'en-US': '/en-US',
-      'ko-KR': '/ko-KR'
-    },
-  },
-  title: "kimgupall98",
+  metadataBase: new URL("https://kimgupall-nextjs.vercel.app"),
+  title: "kimgupall | 일러스트 작가 포트폴리오",
   description:
     "일러스트 작가 kimgupall의 다양한 작품과 프로젝트를 소개하는 포트폴리오 사이트입니다.",
   keywords: ["일러스트", "작가", "포트폴리오", "kimgupall", "그림", "갤러리"],
@@ -42,7 +31,7 @@ export const metadata: Metadata = {
     title: "kimgupall | 일러스트 작가 포트폴리오",
     description:
       "일러스트 작가 kimgupall의 다양한 작품과 프로젝트를 소개하는 포트폴리오 사이트입니다.",
-    url: "https://kimgupall98.com",
+    url: "https://kimgupall-nextjs.vercel.app/",
     siteName: "kimgupall",
     locale: "ko_KR",
     type: "website",

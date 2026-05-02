@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// 1시간(3600초) 동안 캐시를 유지합니다. (ISR)
-// 이후 요청이 들어오면 백그라운드에서 DB를 다시 조회하여 캐시를 갱신합니다.
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
@@ -29,4 +27,3 @@ export async function GET() {
     );
   }
 }
-

@@ -2,8 +2,8 @@
 
 import { useScroll } from "framer-motion";
 import { useRef } from "react";
-import IntroTitle from "../common/intro/introTitle";
-import IntroContext from "../common/intro/introContext";
+import IntroVideo from "../common/intro/IntroVideo";
+import IntroDescription from "../common/intro/IntroDescription";
 
 export default function IntroLayout() {
   const targetRef = useRef<HTMLElement>(null);
@@ -22,11 +22,11 @@ export default function IntroLayout() {
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden pt-10 gap-[5vh]">
         {/* 비디오 영역: 화면 높이의 최대 45%까지만 차지하도록 제한 */}
         <div className="flex-none w-full flex justify-center max-h-[40vh] md:max-h-[50vh] px-4">
-          <IntroTitle />
+          <IntroVideo />
         </div>
 
         {/* 텍스트 영역: 남은 공간을 자연스럽게 채우거나 적절한 간격 유지 */}
-        <IntroContext scrollYProgress={scrollYProgress} />
+        <IntroDescription scrollYProgress={scrollYProgress} />
       </div>
     </article>
   );

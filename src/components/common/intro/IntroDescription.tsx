@@ -2,11 +2,13 @@
 
 import { useTransform, motion, MotionValue } from "framer-motion";
 
-interface IntroContextProps {
+interface IntroDescriptionProps {
   scrollYProgress: MotionValue<number>;
 }
 
-export default function IntroContext({ scrollYProgress }: IntroContextProps) {
+export default function IntroDescription({
+  scrollYProgress,
+}: IntroDescriptionProps) {
   // 각 문단의 투명도 조절
   const opacity1 = useTransform(scrollYProgress, [0.1, 0.25], [0, 1]);
   const opacity2 = useTransform(scrollYProgress, [0.3, 0.45], [0, 1]);
@@ -21,7 +23,7 @@ export default function IntroContext({ scrollYProgress }: IntroContextProps) {
 
   return (
     <figcaption
-      data-testid="IntroContext"
+      data-testid="IntroDescription"
       className="font-bold h-fit w-[90%] md:w-[65%] xl:w-[75%] max-w-6xl mx-auto text-black text-base sm:text-lg md:text-lg lg:text-xl gap-[2vh] md:gap-[2vh] flex flex-col font-chosunGoosu relative"
     >
       <motion.p style={{ opacity: opacity1, y: y1 }}>

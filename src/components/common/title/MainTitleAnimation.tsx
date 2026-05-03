@@ -4,7 +4,7 @@ import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 import Typewriter from "@/components/common/Typewriter";
 
-export default function TitleAnime() {
+export default function MainTitleAnimation() {
   const creditsData = [
     { role: "Project Management", name: "HONG GYEONG ROK" },
     { role: "Content & Editing", name: "KIM CHAN SEOK" },
@@ -36,7 +36,7 @@ export default function TitleAnime() {
   return (
     // 높이를 넉넉히 주어 스크롤 공간 확보
     <article
-      id="TitleAnime"
+      id="MainTitleAnimation"
       ref={targetRef}
       className="h-[200vh] relative w-screen font-sans"
     >

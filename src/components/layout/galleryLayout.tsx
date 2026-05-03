@@ -1,11 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import GalleryContents from "../common/gallery/galleryContents";
-import GalleryNavBtn from "../common/gallery/galleryNavBtn";
 import GoToHomeBtn from "../common/goToHomeBtn";
-import SeasonDropdown from "../common/gallery/seasonDropdown";
-import { ImageItems } from "../../types/imageData";
 import { IsShow } from "../../types/common";
 
 //isShow를 통해 home 페이지에선 불필요한 navigation 컴포넌트 랜더링 안하도록 설정 (초기값은 보여지도록 * gallery 페이지 진입시 navigation이 보여지도록하기 위함)

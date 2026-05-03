@@ -8,7 +8,7 @@ const STORAGE_BASE_URL = (
 const DEFAULT_WIDTH = 1300;
 const DEFAULT_HEIGHT = 500;
 
-export default function IntroTitle() {
+export default function IntroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const { data: medias, isLoading, isError, error } = useIntroImages();

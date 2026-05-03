@@ -1,28 +1,32 @@
 "use client";
 
-import { useScroll, useTransform, motion } from "framer-motion";
-import { useRef, useState, useTransition } from "react";
+import {
+  useMotionValueEvent,
+  useScroll,
+  useTransform,
+  motion,
+} from "framer-motion";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { useCollectionImages } from "@/hooks/useImages";
+import { useImages } from "@/hooks/useImages";
 
 const STORAGE_BASE_URL = (
   process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
 ).replace(/\/$/, "");
 
-export default function ScrollyTellingSequence() {
-  const {
-    data: medias,
-    isLoading,
-    isError,
-    error,
-  } = useCollectionImages("drawing-course-yacha_sketch");
-
-  //동영상 URL (로컬 public 폴더 경로 사용)
-  const yachatMvSrc = "/sampleImages/yacha_sketch/yachaMv.mp4";
+export default function DrawingProcessSequence() {
+  const { data: medias } = useImages((data) =>
+    data.filter(
+      (media) =>
+        media.collection?.slug === "drawing-course-yacha_sketch" ||
+        media.collection?.slug === "drawing-course-yacha_mv",
+    ),
+  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -56,6 +60,17 @@ export default function ScrollyTellingSequence() {
   );
 
   const opacities = [opacityA, opacityB, opacityC, opacityD];
+  const sketchMedias = medias?.filter((media) => media.type === "IMAGE") ?? [];
+  const yachaMvMedia = medias?.find((media) => media.type === "VIDEO");
+  const yachaMvSrc = yachaMvMedia?.publicUrl
+    ? `${STORAGE_BASE_URL}${yachaMvMedia.publicUrl}`
+    : undefined;
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest >= 0.85) {
+      setShouldLoadVideo(true);
+    }
+  });
 
   return (
     <div ref={containerRef} className="h-[300vh] relative w-full">
@@ -64,26 +79,24 @@ export default function ScrollyTellingSequence() {
         className="sticky top-0 h-screen w-full  overflow-hidden"
       >
         <div className="flex w-full h-full max-h-[80vh] justify-center items-center px-10 ">
-          {[...(medias ?? [])].reverse().map((media, index) =>
-            media.type === "IMAGE" ? (
-              <motion.span
-                key={media.id}
-                style={{ opacity: opacities[index] }}
-                className="absolute sm:flex sm:flex-col items-center"
-              >
-                <Image
-                  src={`${STORAGE_BASE_URL}${media.publicUrl}`}
-                  alt={media.description ?? "sketch Image"}
-                  width={300}
-                  height={400}
-                  className="w-full max-w-xl px-4 md:px-0 h-[60vh] object-contain"
-                />
-                <p className="font-sans font-bold text-3xl mt-4 text-center">
-                  STEP {index + 1}
-                </p>
-              </motion.span>
-            ) : null,
-          )}
+          {[...sketchMedias].reverse().map((media, index) => (
+            <motion.span
+              key={media.id}
+              style={{ opacity: opacities[index] }}
+              className="absolute sm:flex sm:flex-col items-center"
+            >
+              <Image
+                src={`${STORAGE_BASE_URL}${media.publicUrl}`}
+                alt={media.description ?? "sketch Image"}
+                width={300}
+                height={400}
+                className="w-full max-w-xl px-4 md:px-0 h-[60vh] object-contain"
+              />
+              <p className="font-sans font-bold text-3xl mt-4 text-center">
+                STEP {index + 1}
+              </p>
+            </motion.span>
+          ))}
 
           <motion.div
             style={{ opacity: opacityMovie }}
@@ -91,16 +104,19 @@ export default function ScrollyTellingSequence() {
           >
             <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                <video
-                  ref={videoRef}
-                  src={yachatMvSrc}
-                  className="w-full h-auto"
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
-                  onTimeUpdate={handleTimeUpdate}
-                />
+                {shouldLoadVideo && yachaMvSrc && (
+                  <video
+                    ref={videoRef}
+                    src={yachaMvSrc}
+                    className="w-full h-auto"
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    preload="none"
+                    onTimeUpdate={handleTimeUpdate}
+                  />
+                )}
               </div>
 
               {/* 프로그레스 바 */}

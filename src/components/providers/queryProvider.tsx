@@ -3,7 +3,8 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import type { Persister } from "@tanstack/query-persist-client-core";
+import { useState } from "react";
 
 export default function QueryProvider({
   children,
@@ -22,19 +23,20 @@ export default function QueryProvider({
       }),
   );
 
-  const [persister, setPersister] = useState<any>(null);
+  const [persister] = useState<Persister | null>(() => {
+    if (typeof window === "undefined") {
+      return null;
+    }
 
-  useEffect(() => {
-    // 클라이언트 마운트 시점에만 persister 생성
-    const p = createSyncStoragePersister({
+    return createSyncStoragePersister({
       storage: window.sessionStorage,
     });
-    setPersister(p);
-  }, []);
+  });
 
-  // persister가 준비되기 전에는 렌더링을 하지 않음 (API 중복 호출 방지)
   if (!persister) {
-    return null;
+    return (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
   }
 
   return (

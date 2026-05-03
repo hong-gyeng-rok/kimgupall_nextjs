@@ -20,6 +20,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const STORAGE_BASE_URL = (
+  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
+).replace(/\/$/, "");
+const previewImageUrl = `${STORAGE_BASE_URL}/gallery/yacha/9990.yacha_force.jpg`;
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://kimgupall-nextjs.vercel.app"),
   title: "kimgupall | 일러스트 작가 포트폴리오",
@@ -37,7 +42,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/sampleImages/yacha.jpg", // 공유 시 보여질 대표 이미지 (public 폴더 기준)
+        url: previewImageUrl,
         width: 1200,
         height: 630,
         alt: "kimgupall 작품 미리보기",
@@ -49,7 +54,7 @@ export const metadata: Metadata = {
     title: "kimgupall | 일러스트 작가 포트폴리오",
     description:
       "일러스트 작가 kimgupall의 다양한 작품과 프로젝트를 소개하는 포트폴리오 사이트입니다.",
-    images: ["/sampleImages/yacha.jpg"],
+    images: [previewImageUrl],
   },
 };
 

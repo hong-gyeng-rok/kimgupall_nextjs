@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import GoToHomeBtn from "@/components/common/goToHomeBtn";
 import DrawingCourseView from "@/components/views/drawingCourseView";
-import MainBg from "@/components/layout/mainBg";
 
 export default function DrawingCoursePage() {
   return (

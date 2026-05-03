@@ -1,9 +1,12 @@
+import { Suspense } from "react";
 import GalleryView from "@/components/views/gallery";
 
 export default function GalleryPage() {
   return (
-    <main date-testid="GalleryPage">
-      <GalleryView isShow={true} />
+    <main data-testid="GalleryPage">
+      <Suspense fallback={null}>
+        <GalleryView isShow={true} />
+      </Suspense>
     </main>
   );
 }

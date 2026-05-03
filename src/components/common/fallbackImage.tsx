@@ -7,10 +7,14 @@ interface FallbackImageProps extends ImageProps {
   fallbackSrc?: string;
 }
 
+const STORAGE_BASE_URL = (
+  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
+).replace(/\/$/, "");
+
 export default function FallbackImage({
   src,
   alt,
-  fallbackSrc = "/sampleImages/yacha.jpg", // 기본 대체 이미지 (public 폴더 내 존재하는 이미지로 설정)
+  fallbackSrc = `${STORAGE_BASE_URL}/gallery/yacha/9990.yacha_force.jpg`,
   ...props
 }: FallbackImageProps) {
   const [imgSrc, setImgSrc] = useState(src);

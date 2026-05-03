@@ -6,20 +6,49 @@ import Image from "next/image";
 
 import MainBg from "@/components/layout/mainBg";
 
-import runner from "../../../../public/sampleImages/runner.jpg";
-import yacha from "../../../../public/sampleImages/yacha.jpg";
-import wave from "../../../../public/sampleImages/ON_THE_WAVE 1.jpg";
-import baseball from "../../../../public/sampleImages/baseball.jpg";
-import newyear from "../../../../public/sampleImages/2025years.jpg";
-import instaQR from "../../../../public/sampleImages/instagramLink.png";
+const STORAGE_BASE_URL = (
+  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
+).replace(/\/$/, "");
+
+const storageUrl = (path: string) => `${STORAGE_BASE_URL}${path}`;
 
 const cards = [
-  { id: 1, url: yacha, title: "야차 시리즈", alt: "YACHA" },
-  { id: 2, url: runner, title: "빈칸 전시회", alt: "RUNNER" },
-  { id: 3, url: wave, title: "2025 서울 일러스트 페어", alt: "ON THE WAVE" },
-  { id: 4, url: baseball, title: "2024 서울 일러스트 페어", alt: "BASEBALL" },
-  { id: 5, url: newyear, title: "모든 작품", alt: "2025 NEW YEAR" },
-  { id: 6, url: instaQR, title: "INSTAGRAM", alt: "INSTAGRAM QR" },
+  {
+    id: 1,
+    url: storageUrl("/gallery/yacha/9990.yacha_force.jpg"),
+    title: "야차 시리즈",
+    alt: "YACHA",
+  },
+  {
+    id: 2,
+    url: storageUrl("/gallery/binkan/0670.RUNNER_03.jpg"),
+    title: "빈칸 전시회",
+    alt: "RUNNER",
+  },
+  {
+    id: 3,
+    url: storageUrl("/gallery/seoul/0640.ON_THE_WAVE_1.jpg"),
+    title: "2025 서울 일러스트 페어",
+    alt: "ON THE WAVE",
+  },
+  {
+    id: 4,
+    url: storageUrl("/gallery/binkan/0700.BASEBALL_01.jpg"),
+    title: "2024 서울 일러스트 페어",
+    alt: "BASEBALL",
+  },
+  {
+    id: 5,
+    url: storageUrl("/gallery/slug/0650.2025신년 특전.jpg"),
+    title: "모든 작품",
+    alt: "2025 NEW YEAR",
+  },
+  {
+    id: 6,
+    url: storageUrl("/album/instagramLink.png"),
+    title: "INSTAGRAM",
+    alt: "INSTAGRAM QR",
+  },
 ];
 
 // 개별 카드 컴포넌트
@@ -117,4 +146,3 @@ export default function AlbumTestPage() {
     </MainBg>
   );
 }
-

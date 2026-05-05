@@ -1,26 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import Masonry from "react-masonry-css"; // react-masonry-css에서 임포트
-import Modal from "react-modal";
-import { useMediaQuery } from "react-responsive"; // 모바일. PC 판독 플러그인
-import { motion, AnimatePresence } from "framer-motion";
-import { useSearchParams } from "next/navigation";
-import { useGalleryImages, MediaType } from "../../../hooks/useImages";
-import FallbackImage from "../fallbackImage";
-import GallerySkeleton from "./gallerySkeleton";
+import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useGalleryImages, MediaType } from "@/hooks/useImages";
+import GalleryImageModal from "@/components/common/gallery/GalleryImageModal";
+import GalleryMasonry from "@/components/common/gallery/GalleryMasonry";
+import GallerySkeleton from "@/components/common/gallery/gallerySkeleton";
+import { galleryBreakpointColumns } from "@/components/common/gallery/galleryUtils";
 
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
+interface GalleryContentsProps {
+  collectionSlug?: string;
+}
 
-const getImageUrl = (path: string) => `${STORAGE_BASE_URL}${path}`;
-
-//Modal.setAppElement("#root"); // 또는 앱의 최상위 DOM ID
-export default function GalleryContents() {
-  const searchParams = useSearchParams();
-  const collectionSlug = searchParams.get("collection"); // URL에서 ?collection=... 값 읽기
-
+export default function GalleryContents({
+  collectionSlug,
+}: GalleryContentsProps) {
   const {
     data: images,
     isLoading,
@@ -28,25 +22,13 @@ export default function GalleryContents() {
     error,
     refetch,
   } = useGalleryImages(collectionSlug);
-
-  const isMobile = useMediaQuery({ maxWidth: 767 }); //모바일 조건 적용
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [selectedImage, setSelectedImage] = useState<MediaType | null>(null);
 
-  // 반응형 컬럼 개수 설정
-  const breakpointColumnsObj = {
-    default: 4, // 기본값 (가장 큰 화면)
-    1280: 3, // 1280px 이하
-    1024: 2, // 1024px 이하
-    800: 1, // 768px 이하
-    640: 1, // 640px 이하
-  };
-
-  // 로딩 스켈레톤 UI
   if (isLoading) {
-    return <GallerySkeleton breakpointCols={breakpointColumnsObj} />;
+    return <GallerySkeleton breakpointCols={galleryBreakpointColumns} />;
   }
 
-  // 에러 UI
   if (isError) {
     return (
       <div className="min-h-[50vh] w-full flex flex-col items-center justify-center gap-6 p-8 bg-gray-50 rounded-xl">
@@ -76,131 +58,15 @@ export default function GalleryContents() {
       data-testid="GalleryContents"
       className="w-full h-full flex justify-center"
     >
-      <div className="w-full min-[350px]:max-h-[85vh] md:max-h-[90vh] overflow-y-auto p-6 no-scrollbar rounded-xl backdrop-blur-sm shadow-inner">
-        {images && images.length > 0 ? (
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="my-masonry-grid flex gap-4"
-            columnClassName="my-masonry-grid_column gap-4 bg-clip-padding"
-          >
-            {images.map((image, index) => (
-              <motion.button
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.03 }}
-                key={image.id}
-                className="rounded-lg shadow-lg mb-4 transition-all duration-300 hover:scale-105 hover:z-50 hover:shadow-2xl relative block w-full group"
-                onClick={() => setSelectedImage(image)}
-                aria-label={`${image.title || "작품"} 크게 보기`}
-              >
-                <FallbackImage
-                  src={getImageUrl(image.publicUrl)}
-                  alt={image.altText || image.title || "작품 이미지"}
-                  width={image.width ?? 300}
-                  height={image.height ?? 400}
-                  sizes="(max-width: 800px) calc(100vw - 48px), (max-width: 1024px) calc((100vw - 64px) / 2), (max-width: 1280px) calc((100vw - 80px) / 3), calc((100vw - 96px) / 4)"
-                  quality={45}
-                  placeholder="empty"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-auto object-cover rounded-lg bg-gray-100"
-                />
-                {/* 호버 시 살짝 어두워지는 효과 */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-lg" />
-              </motion.button>
-            ))}
-          </Masonry>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col items-center justify-center h-full min-h-[40vh] text-gray-400 gap-4"
-          >
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-16 h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center"
-            >
-              <div className="w-8 h-8 bg-gray-200 rounded-full" />
-            </motion.div>
-            <p className="font-mono text-lg tracking-widest text-gray-500">
-              NO ARTWORKS FOUND
-            </p>
-          </motion.div>
-        )}
-      </div>
-
-      {/* 모달 */}
-      <AnimatePresence>
-        {selectedImage && !isMobile && (
-          <Modal
-            ariaHideApp={false}
-            isOpen={selectedImage !== null}
-            onRequestClose={() => setSelectedImage(null)}
-            className="w-screen h-screen flex flex-col items-center justify-center focus:outline-none gap-8"
-            overlayClassName="fixed inset-0 bg-white/95 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in"
-          >
-            <ModalContent
-              selectedImage={selectedImage}
-              onClose={() => setSelectedImage(null)}
-            />
-          </Modal>
-        )}
-      </AnimatePresence>
+      <GalleryMasonry
+        images={images ?? []}
+        onSelectImage={setSelectedImage}
+      />
+      <GalleryImageModal
+        selectedImage={selectedImage}
+        isMobile={isMobile}
+        onClose={() => setSelectedImage(null)}
+      />
     </article>
-  );
-}
-
-// 모달 내부 컨텐츠 분리 (로딩 상태 관리 용이성)
-function ModalContent({
-  selectedImage,
-  onClose,
-}: {
-  selectedImage: MediaType;
-  onClose: () => void;
-}) {
-  const [isImageLoading, setIsImageLoading] = useState(true);
-
-  return (
-    <>
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative max-w-[90vw] max-h-[80vh] min-w-75 min-h-0 flex items-center justify-center"
-      >
-        {/* 로딩 스피너 */}
-        {isImageLoading && (
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <div className="w-12 h-12 border-4 border-gray-200 border-t-black rounded-full animate-spin" />
-          </div>
-        )}
-
-        {/* eslint-disable-next-line @next/next/no-img-element -- Expanded view must use the original high-resolution file. */}
-        <img
-          src={getImageUrl(selectedImage.publicUrl)}
-          alt={selectedImage.altText || selectedImage.title || "작품 이미지"}
-          width={selectedImage.width ?? undefined}
-          height={selectedImage.height ?? undefined}
-          decoding="async"
-          onLoad={() => setIsImageLoading(false)}
-          onError={() => setIsImageLoading(false)}
-          className={`w-auto h-auto max-h-[80vh] object-contain shadow-2xl rounded-lg transition-opacity duration-300 ${
-            isImageLoading ? "opacity-0" : "opacity-100"
-          }`}
-        />
-      </motion.div>
-      <motion.button
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="font-mono bg-white text-black border border-black px-10 py-3 rounded-full text-xl font-bold hover:bg-black hover:text-white transition-all duration-300 shadow-xl"
-        onClick={onClose}
-      >
-        CLOSE
-      </motion.button>
-    </>
   );
 }

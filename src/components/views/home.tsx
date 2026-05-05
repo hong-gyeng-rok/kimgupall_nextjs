@@ -4,31 +4,12 @@ import IntroView from "./introView";
 import DrawingCourseView from "./drawingCourseView";
 import MainBg from "../layout/mainBg";
 import TitleNav from "../common/title/titleNav";
-import LoadingOverlay from "../common/loadingOverlay";
-
-import { useEffect, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import HomeClientEffects from "./HomeClientEffects";
 
 export default function HomeView() {
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // 스크롤 스냅 및 위치 복구 로직
-  useEffect(() => {
-    const savedPos = sessionStorage.getItem("home_scroll_pos");
-    if (savedPos) {
-      setTimeout(() => {
-        window.scrollTo({
-          top: parseInt(savedPos),
-          behavior: "instant",
-        });
-        sessionStorage.removeItem("home_scroll_pos");
-      }, 100);
-    }
-  }, []);
-
   return (
-    <MainBg onLoadComplete={() => setIsLoaded(true)}>
-      <AnimatePresence>{!isLoaded && <LoadingOverlay />}</AnimatePresence>
+    <MainBg>
+      <HomeClientEffects />
       <TitleNav />
       <section
         data-testid="HomeView"

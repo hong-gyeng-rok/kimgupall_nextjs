@@ -1,5 +1,3 @@
-"use client";
-
 import Album from "../common/album/album";
 
 export default function AlbumLayout() {

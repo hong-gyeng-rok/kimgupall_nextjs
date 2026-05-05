@@ -5,11 +5,7 @@ import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import InternalLink from "../internalLink";
 import FallbackImage from "../fallbackImage";
 import { MediaType, useImages } from "@/hooks/useImages";
-
-
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 type AlbumCard = {
   id: string;
@@ -21,12 +17,6 @@ type AlbumCard = {
 };
 
 type OrderedAlbumCard = AlbumCard & { order: number };
-
-const getPublicImageUrl = (path?: string | null) => {
-  if (!path) return null;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  return `${STORAGE_BASE_URL}${path}`;
-};
 
 const toGalleryQuerySlug = (collectionSlug: string) =>
   collectionSlug.replace(/^gallery-/, "");
@@ -48,7 +38,7 @@ const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
 
   const collectionCards = [...collections.values()]
     .reduce<OrderedAlbumCard[]>((cards, collection) => {
-      const thumbnailUrl = getPublicImageUrl(collection.thumbnailUrl);
+      const thumbnailUrl = getPublicMediaUrl(collection.thumbnailUrl);
 
       if (!thumbnailUrl || collection.location !== "GALLERY") return cards;
 
@@ -72,7 +62,7 @@ const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
   const instagramCard: AlbumCard | null = instagramImage
     ? {
       id: instagramImage.id,
-      url: getPublicImageUrl(instagramImage.publicUrl) ?? "",
+      url: getPublicMediaUrl(instagramImage.publicUrl) ?? "",
       title: "INSTAGRAM",
       alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
       slug: null,

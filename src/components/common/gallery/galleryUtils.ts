@@ -1,13 +1,7 @@
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 export const getGalleryImageUrl = (path: string) => {
-  if (path.startsWith("http://") || path.startsWith("https://")) {
-    return path;
-  }
-
-  return `${STORAGE_BASE_URL}${path}`;
+  return getPublicMediaUrl(path) ?? "";
 };
 
 export const galleryBreakpointColumns = {

@@ -1,9 +1,6 @@
 import { useRef } from "react";
 import { useIntroImages } from "@/hooks/useImages";
-
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 const DEFAULT_WIDTH = 1300;
 const DEFAULT_HEIGHT = 500;
@@ -17,9 +14,7 @@ export default function IntroVideo() {
     ?.filter((media) => media.type === "VIDEO")
     .sort((a, b) => b.orderIndex - a.orderIndex)[0];
 
-  const introMvSrc = targetMedia?.publicUrl
-    ? `${STORAGE_BASE_URL}${targetMedia.publicUrl}`
-    : undefined;
+  const introVideoSrc = getPublicMediaUrl(targetMedia?.publicUrl);
 
   if (isLoading) {
     return (
@@ -36,10 +31,10 @@ export default function IntroVideo() {
 
   return (
     <div className="w-full h-full flex items-center justify-center px-4 md:px-0 max-w-7xl mx-auto ">
-      {introMvSrc && (
+      {introVideoSrc && (
         <video
           ref={videoRef}
-          src={introMvSrc}
+          src={introVideoSrc}
           className="w-full h-auto max-h-[80vh] object-contain rounded-lg shadow-xl md:max-w-5xl lg:max-w-6xl"
           width={targetMedia?.width ?? DEFAULT_WIDTH}
           height={targetMedia?.height ?? DEFAULT_HEIGHT}

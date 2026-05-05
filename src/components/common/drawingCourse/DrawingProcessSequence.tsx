@@ -9,17 +9,14 @@ import {
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { useImages } from "@/hooks/useImages";
-
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 export default function DrawingProcessSequence() {
   const { data: medias } = useImages((data) =>
     data.filter(
       (media) =>
-        media.collection?.slug === "drawing-course-yacha_sketch" ||
-        media.collection?.slug === "drawing-course-yacha_mv",
+        media.location === "DRAWING_COURSE" ||
+        media.collection?.location === "DRAWING_COURSE",
     ),
   );
 
@@ -60,11 +57,12 @@ export default function DrawingProcessSequence() {
   );
 
   const opacities = [opacityA, opacityB, opacityC, opacityD];
-  const sketchMedias = medias?.filter((media) => media.type === "IMAGE") ?? [];
+  const sketchMedias =
+    medias
+      ?.filter((media) => media.type === "IMAGE")
+      .sort((a, b) => a.orderIndex - b.orderIndex) ?? [];
   const yachaMvMedia = medias?.find((media) => media.type === "VIDEO");
-  const yachaMvSrc = yachaMvMedia?.publicUrl
-    ? `${STORAGE_BASE_URL}${yachaMvMedia.publicUrl}`
-    : undefined;
+  const drawingCourseVideoSrc = getPublicMediaUrl(yachaMvMedia?.publicUrl);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (latest >= 0.85) {
@@ -79,14 +77,14 @@ export default function DrawingProcessSequence() {
         className="sticky top-0 h-screen w-full  overflow-hidden"
       >
         <div className="flex w-full h-full max-h-[80vh] justify-center items-center px-10 ">
-          {[...sketchMedias].reverse().map((media, index) => (
+          {sketchMedias.map((media, index) => (
             <motion.span
               key={media.id}
               style={{ opacity: opacities[index] }}
               className="relative sm:flex sm:flex-col items-center"
             >
               <Image
-                src={`${STORAGE_BASE_URL}${media.publicUrl}`}
+                src={getPublicMediaUrl(media.publicUrl) ?? ""}
                 alt={media.description ?? "sketch Image"}
                 width={300}
                 height={400}
@@ -104,10 +102,10 @@ export default function DrawingProcessSequence() {
           >
             <div className="relative w-full max-w-xl mx-4 flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl">
               <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                {shouldLoadVideo && yachaMvSrc && (
+                {shouldLoadVideo && drawingCourseVideoSrc && (
                   <video
                     ref={videoRef}
-                    src={yachaMvSrc}
+                    src={drawingCourseVideoSrc}
                     className="w-full h-auto"
                     muted
                     loop

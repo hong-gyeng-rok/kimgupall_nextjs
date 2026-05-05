@@ -3,10 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useIntroImages } from "../../../hooks/useImages";
-
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 export default function BannerImg() {
   const { data: images, isLoading, isError, error } = useIntroImages();
@@ -49,7 +46,7 @@ export default function BannerImg() {
       {images && images.length > 0 ? (
         <figure className="rounded-lg p-2 shadow-xl/50">
           <Image
-            src={`${STORAGE_BASE_URL}${images[count].publicUrl}`}
+            src={getPublicMediaUrl(images[count].publicUrl) ?? ""}
             alt={images[count].title || "작품 이미지"}
             // DB에 저장된 치수 사용 (없을 경우 기본값)
             width={images[count].width ?? 300}

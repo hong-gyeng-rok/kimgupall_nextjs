@@ -1,16 +1,5 @@
 import { prisma } from "@/lib/prisma";
-
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
-
-const toPublicImageUrl = (path: string) => {
-  if (path.startsWith("http://") || path.startsWith("https://")) {
-    return path;
-  }
-
-  return `${STORAGE_BASE_URL}${path}`;
-};
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 export async function getGlobalBackgroundImageUrl() {
   const background = await prisma.media.findFirst({
@@ -24,7 +13,7 @@ export async function getGlobalBackgroundImageUrl() {
   });
 
   if (background?.publicUrl) {
-    return toPublicImageUrl(background.publicUrl);
+    return getPublicMediaUrl(background.publicUrl);
   }
 
   const legacyIntroBackground = await prisma.media.findFirst({
@@ -38,6 +27,20 @@ export async function getGlobalBackgroundImageUrl() {
   });
 
   return legacyIntroBackground?.publicUrl
-    ? toPublicImageUrl(legacyIntroBackground.publicUrl)
+    ? getPublicMediaUrl(legacyIntroBackground.publicUrl)
     : null;
+}
+
+export async function getSitePreviewImageUrl() {
+  const previewImage = await prisma.media.findFirst({
+    where: {
+      location: "GALLERY",
+      type: "IMAGE",
+    },
+    orderBy: {
+      orderIndex: "desc",
+    },
+  });
+
+  return getPublicMediaUrl(previewImage?.publicUrl);
 }

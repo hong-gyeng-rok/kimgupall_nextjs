@@ -7,14 +7,10 @@ interface FallbackImageProps extends ImageProps {
   fallbackSrc?: string;
 }
 
-const STORAGE_BASE_URL = (
-  process.env.NEXT_PUBLIC_GCP_STORAGE_URL ?? ""
-).replace(/\/$/, "");
-
 export default function FallbackImage({
   src,
   alt,
-  fallbackSrc = `${STORAGE_BASE_URL}/gallery/yacha/9990.yacha_force.jpg`,
+  fallbackSrc,
   ...props
 }: FallbackImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
@@ -29,7 +25,9 @@ export default function FallbackImage({
       src={imgSrc}
       alt={alt}
       onError={() => {
-        setImgSrc(fallbackSrc);
+        if (fallbackSrc) {
+          setImgSrc(fallbackSrc);
+        }
       }}
     />
   );

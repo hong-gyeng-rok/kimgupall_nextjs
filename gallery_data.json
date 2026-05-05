@@ -7,7 +7,9 @@
       "description": "Collection for album",
       "thumbnailUrl": "/album/instagramLink.png",
       "createdAt": "2025-12-28T10:09:02.935Z",
-      "updatedAt": "2025-12-28T10:09:02.936Z"
+      "updatedAt": "2025-12-28T10:09:02.936Z",
+      "location": "ALBUM",
+      "orderIndex": 0
     },
     {
       "id": "18d7dd20-0764-4e78-b015-d8f68e3c88f5",
@@ -16,7 +18,9 @@
       "description": "Collection for drawing-course / yacha_mv",
       "thumbnailUrl": "",
       "createdAt": "2025-12-28T10:09:02.937Z",
-      "updatedAt": "2025-12-28T10:09:02.937Z"
+      "updatedAt": "2025-12-28T10:09:02.937Z",
+      "location": "DRAWING_COURSE",
+      "orderIndex": 0
     },
     {
       "id": "0afdd1d0-7b21-45e1-a8e6-73a8b25b5e82",
@@ -25,52 +29,64 @@
       "description": "Collection for drawing-course / yacha_sketch",
       "thumbnailUrl": "/drawing-course/yacha_sketch/yacha_force_sketch_1.jpg",
       "createdAt": "2025-12-28T10:09:02.938Z",
-      "updatedAt": "2025-12-28T10:09:02.938Z"
+      "updatedAt": "2025-12-28T10:09:02.938Z",
+      "location": "DRAWING_COURSE",
+      "orderIndex": 1
     },
     {
       "id": "52fba09e-577d-498b-a0d9-1f6b510ed5f7",
       "slug": "gallery-binkan",
-      "title": "BINKAN",
+      "title": "빈칸 전시회",
       "description": "Collection for gallery / binkan",
       "thumbnailUrl": "/gallery/binkan/0670.RUNNER_03.jpg",
       "createdAt": "2025-12-28T10:09:02.939Z",
-      "updatedAt": "2025-12-28T10:09:02.939Z"
+      "updatedAt": "2025-12-28T10:09:02.939Z",
+      "location": "GALLERY",
+      "orderIndex": 2
     },
     {
       "id": "80288f1a-cf49-476c-b2e0-f6e9162ce73a",
       "slug": "gallery-conceptart",
-      "title": "CONCEPTART",
+      "title": "컨셉아트",
       "description": "Collection for gallery / conceptArt",
       "thumbnailUrl": "/gallery/conceptArt/0470.conseptArt_08.png",
       "createdAt": "2025-12-28T10:09:02.939Z",
-      "updatedAt": "2025-12-28T10:09:02.939Z"
+      "updatedAt": "2025-12-28T10:09:02.939Z",
+      "location": "GALLERY",
+      "orderIndex": 4
     },
     {
       "id": "245f6057-34cb-4bf6-afd4-e9efa46caa2f",
       "slug": "gallery-seoul",
-      "title": "SEOUL",
+      "title": "서울 일러스트 페어",
       "description": "Collection for gallery / seoul",
       "thumbnailUrl": "/gallery/seoul/0550.seoul2024_keyring_1.png",
       "createdAt": "2025-12-28T10:09:02.940Z",
-      "updatedAt": "2025-12-28T10:09:02.940Z"
+      "updatedAt": "2025-12-28T10:09:02.940Z",
+      "location": "GALLERY",
+      "orderIndex": 3
     },
     {
       "id": "08458a43-7169-4078-9f83-61794a0eedef",
       "slug": "gallery-slug",
-      "title": "SLUG",
+      "title": "모든 작품",
       "description": "Collection for gallery / slug",
       "thumbnailUrl": "/gallery/slug/0010.2D캐릭터.jpg",
       "createdAt": "2025-12-28T10:09:02.941Z",
-      "updatedAt": "2025-12-28T10:09:02.941Z"
+      "updatedAt": "2025-12-28T10:09:02.941Z",
+      "location": "GALLERY",
+      "orderIndex": 5
     },
     {
       "id": "c000da36-ef25-403a-98be-c2ac2848602d",
       "slug": "gallery-yacha",
-      "title": "YACHA",
+      "title": "야차 시리즈",
       "description": "Collection for gallery / yacha",
       "thumbnailUrl": "/gallery/yacha/9990.yacha_force.jpg",
       "createdAt": "2025-12-28T10:09:02.943Z",
-      "updatedAt": "2025-12-28T10:09:02.943Z"
+      "updatedAt": "2025-12-28T10:09:02.943Z",
+      "location": "GALLERY",
+      "orderIndex": 1
     },
     {
       "id": "2e53050f-5ba4-490d-b69c-18a4a88a1da7",
@@ -79,7 +95,9 @@
       "description": "Collection for intro",
       "thumbnailUrl": "/intro/mainPatten_2.png",
       "createdAt": "2025-12-28T10:09:02.943Z",
-      "updatedAt": "2025-12-28T10:09:02.943Z"
+      "updatedAt": "2025-12-28T10:09:02.943Z",
+      "location": "INTRO",
+      "orderIndex": 0
     }
   ],
   "media": [
@@ -1515,12 +1533,12 @@
       "id": "6feb4408-c875-4bea-90d4-a8fecf069157",
       "collectionId": "2e53050f-5ba4-490d-b69c-18a4a88a1da7",
       "type": "IMAGE",
-      "location": "INTRO",
-      "publicUrl": "/intro/mainPatten_2.png",
-      "storagePath": "/intro/mainPatten_2.png",
-      "title": "mainPatten 2",
+      "location": "BACKGROUND",
+      "publicUrl": "/background/mainPatten.png",
+      "storagePath": "/background/mainPatten.png",
+      "title": "mainPatten",
       "description": null,
-      "altText": "mainPatten 2",
+      "altText": "main background pattern",
       "width": 1981,
       "height": 1081,
       "posterUrl": null,

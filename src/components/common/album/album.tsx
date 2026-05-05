@@ -22,14 +22,6 @@ type AlbumCard = {
 
 type OrderedAlbumCard = AlbumCard & { order: number };
 
-const albumCardMeta: Record<string, { title: string; order: number }> = {
-  "gallery-yacha": { title: "야차 시리즈", order: 1 },
-  "gallery-binkan": { title: "빈칸 전시회", order: 2 },
-  "gallery-seoul": { title: "서울 일러스트 페어", order: 3 },
-  "gallery-conceptart": { title: "컨샙아트", order: 4 },
-  "gallery-slug": { title: "모든 작품", order: 5 }
-};
-
 const getPublicImageUrl = (path?: string | null) => {
   if (!path) return null;
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -46,25 +38,27 @@ const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
   >();
 
   medias.forEach((media) => {
-    if (media.location === "GALLERY" && media.collection) {
+    if (
+      media.collection &&
+      (media.collection.location === "GALLERY" || media.location === "GALLERY")
+    ) {
       collections.set(media.collection.slug, media.collection);
     }
   });
 
   const collectionCards = [...collections.values()]
     .reduce<OrderedAlbumCard[]>((cards, collection) => {
-      const meta = albumCardMeta[collection.slug];
       const thumbnailUrl = getPublicImageUrl(collection.thumbnailUrl);
 
-      if (!thumbnailUrl || !meta) return cards;
+      if (!thumbnailUrl || collection.location !== "GALLERY") return cards;
 
       cards.push({
         id: collection.id,
         url: thumbnailUrl,
-        title: meta.title,
+        title: collection.title,
         alt: collection.title,
         slug: toGalleryQuerySlug(collection.slug),
-        order: meta.order,
+        order: collection.orderIndex,
       });
 
       return cards;

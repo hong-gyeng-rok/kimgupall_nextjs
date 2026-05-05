@@ -62,6 +62,8 @@ async function main() {
         title: col.title,
         description: col.description,
         thumbnailUrl: col.thumbnailUrl,
+        location: col.location,
+        orderIndex: col.orderIndex ?? 0,
         createdAt: col.createdAt,
         updatedAt: col.updatedAt,
       },
@@ -138,4 +140,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

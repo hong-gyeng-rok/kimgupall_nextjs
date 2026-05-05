@@ -13,9 +13,9 @@ export default function IntroVideo() {
 
   const { data: medias, isLoading, isError, error } = useIntroImages();
 
-  const targetMedia = medias?.find(
-    (media) => media.title === "introMv" && media.type === "VIDEO",
-  );
+  const targetMedia = medias
+    ?.filter((media) => media.type === "VIDEO")
+    .sort((a, b) => b.orderIndex - a.orderIndex)[0];
 
   const introMvSrc = targetMedia?.publicUrl
     ? `${STORAGE_BASE_URL}${targetMedia.publicUrl}`

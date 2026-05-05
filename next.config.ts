@@ -1,7 +1,21 @@
 // next.config.ts
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
+const projectRoot = dirname(fileURLToPath(import.meta.url));
+
 const nextConfig: NextConfig = {
+  cacheMaxMemorySize: 0,
+  turbopack: {
+    root: projectRoot,
+  },
+  experimental: {
+    turbopackMemoryLimit: 2 * 1024 * 1024 * 1024,
+    turbopackFileSystemCacheForDev: false,
+    turbopackSourceMaps: false,
+    turbopackInputSourceMaps: false,
+  },
   images: {
     formats: ["image/avif", "image/webp"], // AVIF 우선 사용
     minimumCacheTTL: 60 * 60 * 24 * 30,

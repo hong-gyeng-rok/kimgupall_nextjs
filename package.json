@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS=--max-old-space-size=2048 next dev --disable-source-maps",
+    "dev:webpack": "NODE_OPTIONS=--max-old-space-size=2048 next dev --webpack --disable-source-maps",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "clean:next": "rm -rf .next",
     "postinstall": "prisma generate"
   },
   "dependencies": {

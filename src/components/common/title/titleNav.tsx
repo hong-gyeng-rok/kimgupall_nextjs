@@ -1,30 +1,27 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import InternalLink from "../internalLink";
-import { Link } from "../../../types/links";
 import { useEffect, useState } from "react";
 
 const navLinks = [
   {
     id: 1,
     title: "작품소개",
-    url: "/page/intro",
     targetId: "section-intro",
   },
   {
     id: 2,
     title: "작업과정",
-    url: "/page/drawingCourse",
     targetId: "section-drawing",
   },
   {
     id: 3,
     title: "앨범",
-    url: "/page/album",
     targetId: "section-album",
   },
 ];
+
+type NavLink = (typeof navLinks)[number];
 
 export default function TitleNav() {
   const { scrollY } = useScroll();
@@ -92,10 +89,18 @@ export default function TitleNav() {
   );
 }
 
-function Nav({ link, isActive }: { link: Link; isActive: boolean }) {
+function Nav({ link, isActive }: { link: NavLink; isActive: boolean }) {
+  const handleClick = () => {
+    document.getElementById(link.targetId)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
-    <InternalLink
+    <button
       data-testid="HomeViewNavBtn"
+      type="button"
       className={`
         flex items-center justify-center text-center relative rounded-full transition-all duration-300
         px-3 py-1.5 text-xs min-w-[60px]
@@ -105,18 +110,13 @@ function Nav({ link, isActive }: { link: Link; isActive: boolean }) {
           : "text-black"
         }
       `}
-      href={link.url}
-      onClick={() => {
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem("home_scroll_pos", window.scrollY.toString());
-        }
-      }}
+      onClick={handleClick}
     >
       <span
         className={`font-medium whitespace-nowrap ${isActive ? "text-white font-bold" : "mix-blend-difference text-white"}`}
       >
         {link.title}
       </span>
-    </InternalLink>
+    </button>
   );
 }

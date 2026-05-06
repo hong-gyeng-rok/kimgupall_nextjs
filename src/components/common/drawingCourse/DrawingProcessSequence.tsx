@@ -81,7 +81,7 @@ export default function DrawingProcessSequence() {
             <motion.span
               key={media.id}
               style={{ opacity: opacities[index] }}
-              className="relative sm:flex sm:flex-col items-center"
+              className="absolute md:relative sm:flex sm:flex-col items-center"
             >
               <Image
                 src={getPublicMediaUrl(media.publicUrl) ?? ""}

@@ -21,13 +21,13 @@ export default async function Home() {
         className="text-black flex flex-col min-h-dvh w-full bg-none"
       >
         <MainTitleAnimation />
-        <div id="section-intro" className="w-full scroll-mt-20 ">
+        <div id="section-intro" >
           <IntroScrollScene />
         </div>
-        <div id="section-drawing" className="w-full scroll-mt-20">
+        <div id="section-drawing" >
           <DrawingProcessSequence />
         </div>
-        <div id="section-album" className="w-full scroll-mt-20">
+        <div id="section-album">
           <Album />
         </div>
       </section>

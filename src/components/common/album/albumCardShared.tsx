@@ -35,10 +35,14 @@ export function AlbumCardLink({
 }) {
   if (card.isExternal) return children;
 
-  const href = card.slug !== "slug" ? `/gallery?collection=${card.slug}` : "/gallery";
+  const href =
+    card.slug !== "slug" ? `/gallery?collection=${card.slug}` : "/gallery";
 
   return (
-    <InternalLink href={href} className="w-fit h-fit flex justify-center">
+    <InternalLink
+      href={href}
+      className="w-full h-full md:w-fit md:h-fit flex justify-center"
+    >
       {children}
     </InternalLink>
   );

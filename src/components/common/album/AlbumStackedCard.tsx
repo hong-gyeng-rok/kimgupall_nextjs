@@ -30,7 +30,7 @@ export function AlbumStackedCard({ card, index }: AlbumStackedCardProps) {
       </p>
 
       <div
-        className={`relative flex-1 w-full h-fit overflow-hidden rounded-lg bg-gray-100 transition-all duration-300 ${!isInstagram ? "group-hover:ring-2 group-hover:ring-black/50" : ""}`}
+        className={`relative flex-1 min-h-0 w-full overflow-hidden rounded-lg bg-gray-100 transition-all duration-300 ${!isInstagram ? "group-hover:ring-2 group-hover:ring-black/50" : ""}`}
       >
         <AlbumCardImage card={card} index={index} />
 

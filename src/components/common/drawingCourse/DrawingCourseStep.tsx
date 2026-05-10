@@ -40,7 +40,7 @@ export function DrawingCourseStep({
   return (
     <motion.span
       style={{ opacity }}
-      className="absolute sm:flex sm:flex-col items-center justify-center"
+      className="absolute sm:static sm:flex sm:flex-col items-center justify-center"
     >
       <Image
         src={getPublicMediaUrl(media.publicUrl) ?? ""}

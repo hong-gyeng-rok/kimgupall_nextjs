@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { AlbumCard } from "@/types/album";
 import { AlbumCardImage, AlbumCardLink } from "./albumCardShared";
+import { ALBUM_DESKTOP_CARD_FRAME_CLASS } from "./albumLayout";
 
 type AlbumStackedCardProps = {
   card: AlbumCard;
@@ -17,11 +18,12 @@ export function AlbumStackedCard({ card, index }: AlbumStackedCardProps) {
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       style={{ scale: 1, opacity: 1 }}
-      className="
+      className={`
         relative flex flex-col items-center justify-center bg-white/20 backdrop-blur-xl border border-white/30 group
         h-full w-full
-        md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6 md:justify-start transition-all duration-300
-      "
+        ${ALBUM_DESKTOP_CARD_FRAME_CLASS}
+        md:justify-start transition-all duration-300
+      `}
     >
       <p className="text-black text-2xl md:text-xl font-bold mb-4 md:mb-6 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300">
         {card.title}

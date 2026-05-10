@@ -95,7 +95,7 @@ export function DrawingCourseScene({
 
         <motion.div
           style={{ opacity: videoOpacity }}
-          className="absolute inset-0 flex items-center-safe justify-center mb-10"
+          className="absolute inset-0 flex items-center-safe justify-center mb-10 z-20"
         >
           <div className={VIDEO_CARD_CLASS}>
             <div

@@ -2,6 +2,10 @@ import { motion, useTransform } from "framer-motion";
 import type { MotionValue } from "framer-motion";
 import type { AlbumCard } from "@/types/album";
 import { AlbumCardImage, AlbumCardLink } from "./albumCardShared";
+import { ALBUM_DESKTOP_CARD_FRAME_CLASS } from "./albumLayout";
+
+const HORIZONTAL_CARD_SCALE_RANGE = [0.8, 1.2, 0.8];
+const HORIZONTAL_CARD_OPACITY_RANGE = [0.3, 1, 0.3];
 
 type AlbumHorizontalCardProps = {
   card: AlbumCard;
@@ -10,6 +14,17 @@ type AlbumHorizontalCardProps = {
   scrollYProgress: MotionValue<number>;
 };
 
+function getHorizontalCardProgressRange(index: number, total: number) {
+  const cardCount = Math.max(total, 1);
+
+  if (cardCount === 1) return [0, 0.5, 1];
+
+  const position = index / (cardCount - 1);
+  const range = 1 / cardCount;
+
+  return [position - range, position, position + range];
+}
+
 export function AlbumHorizontalCard({
   card,
   index,
@@ -17,12 +32,18 @@ export function AlbumHorizontalCard({
   scrollYProgress,
 }: AlbumHorizontalCardProps) {
   const isInstagram = card.isExternal;
-  const position = total > 1 ? index / (total - 1) : 0;
-  const range = 1 / total;
-  const inputRange = [position - range, position, position + range];
+  const inputRange = getHorizontalCardProgressRange(index, total);
 
-  const scale = useTransform(scrollYProgress, inputRange, [0.8, 1.2, 0.8]);
-  const opacity = useTransform(scrollYProgress, inputRange, [0.3, 1, 0.3]);
+  const scale = useTransform(
+    scrollYProgress,
+    inputRange,
+    HORIZONTAL_CARD_SCALE_RANGE,
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    inputRange,
+    HORIZONTAL_CARD_OPACITY_RANGE,
+  );
 
   const cardContent = (
     <motion.div
@@ -31,11 +52,12 @@ export function AlbumHorizontalCard({
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       style={{ scale, opacity }}
-      className="
+      className={`
         relative flex flex-col items-center justify-center bg-white/20 backdrop-blur-xl border border-white/30 group
         h-full w-full
-        md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6 md:justify-start transition-all duration-300
-      "
+        ${ALBUM_DESKTOP_CARD_FRAME_CLASS}
+        md:justify-start transition-all duration-300
+      `}
     >
       <p
         className={`text-black text-2xl md:text-xl font-bold mb-4 md:mb-6 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300 ${!isInstagram ? "md:group-hover:opacity-0" : ""}`}

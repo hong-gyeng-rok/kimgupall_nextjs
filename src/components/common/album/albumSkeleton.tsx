@@ -1,6 +1,12 @@
 import type { AlbumLayoutMode } from "@/types/album";
+import { ALBUM_DESKTOP_CARD_FRAME_CLASS } from "./albumLayout";
 
-const albumSkeletonCards = Array.from({ length: 6 }, (_, index) => index);
+export const ALBUM_SKELETON_CARD_COUNT = 6;
+
+const albumSkeletonCards = Array.from(
+  { length: ALBUM_SKELETON_CARD_COUNT },
+  (_, index) => index,
+);
 
 type AlbumSkeletonProps = {
   layoutMode: AlbumLayoutMode;
@@ -19,10 +25,10 @@ export function AlbumSkeleton({ layoutMode }: AlbumSkeletonProps) {
           `}
         >
           <div
-            className="
+            className={`
               h-full w-full animate-pulse bg-white/20 backdrop-blur-xl border border-white/30
-              md:h-[65vh] md:max-h-[600px] md:w-87.5 md:rounded-3xl md:shadow-2xl md:p-6
-            "
+              ${ALBUM_DESKTOP_CARD_FRAME_CLASS}
+            `}
           />
         </div>
       ))}

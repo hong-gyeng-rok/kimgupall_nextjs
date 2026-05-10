@@ -41,13 +41,13 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
   );
   const instagramCard: AlbumCard | null = instagramImage
     ? {
-        id: instagramImage.id,
-        url: getPublicMediaUrl(instagramImage.publicUrl) ?? "",
-        title: "INSTAGRAM",
-        alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
-        slug: null,
-        isExternal: true,
-      }
+      id: instagramImage.id,
+      url: getPublicMediaUrl(instagramImage.publicUrl) ?? "",
+      title: "INSTAGRAM",
+      alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
+      slug: null,
+      isExternal: true,
+    }
     : null;
 
   return [...collectionCards, instagramCard].filter(

@@ -47,7 +47,7 @@ export function DrawingCourseStep({
         alt={media.description ?? "sketch Image"}
         width={300}
         height={400}
-        className="w-full max-w-xl px-4 md:px-0 h-[60vh] object-contain"
+        className="w-full max-w-xl px-4 md:px-0 h-screen sm:h-[60vh] object-contain"
       />
       <p className="font-sans font-bold text-3xl mt-4 text-center">
         STEP {index + 1}

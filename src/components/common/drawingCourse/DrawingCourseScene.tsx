@@ -82,7 +82,7 @@ export function DrawingCourseScene({
       style={{ backgroundColor: SCENE_BACKGROUND_COLOR }}
       className="h-full w-full relative"
     >
-      <div className="absolute inset-0 sm:flex items-center justify-center p-6 md:p-20">
+      <div className="absolute inset-0 sm:flex items-center justify-center md:p-20">
         {sketchMedias.map((media, index) => (
           <DrawingCourseStep
             key={media.id}

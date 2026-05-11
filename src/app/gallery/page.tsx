@@ -14,7 +14,7 @@ export default async function GalleryPage({
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const slug =
     resolvedSearchParams?.collection &&
-    typeof resolvedSearchParams.collection === "string"
+      typeof resolvedSearchParams.collection === "string"
       ? resolvedSearchParams.collection
       : undefined;
 
@@ -22,7 +22,7 @@ export default async function GalleryPage({
     <PageShell testId="GalleryPage" bgImgSrc={bgImgSrc}>
       <section
         data-testid="GalleryView"
-        className="flex min-h-svh w-full flex-col items-center rounded bg-none shadow-xl/50"
+        className="flex h-svh w-full flex-col items-center overflow-hidden border border-white/20 p-6 shadow-inner backdrop-blur-xs"
       >
         <GalleryContents collectionSlug={slug}>
           <GalleryFooterNav />

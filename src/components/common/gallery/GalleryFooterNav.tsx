@@ -26,7 +26,7 @@ export default function GalleryFooterNav() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="font-mono mx-auto flex w-fit flex-row items-center justify-center gap-5 rounded-full border border-white/30 bg-black/10 px-4 py-2 shadow-2xl backdrop-blur-lg md:gap-8"
+      className="font-mono mx-auto flex w-fit shrink-0 flex-row items-center justify-center gap-5 rounded-full border border-white/30 bg-black/10 px-4 py-2 shadow-2xl backdrop-blur-lg md:gap-8"
     >
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />

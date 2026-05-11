@@ -68,7 +68,7 @@ export default function GalleryContents({
   return (
     <article
       data-testid="GalleryContents"
-      className="flex min-h-svh w-full flex-col gap-6 md:px-6"
+      className="flex h-full min-h-0 w-full flex-col  gap-6"
     >
       {content}
       {children}

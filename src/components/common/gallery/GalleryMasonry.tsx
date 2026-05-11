@@ -16,7 +16,7 @@ export default function GalleryMasonry({
   onSelectImage,
 }: GalleryMasonryProps) {
   return (
-    <div className="w-full min-[350px]:max-h-[85vh] md:max-h-[90vh] overflow-y-auto p-6 no-scrollbar rounded-xl backdrop-blur-sm shadow-inner">
+    <div className="w-full max-h-[85vh] md:max-h-[90vh] overflow-y-auto p-6 no-scrollbar rounded-xl backdrop-blur-sm shadow-inner">
       {images.length > 0 ? (
         <Masonry
           breakpointCols={galleryBreakpointColumns}

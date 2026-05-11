@@ -2,8 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import InternalLink from "./internalLink";
-import { Link } from "../../types/links";
+import InternalLink from "@/components/common/internalLink";
+import { Link } from "@/types/links";
 import { useRouter } from "next/navigation";
 
 const navLinks = [
@@ -19,14 +19,14 @@ const navLinks = [
   },
 ];
 
-export default function GoToHomeBtn() {
+export default function GalleryFooterNav() {
   return (
     <motion.nav
-      id="GoToHomeBtnNav"
+      id="GalleryFooterNav"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="font-mono fixed bottom-5 left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-5 md:gap-8 z-50 pb-safe w-fit px-4 py-2 rounded-full bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl"
+      className="font-mono mx-auto flex w-fit flex-row items-center justify-center gap-5 rounded-full border border-white/30 bg-black/10 px-4 py-2 shadow-2xl backdrop-blur-lg md:gap-8"
     >
       {navLinks.map((link) => (
         <Nav key={link.id} link={link} />
@@ -47,7 +47,7 @@ function Nav({ link }: { link: Link }) {
 
   return (
     <InternalLink
-      data-testid="GoToHomeBtn"
+      data-testid="GalleryFooterNavLink"
       className="flex items-center justify-center text-center md:w-25 md:h-10 relative text-black text-md md:text-lg p-2 rounded-full transition-all duration-300 hover:bg-black hover:text-white hover:scale-105 hover:shadow-xl"
       href={link.url}
       ariaLabel={`${link.title}으로 이동`}

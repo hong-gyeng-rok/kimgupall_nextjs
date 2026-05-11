@@ -1,5 +1,5 @@
 import GalleryContents from "@/components/common/gallery/galleryContents";
-import GoToHomeBtn from "@/components/common/goToHomeBtn";
+import GalleryFooterNav from "@/components/common/gallery/GalleryFooterNav";
 import PageShell from "@/components/layout/PageShell";
 import { getGlobalBackgroundImageUrl } from "@/lib/media";
 
@@ -22,12 +22,11 @@ export default async function GalleryPage({
     <PageShell testId="GalleryPage" bgImgSrc={bgImgSrc}>
       <section
         data-testid="GalleryView"
-        className="flex flex-col items-center bg-none shadow-xl/50 rounded w-full h-screen"
+        className="flex min-h-svh w-full flex-col items-center rounded bg-none shadow-xl/50"
       >
-        <article className="w-full mx-auto px-4" data-testid="GalleryLayout">
-          <GalleryContents collectionSlug={slug} />
-          <GoToHomeBtn />
-        </article>
+        <GalleryContents collectionSlug={slug}>
+          <GalleryFooterNav />
+        </GalleryContents>
       </section>
     </PageShell>
   );

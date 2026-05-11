@@ -30,6 +30,7 @@ export default function IntroVideo() {
   }
   if (isError) return <p>에러 발생 : {error?.message}</p>;
 
+  //targetMedia(introMv) width, height 값 알아오기
   return (
     <div
       className={INTRO_VIDEO_FRAME_CLASS}
@@ -41,7 +42,7 @@ export default function IntroVideo() {
         <video
           ref={videoRef}
           src={introVideoSrc}
-          className="absolute inset-0 h-full w-full object-contain"
+          className="absolute inset-0 object-contain"
           width={targetMedia?.width ?? DEFAULT_WIDTH}
           height={targetMedia?.height ?? DEFAULT_HEIGHT}
           muted

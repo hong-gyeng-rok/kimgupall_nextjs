@@ -60,6 +60,9 @@ export function DrawingCourseScene({
     yachaMvMedia?.width && yachaMvMedia.height
       ? `${yachaMvMedia.width} / ${yachaMvMedia.height}`
       : DEFAULT_VIDEO_ASPECT_RATIO;
+  const MVWidth = yachaMvMedia?.width || 500
+  const MVHeight = yachaMvMedia?.height || 700
+
 
   const handleTimeUpdate = () => {
     if (videoRef.current) {
@@ -77,6 +80,7 @@ export function DrawingCourseScene({
     }
   });
 
+  // yachaMvMedia width height 값 알아오기
   return (
     <motion.div
       style={{ backgroundColor: SCENE_BACKGROUND_COLOR }}
@@ -106,7 +110,9 @@ export function DrawingCourseScene({
                 <video
                   ref={videoRef}
                   src={drawingCourseVideoSrc}
-                  className="absolute inset-0 h-full w-full object-contain"
+                  className="inset-0 object-contain w-full h-full"
+                  width={MVWidth}
+                  height={MVHeight}
                   muted
                   loop
                   playsInline

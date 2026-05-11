@@ -46,7 +46,7 @@ export default function IntroVideo() {
           height={targetMedia?.height ?? DEFAULT_HEIGHT}
           muted
           loop
-          preload="none"
+          preload="auto"
           autoPlay
           playsInline
         />

@@ -111,7 +111,7 @@ export function DrawingCourseScene({
                   loop
                   playsInline
                   autoPlay
-                  preload="none"
+                  preload="metadata"
                   onTimeUpdate={handleTimeUpdate}
                 />
               )}

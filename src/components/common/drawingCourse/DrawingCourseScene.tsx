@@ -16,7 +16,7 @@ const SCENE_BACKGROUND_COLOR = "#ffffff";
 const ARROW_WIDTH_RANGE = [0, 0.8];
 const ARROW_OPACITY_RANGE = [0.85, 0.9];
 const VIDEO_OPACITY_RANGE = [0.9, 1];
-const VIDEO_PLAY_PROGRESS = 0.85;
+const VIDEO_PLAY_PROGRESS = 0.9;
 const DEFAULT_VIDEO_ASPECT_RATIO = "3 / 4";
 const VIDEO_CARD_CLASS =
   "relative w-[88vw] md:w-[56vw] xl:w-[42vw] max-h-[85vh] flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl";
@@ -70,6 +70,7 @@ export function DrawingCourseScene({
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
+    video.currentTime = 0;
 
     const playPromise = video.play();
 
@@ -141,8 +142,6 @@ export function DrawingCourseScene({
                   loop
                   preload="auto"
                   playsInline
-                  onLoadedData={tryPlayVideo}
-                  onCanPlay={tryPlayVideo}
                   onTimeUpdate={handleTimeUpdate}
                 />
               )}

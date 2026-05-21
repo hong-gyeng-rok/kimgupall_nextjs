@@ -6,7 +6,7 @@ import {
   motion,
   type MotionValue,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { MediaType } from "@/hooks/useImages";
 import { getPublicMediaUrl } from "@/lib/mediaUrl";
 import { DrawingCourseProgressArrow } from "./DrawingCourseProgressArrow";
@@ -60,9 +60,33 @@ export function DrawingCourseScene({
     yachaMvMedia?.width && yachaMvMedia.height
       ? `${yachaMvMedia.width} / ${yachaMvMedia.height}`
       : DEFAULT_VIDEO_ASPECT_RATIO;
-  const MVWidth = yachaMvMedia?.width || 500
-  const MVHeight = yachaMvMedia?.height || 700
+  const MVWidth = yachaMvMedia?.width || 500;
+  const MVHeight = yachaMvMedia?.height || 700;
 
+  const tryPlayVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("Drawing course video autoplay failed", error);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!shouldLoadVideo || !drawingCourseVideoSrc) return;
+
+    tryPlayVideo();
+  }, [shouldLoadVideo, drawingCourseVideoSrc, tryPlayVideo]);
 
   const handleTimeUpdate = () => {
     if (videoRef.current) {
@@ -117,7 +141,9 @@ export function DrawingCourseScene({
                   loop
                   playsInline
                   autoPlay
-                  preload="metadata"
+                  preload="auto"
+                  onLoadedData={tryPlayVideo}
+                  onCanPlay={tryPlayVideo}
                   onTimeUpdate={handleTimeUpdate}
                 />
               )}

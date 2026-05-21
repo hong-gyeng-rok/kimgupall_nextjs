@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useIntroImages } from "@/hooks/useImages";
 import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
@@ -17,6 +17,31 @@ export default function IntroVideo() {
     .sort((a, b) => b.orderIndex - a.orderIndex)[0];
 
   const introVideoSrc = getPublicMediaUrl(targetMedia?.publicUrl);
+
+  const tryPlayVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.warn("Intro video autoplay failed", error);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!introVideoSrc) return;
+
+    tryPlayVideo();
+  }, [introVideoSrc, tryPlayVideo]);
 
   if (isLoading) {
     return (
@@ -42,7 +67,7 @@ export default function IntroVideo() {
         <video
           ref={videoRef}
           src={introVideoSrc}
-          className="absolute inset-0 object-contain"
+          className="absolute inset-0 object-contain w-full h-full"
           width={targetMedia?.width ?? DEFAULT_WIDTH}
           height={targetMedia?.height ?? DEFAULT_HEIGHT}
           muted
@@ -50,6 +75,8 @@ export default function IntroVideo() {
           preload="auto"
           autoPlay
           playsInline
+          onLoadedData={tryPlayVideo}
+          onCanPlay={tryPlayVideo}
         />
       )}
     </div>

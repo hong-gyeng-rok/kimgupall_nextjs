@@ -139,7 +139,7 @@ export function DrawingCourseScene({
                   height={MVHeight}
                   muted
                   loop
-                  preload="metadata"
+                  preload="auto"
                   playsInline
                   onLoadedData={tryPlayVideo}
                   onCanPlay={tryPlayVideo}

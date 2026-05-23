@@ -15,6 +15,7 @@ import { DrawingCourseStep } from "./DrawingCourseStep";
 const SCENE_BACKGROUND_COLOR = "#ffffff";
 const ARROW_WIDTH_RANGE = [0, 0.8];
 const ARROW_OPACITY_RANGE = [0.85, 0.9];
+const VIDEO_OPACITY_RANGE = [0.9, 1];
 const VIDEO_PLAY_PROGRESS = 0.9;
 const DEFAULT_VIDEO_ASPECT_RATIO = "3 / 4";
 const VIDEO_CARD_CLASS =
@@ -43,6 +44,12 @@ export function DrawingCourseScene({
     ARROW_OPACITY_RANGE,
     [1, 0],
   );
+  const videoOpacity = useTransform(
+    scrollYProgress,
+    VIDEO_OPACITY_RANGE,
+    [0, 1],
+  );
+
   const sketchMedias =
     medias
       ?.filter((media) => media.type === "IMAGE")
@@ -115,8 +122,9 @@ export function DrawingCourseScene({
           />
         ))}
 
-        <div
-          className={`absolute inset-0 flex items-center-safe justify-center mb-10 ${shouldPlayVideo ? "z-30" : "z-0"}`}
+        <motion.div
+          style={{ opacity: videoOpacity }}
+          className="absolute inset-0 flex items-center-safe justify-center mb-10 z-20"
         >
           <div className={VIDEO_CARD_CLASS}>
             <div
@@ -146,7 +154,7 @@ export function DrawingCourseScene({
               />
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <DrawingCourseProgressArrow

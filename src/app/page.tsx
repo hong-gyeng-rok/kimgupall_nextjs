@@ -5,22 +5,18 @@ import IntroScrollScene from "@/components/common/intro/IntroScrollScene";
 import MainTitleAnimation from "@/components/common/title/MainTitleAnimation";
 import TitleNav from "@/components/common/title/titleNav";
 import PageShell from "@/components/layout/PageShell";
-import { getGlobalBackgroundImageUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const bgImgSrc = await getGlobalBackgroundImageUrl();
 
   return (
-    <PageShell testId="HomePage" bgImgSrc={bgImgSrc}>
-      <StartupOverlay preloadSrc={bgImgSrc} />
-      <TitleNav />
+    <PageShell testId="HomePage" >
+      <StartupOverlay />
       <section
         data-testid="HomeView"
         className="text-black flex flex-col min-h-dvh w-full bg-none"
       >
-        <MainTitleAnimation />
         <div id="section-intro" >
           <IntroScrollScene />
         </div>
@@ -30,6 +26,7 @@ export default async function Home() {
         <div id="section-album">
           <Album />
         </div>
+        <MainTitleAnimation />
       </section>
     </PageShell>
   );

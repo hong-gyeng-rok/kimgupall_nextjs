@@ -1,5 +1,6 @@
 import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
+
 export const getGalleryImageUrl = (path: string) => {
   return getPublicMediaUrl(path) ?? "";
 };

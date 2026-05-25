@@ -1,6 +1,6 @@
 import React from "react";
-import { NavList } from "../../../types/galleryNavBtn";
-import InternalLink from "../internalLink";
+import InternalLink from "@/components/common/internalLink";
+import type { NavList } from "@/types/galleryNavBtn";
 const navList: NavList[] = [
   // {
   //   id: 1,

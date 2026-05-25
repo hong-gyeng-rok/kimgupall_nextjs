@@ -37,13 +37,13 @@ export default function TitleNav() {
   }, []);
 
   // 200vh 시점 계산 (뷰포트 높이가 0일 땐 0 처리)
-  const startPoint = viewportHeight * 2;
-  const endPoint = viewportHeight * 2.5;
+  const startPoint = viewportHeight * 0.2;
+  const endPoint = viewportHeight * 1.5;
 
   // 200vh까지는 0, 200vh~250vh 구간에서 서서히 1로 변함
   const opacity = useTransform(scrollY, [startPoint, endPoint], [0, 1]);
   // 200vh~250vh 구간에서 위에서 아래로 내려오는 효과
-  const y = useTransform(scrollY, [startPoint, endPoint], [-20, 0]);
+  const y = useTransform(scrollY, [startPoint, endPoint], [-30, 0]);
   // 200vh 이전에는 클릭 불가능
   const pointerEvents = useTransform(scrollY, (value) =>
     value > startPoint ? "auto" : "none",

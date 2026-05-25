@@ -12,10 +12,10 @@ import { getPublicMediaUrl } from "@/lib/mediaUrl";
 import { DrawingCourseProgressArrow } from "./DrawingCourseProgressArrow";
 import { DrawingCourseStep } from "./DrawingCourseStep";
 
-const SCENE_BACKGROUND_COLOR = "#ffffff";
+const SCENE_BACKGROUND_COLOR = "#000000";
 const ARROW_WIDTH_RANGE = [0, 0.8];
 const ARROW_OPACITY_RANGE = [0.85, 0.9];
-const VIDEO_OPACITY_RANGE = [0.9, 1];
+const VIDEO_OPACITY_RANGE = [1, 1];
 const VIDEO_PLAY_PROGRESS = 0.9;
 const DEFAULT_VIDEO_ASPECT_RATIO = "3 / 4";
 const VIDEO_CARD_CLASS =
@@ -112,15 +112,6 @@ export function DrawingCourseScene({
       className="h-full w-full relative"
     >
       <div className="absolute inset-0 sm:flex items-center justify-center md:p-20">
-        {sketchMedias.map((media, index) => (
-          <DrawingCourseStep
-            key={media.id}
-            media={media}
-            index={index}
-            total={sketchMedias.length}
-            scrollYProgress={scrollYProgress}
-          />
-        ))}
 
         <motion.div
           style={{ opacity: videoOpacity }}
@@ -157,10 +148,6 @@ export function DrawingCourseScene({
         </motion.div>
       </div>
 
-      <DrawingCourseProgressArrow
-        opacity={arrowOpacity}
-        width={arrowWidth}
-      />
     </motion.div>
   );
 }

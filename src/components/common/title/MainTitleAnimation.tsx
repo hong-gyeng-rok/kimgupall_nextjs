@@ -8,8 +8,8 @@ export default function MainTitleAnimation() {
   const creditsData = [
     { role: "Project Management", name: "HONG GYEONG ROK" },
     { role: "Content & Editing", name: "KIM CHAN SEOK" },
-    { role: "Website", name: "KIMGUPALL98.COM" },
-    { role: "Instagram", name: "@kimgupall_98" },
+    { role: "Website", name: "KIMGUPALL98" },
+    { role: "Instagram", name: "kimgupall_98" },
     { role: "Email", name: "kimgupall98@gmail.com" },
   ];
 
@@ -24,12 +24,12 @@ export default function MainTitleAnimation() {
   const backgroundColor = useTransform(
     scrollYProgress,
     [0.5, 1],
-    ["#000000", "rgba(255,255,255,0)"],
+    ["#000000", "#000000"],
   );
   const textColor = useTransform(
     scrollYProgress,
     [0.5, 1],
-    ["#ffffff", "#c4c47e"],
+    ["#ffffff", "#000000"],
   );
   const trapOpacity = useTransform(scrollYProgress, [0.5, 1], [1, 0]);
 

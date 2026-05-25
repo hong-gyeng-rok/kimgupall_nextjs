@@ -12,7 +12,6 @@ export default function IntroScrollScene() {
           <div className="flex-none w-full flex justify-center max-h-[40vh] md:max-h-[50vh] px-4">
             <IntroVideo />
           </div>
-          <IntroDescription scrollYProgress={scrollYProgress} />
         </>
       )}
     </ScrollytellingSection>

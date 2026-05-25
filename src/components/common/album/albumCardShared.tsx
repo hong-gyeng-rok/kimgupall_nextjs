@@ -3,7 +3,7 @@ import type { AlbumCard } from "@/types/album";
 import FallbackImage from "../fallbackImage";
 import InternalLink from "../internalLink";
 
-const ALBUM_IMAGE_SIZES = "(max-width: 767px) calc(100vw - 2rem), 384px";
+const ALBUM_IMAGE_SIZES = "(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) 30vw, 360px";
 
 export function AlbumCardImage({
   card,
@@ -41,7 +41,7 @@ export function AlbumCardLink({
   return (
     <InternalLink
       href={href}
-      className="w-full h-full md:w-fit md:h-fit flex justify-center"
+      className="flex h-full w-full justify-center"
     >
       {children}
     </InternalLink>

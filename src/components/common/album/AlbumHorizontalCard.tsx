@@ -1,49 +1,18 @@
-import { motion, useTransform } from "framer-motion";
-import type { MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import type { AlbumCard } from "@/types/album";
 import { AlbumCardImage, AlbumCardLink } from "./albumCardShared";
 import { ALBUM_DESKTOP_CARD_FRAME_CLASS } from "./albumLayout";
 
-const HORIZONTAL_CARD_SCALE_RANGE = [0.8, 1.2, 0.8];
-const HORIZONTAL_CARD_OPACITY_RANGE = [0.3, 1, 0.3];
-
 type AlbumHorizontalCardProps = {
   card: AlbumCard;
   index: number;
-  total: number;
-  scrollYProgress: MotionValue<number>;
 };
-
-function getHorizontalCardProgressRange(index: number, total: number) {
-  const cardCount = Math.max(total, 1);
-
-  if (cardCount === 1) return [0, 0.5, 1];
-
-  const position = index / (cardCount - 1);
-  const range = 1 / cardCount;
-
-  return [position - range, position, position + range];
-}
 
 export function AlbumHorizontalCard({
   card,
   index,
-  total,
-  scrollYProgress,
 }: AlbumHorizontalCardProps) {
   const isInstagram = card.isExternal;
-  const inputRange = getHorizontalCardProgressRange(index, total);
-
-  const scale = useTransform(
-    scrollYProgress,
-    inputRange,
-    HORIZONTAL_CARD_SCALE_RANGE,
-  );
-  const opacity = useTransform(
-    scrollYProgress,
-    inputRange,
-    HORIZONTAL_CARD_OPACITY_RANGE,
-  );
 
   const cardContent = (
     <motion.div
@@ -51,16 +20,15 @@ export function AlbumHorizontalCard({
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      style={{ scale, opacity }}
       className={`
         relative flex flex-col items-center justify-center bg-white/20 backdrop-blur-xl border border-white/30 group
         h-full w-full
         ${ALBUM_DESKTOP_CARD_FRAME_CLASS}
-        md:justify-start transition-all duration-300
+        md:justify-start transition-all duration-300 hover:-translate-y-1 hover:bg-white/30
       `}
     >
       <p
-        className={`text-black text-2xl md:text-xl font-bold mb-4 md:mb-6 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300 ${!isInstagram ? "md:group-hover:opacity-0" : ""}`}
+        className={`text-black text-2xl md:text-base lg:text-lg font-bold mb-4 md:mb-3 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300 ${!isInstagram ? "md:group-hover:opacity-0" : ""}`}
       >
         {card.title}
       </p>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useImages } from "@/hooks/useImages";
-import { ScrollytellingSection } from "../scrollytelling/ScrollytellingSection";
 import { AlbumHorizontalScene } from "./AlbumHorizontalScene";
 import { AlbumStackedScene } from "./AlbumStackedScene";
 import { buildAlbumCards } from "./albumData";
@@ -17,14 +16,8 @@ export default function Album() {
   }
 
   return (
-    <ScrollytellingSection stageClassName="flex items-center z-10">
-      {(scrollYProgress) => (
-        <AlbumHorizontalScene
-          cards={cards}
-          isLoading={isLoading}
-          scrollYProgress={scrollYProgress}
-        />
-      )}
-    </ScrollytellingSection>
+    <section className="relative z-10 flex h-dvh w-full items-center justify-center overflow-hidden px-6 py-8">
+      <AlbumHorizontalScene cards={cards} isLoading={isLoading} />
+    </section>
   );
 }

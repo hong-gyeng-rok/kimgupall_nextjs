@@ -35,7 +35,7 @@ export function AlbumHorizontalCard({
       `}
     >
       <p
-        className={`text-black text-2xl md:text-base lg:text-lg font-bold mb-4 md:mb-3 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300 ${!isInstagram ? "md:group-hover:opacity-0" : ""}`}
+        className={`text-white text-2xl md:text-base lg:text-lg font-bold mb-4 md:mb-3 drop-shadow-md md:drop-shadow-none z-10 transition-opacity duration-300 ${!isInstagram ? "md:group-hover:opacity-0" : ""}`}
       >
         {card.title}
       </p>
@@ -46,11 +46,10 @@ export function AlbumHorizontalCard({
             {stackImages.slice(1).map((image, stackIndex) => (
               <div
                 key={`${image.url}-${stackIndex}`}
-                className={`absolute inset-0 overflow-hidden rounded-xl border border-white/60 bg-gray-100 shadow-lg transition-all duration-500 ease-out ${
-                  stackIndex === 0
-                    ? "translate-x-2 translate-y-2 rotate-3 group-hover:translate-x-4 group-hover:-translate-y-1 group-hover:rotate-8"
-                    : "-translate-x-2 translate-y-4 -rotate-3 group-hover:-translate-x-5 group-hover:translate-y-1 group-hover:-rotate-8"
-                }`}
+                className={`absolute inset-0 overflow-hidden rounded-xl border border-white/60 bg-gray-100 shadow-lg transition-all duration-500 ease-out ${stackIndex === 0
+                  ? "translate-x-2 translate-y-2 rotate-3 group-hover:translate-x-4 group-hover:-translate-y-1 group-hover:rotate-8"
+                  : "-translate-x-2 translate-y-4 -rotate-3 group-hover:-translate-x-5 group-hover:translate-y-1 group-hover:-rotate-8"
+                  }`}
               >
                 <AlbumCardImage
                   card={card}
@@ -74,13 +73,12 @@ export function AlbumHorizontalCard({
               {previewImages.map((image, previewIndex) => (
                 <div
                   key={`${image.url}-${previewIndex}`}
-                  className={`relative overflow-hidden rounded-md bg-gray-100 transition-transform duration-500 group-hover:translate-x-0 ${
-                    previewIndex === 0
-                      ? "translate-x-[22px] delay-0"
-                      : previewIndex === 1
-                        ? "translate-x-[44px] delay-75"
-                        : "translate-x-[66px] delay-150"
-                  }`}
+                  className={`relative overflow-hidden rounded-md bg-gray-100 transition-transform duration-500 group-hover:translate-x-0 ${previewIndex === 0
+                    ? "translate-x-[22px] delay-0"
+                    : previewIndex === 1
+                      ? "translate-x-[44px] delay-75"
+                      : "translate-x-[66px] delay-150"
+                    }`}
                 >
                   <AlbumCardImage
                     card={card}
@@ -95,12 +93,15 @@ export function AlbumHorizontalCard({
           )}
 
           {!isInstagram && (
-            <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col items-center justify-center gap-4 z-20">
-              <p className="text-white text-2xl font-bold px-4 text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+            <div className="absolute inset-0 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
+
+              <p className="absolute bottom-5 left-5 right-5 text-white text-2xl font-bold drop-shadow-md translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
                 {card.title}
               </p>
-              <div className="flex items-center gap-2 px-6 py-2 border border-white/50 rounded-full text-white text-sm font-medium tracking-wider hover:bg-white hover:text-black transition-colors duration-300 translate-y-4 group-hover:translate-y-0 delay-75">
-                <span>VIEW {card.title}</span>
+
+              <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/70 bg-white px-5 py-2 text-black text-xs font-semibold tracking-wider shadow-lg translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                <span>VIEW</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

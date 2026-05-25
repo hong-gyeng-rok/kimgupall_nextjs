@@ -1,7 +1,6 @@
 import GalleryContents from "@/components/common/gallery/galleryContents";
 import GalleryFooterNav from "@/components/common/gallery/GalleryFooterNav";
 import PageShell from "@/components/layout/PageShell";
-import { getGlobalBackgroundImageUrl } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +9,6 @@ export default async function GalleryPage({
 }: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const bgImgSrc = await getGlobalBackgroundImageUrl();
   const resolvedSearchParams = searchParams ? await searchParams : undefined;
   const slug =
     resolvedSearchParams?.collection &&
@@ -19,7 +17,7 @@ export default async function GalleryPage({
       : undefined;
 
   return (
-    <PageShell testId="GalleryPage" bgImgSrc={bgImgSrc}>
+    <PageShell testId="GalleryPage" >
       <section
         data-testid="GalleryView"
         className="flex h-svh w-full flex-col items-center overflow-hidden border border-white/20 p-6 shadow-inner backdrop-blur-xs"

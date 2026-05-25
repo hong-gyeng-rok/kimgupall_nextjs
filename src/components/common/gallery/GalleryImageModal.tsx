@@ -8,24 +8,22 @@ import { getGalleryImageUrl } from "@/components/common/gallery/galleryUtils";
 
 interface GalleryImageModalProps {
   selectedImage: MediaType | null;
-  isMobile: boolean;
   onClose: () => void;
 }
 
 export default function GalleryImageModal({
   selectedImage,
-  isMobile,
   onClose,
 }: GalleryImageModalProps) {
   return (
     <AnimatePresence>
-      {selectedImage && !isMobile && (
+      {selectedImage && (
         <Modal
           ariaHideApp={false}
           isOpen={selectedImage !== null}
           onRequestClose={onClose}
-          className="w-screen h-screen flex flex-col items-center justify-center focus:outline-none gap-8"
-          overlayClassName="fixed inset-0 bg-white/95 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in"
+          className="flex flex-col w-screen h-screen items-center justify-center focus:outline-none gap-8"
+          overlayClassName="fixed inset-0 z-50 flex items-center justify-center bg-white/95 backdrop-blur-md animate-fade-in"
         >
           <ModalContent selectedImage={selectedImage} onClose={onClose} />
         </Modal>
@@ -50,7 +48,7 @@ function ModalContent({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-        className="relative max-w-[90vw] max-h-[80vh] min-w-75 min-h-0 flex items-center justify-center"
+        className="flex relative max-w-[90vw] max-h-[80vh] min-w-75 min-h-0 items-center justify-center"
       >
         {isImageLoading && (
           <div className="absolute inset-0 flex items-center justify-center z-10">

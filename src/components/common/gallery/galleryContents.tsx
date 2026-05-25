@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import { useGalleryImages, MediaType } from "@/hooks/useImages";
 import GalleryImageModal from "@/components/common/gallery/GalleryImageModal";
 import GalleryMasonry from "@/components/common/gallery/GalleryMasonry";
@@ -25,7 +24,6 @@ export default function GalleryContents({
     error,
     refetch,
   } = useGalleryImages(collectionSlug);
-  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [selectedImage, setSelectedImage] = useState<MediaType | null>(null);
 
   const content = (() => {
@@ -74,7 +72,6 @@ export default function GalleryContents({
       {children}
       <GalleryImageModal
         selectedImage={selectedImage}
-        isMobile={isMobile}
         onClose={() => setSelectedImage(null)}
       />
     </article>

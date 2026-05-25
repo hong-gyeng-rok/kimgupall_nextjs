@@ -21,7 +21,7 @@ export default function GalleryImageCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.03 }}
-      className="rounded-lg shadow-lg mb-4 transition-all duration-300 hover:scale-105 hover:z-50 hover:shadow-2xl relative block w-full group"
+      className="pointer-events-none relative mb-4 w-full rounded-lg shadow-lg transition-all duration-300 md:pointer-events-auto md:hover:z-50 md:hover:scale-105 md:hover:shadow-2xl group"
       onClick={() => onSelect(image)}
       aria-label={`${image.title || "작품"} 크게 보기`}
     >

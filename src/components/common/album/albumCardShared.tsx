@@ -8,16 +8,22 @@ const ALBUM_IMAGE_SIZES = "(max-width: 767px) calc(100vw - 2rem), (max-width: 12
 export function AlbumCardImage({
   card,
   index,
+  src = card.url,
+  alt = card.alt,
+  className = "object-contain",
 }: {
   card: AlbumCard;
   index: number;
+  src?: string;
+  alt?: string;
+  className?: string;
 }) {
   return (
     <FallbackImage
-      src={card.url}
-      alt={card.alt}
+      src={src}
+      alt={alt}
       fill
-      className="object-contain"
+      className={className}
       sizes={ALBUM_IMAGE_SIZES}
       priority={index === 0}
       quality={card.isExternal ? 85 : 60}

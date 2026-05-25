@@ -7,6 +7,10 @@ const toGalleryQuerySlug = (collectionSlug: string) =>
 
 export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
   const collections = new Map<string, NonNullable<MediaType["collection"]>>();
+  const collectionPreviewImages = new Map<
+    string,
+    NonNullable<AlbumCard["previewImages"]>
+  >();
 
   medias.forEach((media) => {
     if (
@@ -14,6 +18,18 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
       (media.collection.location === "GALLERY" || media.location === "GALLERY")
     ) {
       collections.set(media.collection.slug, media.collection);
+
+      const previewUrl = getPublicMediaUrl(media.publicUrl);
+      if (!previewUrl || media.type !== "IMAGE") return;
+
+      const previewImages = collectionPreviewImages.get(media.collection.slug) ?? [];
+      if (previewImages.length >= 3) return;
+
+      previewImages.push({
+        url: previewUrl,
+        alt: media.altText ?? media.title ?? media.collection.title,
+      });
+      collectionPreviewImages.set(media.collection.slug, previewImages);
     }
   });
 
@@ -29,6 +45,10 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
         title: collection.title,
         alt: collection.title,
         slug: toGalleryQuerySlug(collection.slug),
+        previewImages: [
+          { url: thumbnailUrl, alt: collection.title },
+          ...(collectionPreviewImages.get(collection.slug) ?? []),
+        ].slice(0, 3),
         order: collection.orderIndex,
       });
 
@@ -47,6 +67,12 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
       alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
       slug: null,
       isExternal: true,
+      previewImages: [
+        {
+          url: getPublicMediaUrl(instagramImage.publicUrl) ?? "",
+          alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
+        },
+      ],
     }
     : null;
 

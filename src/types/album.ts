@@ -1,5 +1,10 @@
 import type { MotionValue } from "framer-motion";
 
+export type AlbumCardPreviewImage = {
+  url: string;
+  alt: string;
+};
+
 export type AlbumCard = {
   id: string;
   url: string;
@@ -7,6 +12,7 @@ export type AlbumCard = {
   alt: string;
   slug: string | null;
   isExternal?: boolean;
+  previewImages?: AlbumCardPreviewImage[];
 };
 
 export type OrderedAlbumCard = AlbumCard & {

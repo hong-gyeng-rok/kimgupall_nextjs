@@ -19,7 +19,7 @@ const VIDEO_OPACITY_RANGE = [1, 1];
 const VIDEO_PLAY_PROGRESS = 0.9;
 const DEFAULT_VIDEO_ASPECT_RATIO = "3 / 4";
 const VIDEO_CARD_CLASS =
-  "relative w-[88vw] md:w-[56vw] xl:w-[42vw] max-h-[85vh] flex flex-col gap-5 p-6 rounded-3xl bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl";
+  "relative  flex flex-col p-6 rounded-md bg-black/10 backdrop-blur-lg border border-white/30 shadow-2xl";
 
 type DrawingCourseSceneProps = {
   medias?: MediaType[];
@@ -107,47 +107,80 @@ export function DrawingCourseScene({
 
   // yachaMvMedia width height 값 알아오기
   return (
-    <motion.div
-      style={{ backgroundColor: SCENE_BACKGROUND_COLOR }}
-      className="h-full w-full relative"
-    >
-      <div className="absolute inset-0 sm:flex items-center justify-center md:p-20">
 
-        <motion.div
-          style={{ opacity: videoOpacity }}
-          className="absolute inset-0 flex items-center-safe justify-center mb-10 z-20"
-        >
-          <div className={VIDEO_CARD_CLASS}>
-            <div
-              className="relative rounded-2xl overflow-hidden shadow-xl bg-black/10"
-              style={{ aspectRatio: videoAspectRatio }}
-            >
-              {drawingCourseVideoSrc && (
-                <video
-                  ref={videoRef}
-                  src={drawingCourseVideoSrc}
-                  className="inset-0 object-contain w-full h-full"
-                  width={MVWidth}
-                  height={MVHeight}
-                  muted
-                  loop
-                  preload="auto"
-                  playsInline
-                  onTimeUpdate={handleTimeUpdate}
-                />
-              )}
-            </div>
-
-            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-black shadow-[0_0_8px_rgba(0,0,0,0.8)]"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-        </motion.div>
+    <div className="grid grid-cols-3 gap-5 h-fit px-30">
+      <div className="text-white flex flex-col justify-start items-start  h-fit">
+        <h1 className="font-bold text-9xl">
+          YaCha
+        </h1>
+        <p className="w-50% text-3xl">
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+        </p>
       </div>
+      <motion.div
+        style={{ backgroundColor: SCENE_BACKGROUND_COLOR }}
+        className="h-fit w-full flex justify-center items-center"
+      >
+        <div className="relative inset-0 sm:flex items-center justify-center">
 
-    </motion.div>
+          <motion.div
+            style={{ opacity: videoOpacity }}
+            className="static inset-0 flex items-center-safe justify-center"
+          >
+            <div className={VIDEO_CARD_CLASS}>
+              <div
+                className=" rounded-2xl overflow-hidden shadow-xl bg-black/10"
+                style={{ aspectRatio: videoAspectRatio }}
+              >
+                {drawingCourseVideoSrc && (
+                  <video
+                    ref={videoRef}
+                    src={drawingCourseVideoSrc}
+                    className="inset-0 object-contain w-full h-full"
+                    width={MVWidth}
+                    height={MVHeight}
+                    muted
+                    loop
+                    preload="auto"
+                    playsInline
+                    onTimeUpdate={handleTimeUpdate}
+                  />
+                )}
+              </div>
+
+              <div className="w-auto h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-white shadow-[0_0_8px_rgba(0,0,0,0.8)]"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+      </motion.div>
+      <div className="text-white flex flex-col justify-end items-start ">
+        <h1 className="font-bold text-9xl">
+          YaCha
+        </h1>
+        <p className="w-50% text-3xl">
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+          test commeents
+        </p>
+      </div>
+    </div>
   );
 }

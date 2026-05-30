@@ -8,11 +8,6 @@ import { useRouter } from "next/navigation";
 
 const navLinks = [
   {
-    id: 1,
-    title: "홈",
-    url: "/",
-  },
-  {
     id: 2,
     title: "뒤로가기",
     url: "#",
@@ -48,7 +43,7 @@ function Nav({ link }: { link: Link }) {
   return (
     <InternalLink
       data-testid="GalleryFooterNavLink"
-      className="flex items-center justify-center text-center md:w-25 md:h-10 relative text-black text-md md:text-lg p-2 rounded-full transition-all duration-300 hover:bg-black hover:text-white hover:scale-105 hover:shadow-xl"
+      className="flex items-center justify-center text-center md:w-25 md:h-10 relative text-white text-md md:text-lg p-2 rounded-full transition-all duration-300 hover:bg-white hover:text-white hover:scale-105 hover:shadow-xl"
       href={link.url}
       ariaLabel={`${link.title}으로 이동`}
       onClick={handleOnClick}

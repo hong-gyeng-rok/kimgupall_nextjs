@@ -46,7 +46,7 @@ export function AlbumHorizontalCard({
             {stackImages.slice(1).map((image, stackIndex) => (
               <div
                 key={`${image.url}-${stackIndex}`}
-                className={`absolute inset-0 overflow-hidden rounded-xl border border-white/60 bg-gray-100 shadow-lg transition-all duration-500 ease-out ${stackIndex === 0
+                className={`absolute inset-0 overflow-hidden border border-white/60 bg-gray-100 shadow-lg transition-all duration-500 ease-out ${stackIndex === 0
                   ? "translate-x-2 translate-y-2 rotate-3 group-hover:translate-x-4 group-hover:-translate-y-1 group-hover:rotate-8"
                   : "-translate-x-2 translate-y-4 -rotate-3 group-hover:-translate-x-5 group-hover:translate-y-1 group-hover:-rotate-8"
                   }`}
@@ -64,7 +64,7 @@ export function AlbumHorizontalCard({
         )}
 
         <div
-          className={`relative z-10 h-full w-full overflow-hidden rounded-lg bg-gray-100 shadow-sm transition-all duration-300 ${!isInstagram ? "group-hover:ring-2 group-hover:ring-black/50" : ""}`}
+          className={`relative z-10 h-full w-full overflow-hidden bg-black/20 shadow-sm transition-all duration-300 ${!isInstagram ? "group-hover:ring-2 group-hover:ring-black/50" : ""}`}
         >
           <AlbumCardImage card={card} index={index} />
 
@@ -97,7 +97,7 @@ export function AlbumHorizontalCard({
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
 
               <p className="absolute bottom-5 left-5 right-5 text-white text-2xl font-bold drop-shadow-md translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                {card.title}
+                {card.title + " 작품 보기"}
               </p>
 
               <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/70 bg-white px-5 py-2 text-black text-xs font-semibold tracking-wider shadow-lg translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">

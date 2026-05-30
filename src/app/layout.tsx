@@ -31,13 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const previewImageUrl = await getSitePreviewImageUrl();
   const previewImages = previewImageUrl
     ? [
-        {
-          url: previewImageUrl,
-          width: 1200,
-          height: 630,
-          alt: "kimgupall 작품 미리보기",
-        },
-      ]
+      {
+        url: previewImageUrl,
+        width: 1200,
+        height: 630,
+        alt: "kimgupall 작품 미리보기",
+      },
+    ]
     : [];
 
   return {
@@ -72,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${chosunGoosu.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <QueryProvider>{children}</QueryProvider>
       </body>

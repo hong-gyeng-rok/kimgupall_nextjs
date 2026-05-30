@@ -23,13 +23,13 @@ export default function MainTitleAnimation() {
   // 2. 스크롤 진행률(0 -> 1)에 따라 색상 매핑
   const backgroundColor = useTransform(
     scrollYProgress,
-    [0.5, 1],
+    [1, 1],
     ["#000000", "#000000"],
   );
   const textColor = useTransform(
     scrollYProgress,
-    [0.5, 1],
-    ["#ffffff", "#000000"],
+    [1, 1],
+    ["#ffffff", "#ffffff"],
   );
   const trapOpacity = useTransform(scrollYProgress, [0.5, 1], [1, 0]);
 
@@ -38,7 +38,7 @@ export default function MainTitleAnimation() {
     <article
       id="MainTitleAnimation"
       ref={targetRef}
-      className="h-[200vh] relative w-screen font-sans"
+      className="h-dvh relative w-screen font-sans"
     >
       <motion.div
         style={{

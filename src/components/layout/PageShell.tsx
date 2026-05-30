@@ -25,7 +25,7 @@ export default function PageShell({
         />
       )}
 
-      <div className="relative z-10 min-h-dvh">{children}</div>
+      <div className="relative z-10 min-h-dvh ">{children}</div>
     </main>
   );
 }

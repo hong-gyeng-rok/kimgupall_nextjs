@@ -19,7 +19,7 @@ type ScrollytellingSectionProps = {
 export function ScrollytellingSection({
   children,
   className = "",
-  scrollLengthClassName = "h-[300vh]",
+  scrollLengthClassName = "h-dvh",
   stageClassName = "",
   offset = ["start start", "end end"],
 }: ScrollytellingSectionProps) {
@@ -33,7 +33,7 @@ export function ScrollytellingSection({
   return (
     <section
       ref={containerRef}
-      className={`relative w-full ${scrollLengthClassName} ${className}`}
+      className={`relative w-full  ${scrollLengthClassName} ${className}`}
     >
       <div
         className={`sticky top-0 h-screen w-full overflow-hidden ${stageClassName}`}

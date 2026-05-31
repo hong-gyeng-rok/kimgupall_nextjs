@@ -58,7 +58,7 @@ export default function ExhibitionTextSection({
     >
       {isEnding && <div aria-hidden="true" />}
 
-      <div className="mx-auto max-w-5xl text-center [font-family:var(--font-kimsaeng)]">
+      <div className="mx-auto max-w-5xl text-center [font-family:var(--font-kimsaeng)] ">
         {eyebrow ? (
           <motion.p
             variants={itemMotion}
@@ -73,14 +73,14 @@ export default function ExhibitionTextSection({
           variants={itemMotion}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.12 }}
           className={[
-            "mt-6 font-black leading-[0.95] tracking-[-0.04em]",
+            " font-black leading-[0.95] tracking-[-0.04em] ",
             isEnding
-              ? "text-5xl md:text-8xl lg:text-9xl"
-              : "text-6xl md:text-8xl lg:text-9xl",
+              ? "text-5xl md:text-8xl"
+              : "text-6xl md:text-8xl ",
           ].join(" ")}
         >
           {titleLines.map((line) => (
-            <span key={line} className="block">
+            <span key={line} className="block mt-6 ">
               {line}
             </span>
           ))}

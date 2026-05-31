@@ -9,11 +9,25 @@ type ShowcaseProps = {
   endIndex?: number;
 };
 
-const TEST_PROFILE = `'분노의 야차'는 과거의 죄악을 겪고, '야차'가 되어 도시의 어둠 속에 숨어서 분노의 대상을 찾고있습니다.
-분노를 터뜨리는 푸른 불꽃은 여전히 숨쉬고 있습니다.`;
+const TEST_PROFILE = (
+  <>
+    <strong className="font-bold text-white">'분노의 야차'</strong>는 과거의
+    죄악을 겪고, <strong className="font-bold text-white">'야차'</strong>가 되어 도시의 어둠 속에 숨어서 분노의 대상을
+    찾고있습니다.
+    <br />
+    분노를 터뜨리는 <strong className="font-bold text-white">푸른 불꽃</strong>은 여전히 숨쉬고 있습니다.
+  </>
+);
 
-const TEST_MOTIF = `한국의 귀신 '도깨비'를 모티브로 도깨비의 방망이를 현대적인 야구배트로 변화 시켰습니다.
-'분노'를 현대의 야차의 모습으로 형상화 되었습니다.`;
+const TEST_MOTIF = (
+  <>
+    한국의 귀신 <strong className="font-bold text-white">'도깨비'</strong>를
+    모티브로 도깨비의 <strong className="font-bold text-white">방망이</strong>를 현대적인 <strong className="font-bold text-white">야구배트</strong>
+    <br />
+    <strong className="font-bold text-white">'분노'</strong>를 현대의 야차의
+    모습으로 형상화 되었습니다.
+  </>
+);
 
 export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
   const { data: images = [] } = useCollectionImages("gallery-yacha");
@@ -39,6 +53,7 @@ export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
             profile={TEST_PROFILE}
             motifTitle="MOTIF"
             motif={TEST_MOTIF}
+            reversed={index % 2 === 1}
           />
         );
       })}

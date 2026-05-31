@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 
 type ArtworkDetailSectionProps = {
@@ -8,9 +9,10 @@ type ArtworkDetailSectionProps = {
   title: string;
   image: string;
   alt: string;
-  profile: string;
+  profile: ReactNode;
   motifTitle?: string;
-  motif: string;
+  motif: ReactNode;
+  reversed?: boolean;
 };
 
 const fadeUp = {
@@ -25,9 +27,14 @@ export default function ArtworkDetailSection({
   image,
   alt,
   profile,
-  motifTitle = "MOTIF: 도깨비",
   motif,
+  reversed = false,
 }: ArtworkDetailSectionProps) {
+  const textOrderClass = reversed
+    ? "md:order-2 md:pl-10"
+    : "md:order-1 md:pr-10";
+  const imageOrderClass = reversed ? "md:order-1" : "md:order-2";
+
   return (
     <article className="flex justify-center items-center min-h-dvh shrink-0 snap-start bg-black px-6 py-12 text-white md:px-14 md:py-16">
       <motion.div
@@ -35,7 +42,7 @@ export default function ArtworkDetailSection({
         whileInView="visible"
         viewport={{ once: true, amount: 0.35 }}
         transition={{ staggerChildren: 0.12 }}
-        className="order-2 flex flex-col justify-center md:order-1 md:pr-10"
+        className={`order-2 flex flex-col justify-center ${textOrderClass}`}
       >
         <motion.p
           variants={fadeUp}
@@ -49,7 +56,7 @@ export default function ArtworkDetailSection({
           <motion.h2
             variants={fadeUp}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="text-5xl font-black leading-none tracking-tight md:text-6xl lg:text-7xl"
+            className="text-5xl font-black leading-none tracking-tight md:text-6xl lg:text-7xl mb-8"
           >
             {title}
           </motion.h2>
@@ -67,7 +74,7 @@ export default function ArtworkDetailSection({
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true, amount: 0.35 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.12 }}
-          className="mt-8 h-px origin-left bg-white/50"
+          className=" h-px origin-left bg-white/50"
         />
 
         <motion.div
@@ -78,7 +85,7 @@ export default function ArtworkDetailSection({
           <h3 className="text-3xl font-black tracking-tight md:text-5xl">
             PROFILE
           </h3>
-          <p className="mt-4 whitespace-pre-line text-base leading-relaxed text-white/80 md:text-xl">
+          <p className="mt-4 px-10 w-[80%] whitespace-pre-line text-base leading-relaxed text-white/80 md:text-xl">
             {profile}
           </p>
         </motion.div>
@@ -89,9 +96,9 @@ export default function ArtworkDetailSection({
           className="mt-10"
         >
           <h3 className="text-3xl font-black tracking-tight md:text-5xl">
-            {motifTitle}
+            MOTIF: 도깨비
           </h3>
-          <p className="mt-4 whitespace-pre-line text-base leading-relaxed text-white/80 md:text-xl">
+          <p className="mt-4 px-10 w-[80%] whitespace-pre-line text-base leading-relaxed text-white/80 md:text-xl">
             {motif}
           </p>
         </motion.div>
@@ -102,12 +109,12 @@ export default function ArtworkDetailSection({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.35 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="order-1 flex items-center justify-center pb-10 md:order-2 md:pb-0 w-fit"
+        className={`order-1 flex items-center justify-center pb-10 md:pb-0 w-fit ${imageOrderClass}`}
       >
         <img
           src={image}
           alt={alt}
-          className="max-h-[52dvh] w-full object-contain md:max-h-[82dvh]"
+          className="h-fit w-full object-contain md:max-h-[82dvh]"
         />
       </motion.div>
     </article>

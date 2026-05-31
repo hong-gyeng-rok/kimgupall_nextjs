@@ -42,7 +42,7 @@ export default function MainTitleAnimation() {
       >
         <h3 className="contents">
           <Typewriter
-            className="text-[clamp(1.2rem,4vw,5rem)] z-20 font-light italic text-center whitespace-nowrap"
+            className="text-6xl z-20 font-light italic text-center whitespace-nowrap"
             text="ARTIST BY KIMGUPALL"
             speed={0.1}
             show={true}
@@ -50,7 +50,7 @@ export default function MainTitleAnimation() {
         </h3>
         <h1 className="contents">
           <Typewriter
-            className="text-[clamp(3rem,13vw,16rem)] z-20 leading-none text-center whitespace-nowrap"
+            className="text-9xl z-20 leading-none text-center whitespace-nowrap"
             text="GRADUATION"
             speed={0.2}
             delay={1}
@@ -59,7 +59,7 @@ export default function MainTitleAnimation() {
         </h1>
         <h2 className="contents">
           <Typewriter
-            className="text-[clamp(2rem,10vw,11rem)] z-20 leading-none text-center whitespace-nowrap"
+            className="text-9xl z-20 leading-none text-center whitespace-nowrap"
             text="2026"
             speed={0.3}
             show={true}

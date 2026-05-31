@@ -16,7 +16,7 @@ export default function Album() {
   }
 
   return (
-    <section className="relative z-10 flex h-dvh w-full items-center justify-center overflow-hidden px-6 py-8">
+    <section className="relative z-10 flex h-dvh w-full items-center justify-center overflow-hidden px-6 py-12">
       <AlbumHorizontalScene cards={cards} isLoading={isLoading} />
     </section>
   );

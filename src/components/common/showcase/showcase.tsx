@@ -22,13 +22,13 @@ export default function Showcase() {
             key={item.id}
             className="flex h-dvh shrink-0 snap-start items-center justify-center"
           >
-            <div className="h-fit flex flex-row gap-5 px-30">
+            <div className="h-fit flex flex-row gap-10 w-fit">
               <div className="flex flex-col items-start justify-end text-white  w-fit mt-50 gap-10 [font-family:var(--font-kimsaeng)]">
-                <h1 className="font-bold text-8xl">{title}</h1>
-                <p className="w-full whitespace-pre-line text-4xl opacity-80">{comment}</p>
+                <h1 className="font-bold text-6xl">{title}</h1>
+                <p className="w-full whitespace-pre-line text-3xl opacity-80">{comment}</p>
               </div>
 
-              <div className="h-fit w-2xl">
+              <div className="w-xl h-[75vdh]">
                 <div className=" rounded-md ">
                   <img
                     src={imageUrl}

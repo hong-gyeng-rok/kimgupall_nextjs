@@ -4,11 +4,18 @@ import "./globals.css";
 import QueryProvider from "@/components/providers/queryProvider";
 import localFont from "next/font/local";
 import { getSitePreviewImageUrl } from "@/lib/media";
+import { Analytics } from "@vercel/analytics/next";
 
-const chosunGoosu = localFont({
+const chosunGosu = localFont({
   src: "./fonts/ChosunCentennial.ttf",
   display: "swap",
   variable: "--font-goosu",
+});
+
+const chungjuKimSaeng = localFont({
+  src: "./fonts/ChungjuKimSaeng.ttf",
+  display: "swap",
+  variable: "--font-kimsaeng",
 });
 
 const geistSans = Geist({
@@ -72,9 +79,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={` ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${chosunGosu.variable} ${chungjuKimSaeng.variable} antialiased`}
       >
         <QueryProvider>{children}</QueryProvider>
+        <Analytics />
       </body>
     </html>
   );

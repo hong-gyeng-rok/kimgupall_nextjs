@@ -18,6 +18,9 @@ export default async function Home() {
         data-testid="HomeView"
         className="text-white flex h-dvh w-full flex-col overflow-y-auto bg-none snap-y snap-mandatory"
       >
+        <div className="h-dvh shrink-0 snap-start">
+          <MainTitleAnimation />
+        </div>
         <div id="section-intro" className="h-dvh shrink-0 snap-start">
           <IntroScrollScene />
         </div>
@@ -31,9 +34,6 @@ export default async function Home() {
         <Showcase startIndex={4} />
         <div id="section-album" className="h-dvh shrink-0 snap-start">
           <Album />
-        </div>
-        <div className="h-dvh shrink-0 snap-start">
-          <MainTitleAnimation />
         </div>
         <ExhibitionTextSection
           variant="ending"

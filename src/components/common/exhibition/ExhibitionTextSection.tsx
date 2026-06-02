@@ -45,7 +45,7 @@ export default function ExhibitionTextSection({
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.35 }}
+      viewport={{ once: false, amount: 0.35 }}
       variants={sectionMotion}
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={[
@@ -111,7 +111,7 @@ export default function ExhibitionTextSection({
         <motion.dl
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ staggerChildren: 0.08, delayChildren: 0.45 }}
           className="grid gap-6 text-xs tracking-[0.2em] text-white/50 md:grid-cols-3 md:text-sm"
         >

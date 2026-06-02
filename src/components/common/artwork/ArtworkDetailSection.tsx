@@ -40,7 +40,7 @@ export default function ArtworkDetailSection({
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.35 }}
+        viewport={{ once: false, amount: 0.35 }}
         transition={{ staggerChildren: 0.12 }}
         className={`order-2 flex flex-col justify-center ${textOrderClass}`}
       >
@@ -72,7 +72,7 @@ export default function ArtworkDetailSection({
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
-          viewport={{ once: true, amount: 0.35 }}
+          viewport={{ once: false, amount: 0.35 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.12 }}
           className=" h-px origin-left bg-white/50"
         />
@@ -107,7 +107,7 @@ export default function ArtworkDetailSection({
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.35 }}
+        viewport={{ once: false, amount: 0.35 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`order-1 flex items-center justify-center pb-10 md:pb-0 w-fit ${imageOrderClass}`}
       >

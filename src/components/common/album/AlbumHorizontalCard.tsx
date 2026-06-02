@@ -97,7 +97,7 @@ export function AlbumHorizontalCard({
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/35 to-transparent" />
 
               <p className="absolute bottom-5 left-5 right-5 text-white text-2xl font-bold drop-shadow-md translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                {card.title + " 작품 보기"}
+                {card.title + " 보기"}
               </p>
 
               <div className="absolute right-4 top-4 flex items-center gap-2 rounded-full border border-white/70 bg-white px-5 py-2 text-black text-xs font-semibold tracking-wider shadow-lg translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">

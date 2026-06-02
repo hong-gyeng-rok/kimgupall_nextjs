@@ -40,14 +40,6 @@ export default function MainTitleAnimation() {
         }}
         className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors gap-[2vh] md:gap-[4vh] px-4 overflow-hidden"
       >
-        <h3 className="contents">
-          <Typewriter
-            className="text-6xl z-20 font-light italic text-center whitespace-nowrap"
-            text="ARTIST BY KIMGUPALL"
-            speed={0.1}
-            show={true}
-          />
-        </h3>
         <h1 className="contents">
           <Typewriter
             className="text-9xl z-20 leading-none text-center whitespace-nowrap"
@@ -66,6 +58,15 @@ export default function MainTitleAnimation() {
             delay={2}
           />
         </h2>
+        <h3 className="contents">
+          <Typewriter
+            className="text-4xl text-white/70 z-20 font-light italic text-center whitespace-nowrap"
+            text="ARTIST BY KIMGUPALL"
+            speed={0.4}
+            show={true}
+            delay={3}
+          />
+        </h3>
       </motion.div>
     </article>
   );

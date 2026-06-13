@@ -39,10 +39,17 @@ function useIsDesktop() {
     const updateIsDesktop = () => setIsDesktop(mediaQuery.matches);
 
     updateIsDesktop();
-    mediaQuery.addEventListener("change", updateIsDesktop);
 
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", updateIsDesktop);
+      return () => {
+        mediaQuery.removeEventListener("change", updateIsDesktop);
+      };
+    }
+
+    mediaQuery.addListener(updateIsDesktop);
     return () => {
-      mediaQuery.removeEventListener("change", updateIsDesktop);
+      mediaQuery.removeListener(updateIsDesktop);
     };
   }, []);
 

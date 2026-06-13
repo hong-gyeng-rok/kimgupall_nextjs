@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import ArtworkDetailSection from "@/components/common/artwork/ArtworkDetailSection";
 import MobileArtworkShowcase from "@/components/common/showcase/MobileArtworkShowcase";
 import { useCollectionImages } from "@/hooks/useImages";
@@ -30,7 +31,26 @@ const TEST_MOTIF = (
   </>
 );
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const updateIsDesktop = () => setIsDesktop(mediaQuery.matches);
+
+    updateIsDesktop();
+    mediaQuery.addEventListener("change", updateIsDesktop);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateIsDesktop);
+    };
+  }, []);
+
+  return isDesktop;
+}
+
 export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
+  const isDesktop = useIsDesktop();
   const { data: images = [] } = useCollectionImages("gallery-yacha");
   const visibleImages = images.slice(startIndex, endIndex);
 
@@ -57,26 +77,28 @@ export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
     })
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
 
+  if (isDesktop === null) return null;
+
+  if (!isDesktop) {
+    return <MobileArtworkShowcase items={showcaseItems} />;
+  }
+
   return (
     <>
-      <MobileArtworkShowcase items={showcaseItems} />
-
-      <div className="hidden md:contents">
-        {showcaseItems.map((item) => (
-          <ArtworkDetailSection
-            key={item.id}
-            logoText={item.logoText}
-            number={item.number}
-            title={item.title}
-            image={item.image}
-            alt={item.alt}
-            profile={item.profile}
-            motifTitle={item.motifTitle}
-            motif={item.motif}
-            reversed={item.reversed}
-          />
-        ))}
-      </div>
+      {showcaseItems.map((item) => (
+        <ArtworkDetailSection
+          key={item.id}
+          logoText={item.logoText}
+          number={item.number}
+          title={item.title}
+          image={item.image}
+          alt={item.alt}
+          profile={item.profile}
+          motifTitle={item.motifTitle}
+          motif={item.motif}
+          reversed={item.reversed}
+        />
+      ))}
     </>
   );
 }

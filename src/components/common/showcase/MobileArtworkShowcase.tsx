@@ -9,6 +9,8 @@ type MobileArtworkShowcaseItem = {
   image: string;
   alt: string;
   number: string;
+  width?: number | null;
+  height?: number | null;
   profile: ReactNode;
   motif: ReactNode;
   motifTitle?: string;
@@ -49,6 +51,10 @@ export default function MobileArtworkShowcase({
         const isOpen = openId === item.id;
         const panelId = `showcase-panel-${item.id}`;
 
+        const isOversizedImage =
+          Boolean(item.width && item.height) &&
+          Number(item.width) * Number(item.height) > 80_000_000;
+
         return (
           <article key={item.id} className="overflow-hidden bg-black">
             <button
@@ -59,17 +65,21 @@ export default function MobileArtworkShowcase({
               className="group block w-full text-left"
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-950">
-                <FallbackImage
-                  src={item.image}
-                  alt={item.alt || item.title}
-                  fill
-                  className={`object-cover transition-transform duration-500 ease-out ${
-                    isOpen ? "scale-100" : "scale-[1.01]"
-                  }`}
-                  sizes="100vw"
-                  quality={70}
-                  placeholder="empty"
-                />
+                {isOversizedImage ? (
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.12),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(0,0,0,0.92))]" />
+                ) : (
+                  <FallbackImage
+                    src={item.image}
+                    alt={item.alt || item.title}
+                    fill
+                    className={`object-cover transition-transform duration-500 ease-out ${
+                      isOpen ? "scale-100" : "scale-[1.01]"
+                    }`}
+                    sizes="(max-width: 767px) 420px, 100vw"
+                    quality={45}
+                    placeholder="empty"
+                  />
+                )}
                 <div
                   className={`absolute inset-0 bg-black transition-opacity duration-300 ${
                     isOpen ? "opacity-10" : "opacity-0"

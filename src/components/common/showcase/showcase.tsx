@@ -76,6 +76,8 @@ export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
         title,
         image: imageUrl,
         alt,
+        width: item.width,
+        height: item.height,
         profile: TEST_PROFILE,
         motifTitle: "도깨비",
         motif: TEST_MOTIF,

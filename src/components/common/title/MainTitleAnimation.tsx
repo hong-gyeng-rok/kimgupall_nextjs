@@ -1,73 +1,98 @@
 "use client";
 
-import { useScroll, useTransform, motion } from "framer-motion";
-import { useRef } from "react";
+import { motion, type MotionValue, useTransform } from "framer-motion";
 import Typewriter from "@/components/common/Typewriter";
 
-export default function MainTitleAnimation() {
+type MainTitleAnimationProps = {
+  progress: MotionValue<number>;
+};
 
-  const targetRef = useRef<HTMLDivElement>(null);
+const sidebarWidthClass = "md:w-[clamp(140px,11.5vw,174px)]";
 
-  // 1. 타겟 요소의 스크롤 진행률을 추적 (0 ~ 1)
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"], // 요소의 시작이 뷰포트 시작에 닿을 때 ~ 끝이 뷰포트 끝에 닿을 때
-  });
-  // 2. 스크롤 진행률(0 -> 1)에 따라 색상 매핑
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [1, 1],
-    ["#000000", "#000000"],
-  );
-  const textColor = useTransform(
-    scrollYProgress,
-    [1, 1],
-    ["#ffffff", "#ffffff"],
-  );
-  const trapOpacity = useTransform(scrollYProgress, [0.5, 1], [1, 0]);
+export default function MainTitleAnimation({ progress }: MainTitleAnimationProps) {
+  const centerScale = useTransform(progress, [0, 0.78, 1], [1, 0.72, 0.48]);
+  const centerY = useTransform(progress, [0, 1], [0, -96]);
+  const centerOpacity = useTransform(progress, [0, 0.72, 1], [1, 0.55, 0]);
+
+  const sidebarOpacity = useTransform(progress, [0.5, 0.85], [0, 1]);
+  const sidebarX = useTransform(progress, [0.45, 0.85], [-24, 0]);
+  const sidebarBorderOpacity = useTransform(progress, [0.55, 1], [0, 1]);
+
+  const yachaY = useTransform(progress, [0.68, 1], [-56, 0]);
+  const yachaOpacity = useTransform(progress, [0.68, 0.9], [0, 1]);
 
   return (
-    // 높이를 넉넉히 주어 스크롤 공간 확보
     <article
       id="MainTitleAnimation"
-      ref={targetRef}
-      className="h-dvh relative w-screen font-sans"
+      className="relative h-full w-screen bg-black font-sans text-white"
     >
-      <motion.div
-        style={{
-          backgroundColor: backgroundColor,
-          color: textColor,
-        }}
-        className="items-center sticky top-0 left-0 h-screen flex flex-col justify-center font-bold transition-colors gap-[2vh] md:gap-[4vh] px-4 overflow-hidden"
+      <motion.aside
+        style={{ opacity: sidebarOpacity, x: sidebarX }}
+        className={`pointer-events-none fixed left-0 top-0 z-30 hidden h-dvh ${sidebarWidthClass} flex-col justify-between overflow-hidden md:flex md:border-r md:border-white/10 md:bg-black md:px-5 md:py-7`}
+        aria-hidden="true"
       >
-        <h1 className="contents">
+        <motion.div
+          style={{ opacity: sidebarBorderOpacity }}
+          className="absolute right-0 top-0 hidden h-full w-px bg-white/10 md:block"
+        />
+
+        <div className="relative z-10 space-y-2 md:space-y-3">
+          <motion.p
+            style={{ y: yachaY, opacity: yachaOpacity }}
+            className="text-center [font-family:var(--font-kimsaeng)] text-4xl font-black leading-none text-white"
+          >
+            七罪宗
+          </motion.p>
+          <p className="w-full whitespace-nowrap text-2xl font-black uppercase leading-none tracking-[-0.1em] text-white">
+            GRADUATION
+          </p>
+          <p className="text-right text-base font-light leading-none tracking-[-0.04em] text-white/90">
+            2026
+          </p>
+        </div>
+
+        <div className="relative z-10 text-left uppercase leading-none tracking-[-0.04em]">
+          <p className="text-base font-light text-white/70">
+            ARTIST BY
+          </p>
+          <p className="mt-1 text-2xl font-black">
+            KIMGUPALL
+          </p>
+        </div>
+      </motion.aside>
+
+      <div className="sticky left-0 top-0 flex h-dvh w-full items-center justify-center overflow-hidden bg-black px-4">
+        <motion.div
+          style={{ scale: centerScale, y: centerY, opacity: centerOpacity }}
+          className="flex origin-center flex-col items-center justify-center gap-[2vh] text-center md:gap-[4vh]"
+        >
+          <h1 className="contents">
+            <Typewriter
+              className="z-20 whitespace-nowrap text-[clamp(2.75rem,12vw,4.5rem)] font-black leading-none tracking-[-0.08em] md:text-9xl"
+              text="GRADUATION"
+              speed={0.2}
+              delay={1}
+              show={true}
+            />
+          </h1>
+          <h2 className="contents">
+            <Typewriter
+              className="z-20 whitespace-nowrap text-[clamp(3rem,16vw,4.5rem)] font-black leading-none tracking-[-0.08em] md:text-9xl"
+              text="2026"
+              speed={0.3}
+              show={true}
+              delay={2}
+            />
+          </h2>
           <Typewriter
-            className="text-9xl z-20 leading-none text-center whitespace-nowrap"
-            text="GRADUATION"
-            speed={0.2}
-            delay={1}
-            show={true}
-          />
-        </h1>
-        <h2 className="contents">
-          <Typewriter
-            className="text-9xl z-20 leading-none text-center whitespace-nowrap"
-            text="2026"
-            speed={0.3}
-            show={true}
-            delay={2}
-          />
-        </h2>
-        <h3 className="contents">
-          <Typewriter
-            className="text-4xl text-white/70 z-20 font-light italic text-center whitespace-nowrap"
+            className="z-20 whitespace-nowrap text-center text-lg font-light italic leading-none text-white/70 md:text-4xl"
             text="ARTIST BY KIMGUPALL"
             speed={0.4}
             show={true}
             delay={3}
           />
-        </h3>
-      </motion.div>
+        </motion.div>
+      </div>
     </article>
   );
 }

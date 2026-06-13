@@ -1,6 +1,7 @@
 "use client";
 
 import ArtworkDetailSection from "@/components/common/artwork/ArtworkDetailSection";
+import MobileArtworkShowcase from "@/components/common/showcase/MobileArtworkShowcase";
 import { useCollectionImages } from "@/hooks/useImages";
 import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
@@ -33,30 +34,49 @@ export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
   const { data: images = [] } = useCollectionImages("gallery-yacha");
   const visibleImages = images.slice(startIndex, endIndex);
 
+  const showcaseItems = visibleImages
+    .map((item, index) => {
+      const imageUrl = getPublicMediaUrl(item.publicUrl);
+      const title = item.title ?? "야차도";
+      const alt = item.altText || item.title || "작품 이미지";
+
+      if (!imageUrl) return null;
+
+      return {
+        id: item.id,
+        logoText: "夜叉",
+        number: `No.${startIndex + index + 1}`,
+        title,
+        image: imageUrl,
+        alt,
+        profile: TEST_PROFILE,
+        motifTitle: "도깨비",
+        motif: TEST_MOTIF,
+        reversed: index % 2 === 1,
+      };
+    })
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+
   return (
     <>
-      {visibleImages.map((item, index) => {
-        const imageUrl = getPublicMediaUrl(item.publicUrl);
-        const title = item.title ?? "야차도";
-        const alt = item.altText || item.title || "작품 이미지";
+      <MobileArtworkShowcase items={showcaseItems} />
 
-        if (!imageUrl) return null;
-
-        return (
+      <div className="hidden md:contents">
+        {showcaseItems.map((item) => (
           <ArtworkDetailSection
             key={item.id}
-            logoText="夜叉"
-            number={`No.${startIndex + index + 1}`}
-            title={title}
-            image={imageUrl}
-            alt={alt}
-            profile={TEST_PROFILE}
-            motifTitle="MOTIF"
-            motif={TEST_MOTIF}
-            reversed={index % 2 === 1}
+            logoText={item.logoText}
+            number={item.number}
+            title={item.title}
+            image={item.image}
+            alt={item.alt}
+            profile={item.profile}
+            motifTitle={item.motifTitle}
+            motif={item.motif}
+            reversed={item.reversed}
           />
-        );
-      })}
+        ))}
+      </div>
     </>
   );
 }

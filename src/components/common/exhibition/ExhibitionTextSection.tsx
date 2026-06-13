@@ -113,7 +113,7 @@ export default function ExhibitionTextSection({
           whileInView="visible"
           viewport={{ once: false, amount: 0.2 }}
           transition={{ staggerChildren: 0.08, delayChildren: 0.45 }}
-          className="grid gap-6 text-xs tracking-[0.2em] text-white/50 md:grid-cols-3 md:text-sm"
+          className="grid gap-6 text-center text-xs tracking-[0.2em] text-white/50 md:grid-cols-3 md:text-sm"
         >
           {contacts.map((contact) => (
             <motion.div key={contact.label} variants={itemMotion}>

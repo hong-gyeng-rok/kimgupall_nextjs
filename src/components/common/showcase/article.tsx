@@ -30,7 +30,7 @@ export default function Article({
                 />
               </div>
 
-              <div className="h-1.5 w-auto overflow-hidden rounded-full bg-white/20">
+              <div className="h-fit w-auto overflow-hidden rounded-full bg-white/20">
                 <div className="h-full bg-white shadow-[0_0_8px_rgba(0,0,0,0.8)]" />
               </div>
             </div>

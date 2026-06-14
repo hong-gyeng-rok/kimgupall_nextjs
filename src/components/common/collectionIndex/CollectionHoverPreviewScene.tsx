@@ -88,7 +88,9 @@ export default function CollectionHoverPreviewScene({
           {cards.map((card, index) => {
             const isActive = activeCard?.id === card.id;
             const hasActive = Boolean(activeCard);
-            const rowClassName = `group flex min-h-[72px] w-full cursor-pointer items-center justify-between gap-6 border-b border-white/10 py-4 text-left transition-all duration-300 ease-out hover:border-white/35 hover:bg-white/[0.03] lg:min-h-[82px] ${isActive
+            const rowItemClassName = "group relative";
+            const rowHoverAreaClassName = "absolute right-0 top-0 z-0 h-full w-screen cursor-pointer";
+            const rowClassName = `relative z-10 flex min-h-[72px] w-full cursor-pointer items-center justify-between gap-6 border-b border-white/10 py-4 text-left transition-all duration-300 ease-out group-hover:border-white/35 group-hover:bg-white/[0.03] lg:min-h-[82px] ${isActive
               ? "text-white"
               : hasActive
                 ? "text-white/35"
@@ -134,16 +136,24 @@ export default function CollectionHoverPreviewScene({
               return (
                 <li
                   key={card.id}
-                  className={rowClassName}
+                  className={rowItemClassName}
                   onMouseEnter={() => setActiveCard(card)}
                 >
-                  {rowContent}
+                  <span className={rowHoverAreaClassName} aria-hidden="true" />
+                  <div className={rowClassName}>
+                    {rowContent}
+                  </div>
                 </li>
               );
             }
 
             return (
-              <li key={card.id} onMouseEnter={() => setActiveCard(card)}>
+              <li
+                key={card.id}
+                className={rowItemClassName}
+                onMouseEnter={() => setActiveCard(card)}
+              >
+                <span className={rowHoverAreaClassName} aria-hidden="true" />
                 <InternalLink
                   href={getCollectionIndexHref(card)}
                   className={rowClassName}

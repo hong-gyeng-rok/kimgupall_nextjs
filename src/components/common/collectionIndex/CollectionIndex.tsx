@@ -12,11 +12,11 @@ export default function CollectionIndex() {
   const visibleCards = cards.filter((card) => !hiddenCollectionTitles.has(card.title));
 
   return (
-    <section className="relative z-10 h-full w-full overflow-hidden bg-black text-white">
+    <section className="relative z-10 min-h-full w-full bg-black text-white md:h-full md:overflow-hidden">
       <div className="hidden h-full md:block">
         <CollectionHoverPreviewScene cards={visibleCards} isLoading={isLoading} />
       </div>
-      <div className="h-full md:hidden">
+      <div className="min-h-[100svh] md:hidden">
         <CollectionMobileTextScene cards={visibleCards} isLoading={isLoading} />
       </div>
     </section>

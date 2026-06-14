@@ -9,7 +9,7 @@ type CollectionMobileTextSceneProps = {
 
 function CollectionMobileTextSkeleton() {
   return (
-    <div className="flex h-full w-full flex-col justify-center px-5 py-10">
+    <div className="flex min-h-[100svh] w-full flex-col justify-center px-5 py-10">
       <div className="mb-8 border-b border-white/15 pb-5">
         <div className="mb-3 h-3 w-32 animate-pulse bg-white/10" />
         <div className="h-10 w-64 animate-pulse bg-white/10" />
@@ -37,7 +37,7 @@ export default function CollectionMobileTextScene({
 
   return (
     <section
-      className="flex h-full w-full flex-col justify-center px-5 py-10"
+      className="flex min-h-[100svh] w-full flex-col justify-center px-5 py-10"
       aria-label="컬렉션 인덱스"
     >
       <div className="mb-8 border-b border-white/15 pb-5">

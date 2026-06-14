@@ -49,10 +49,10 @@ export default function ExhibitionTextSection({
       variants={sectionMotion}
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={[
-        "shrink-0 bg-black text-white md:snap-start",
+        "bg-black text-white md:shrink-0 md:snap-start",
         isEnding
           ? "flex min-h-dvh flex-col justify-between px-6 py-16 md:px-12 md:py-20"
-          : "flex h-screen items-center justify-center px-6 py-20",
+          : "flex min-h-[100svh] items-center justify-center px-6 py-20 md:h-screen",
         className,
       ].join(" ")}
     >

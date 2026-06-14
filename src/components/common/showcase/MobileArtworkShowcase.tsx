@@ -45,7 +45,7 @@ export default function MobileArtworkShowcase({
   if (items.length === 0) return null;
 
   return (
-    <section className="shrink-0 space-y-7 bg-black px-2 py-10 text-white md:hidden flex flex-col gap-5">
+    <section className="flex flex-col gap-5 space-y-7 bg-black px-2 py-10 text-white md:hidden">
       {items.map((item) => {
         const isOpen = openId === item.id;
         const panelId = `showcase-panel-${item.id}`;

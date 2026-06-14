@@ -51,7 +51,7 @@ function useIsDesktop() {
 
 function MobileMainTitle() {
   return (
-    <section className="flex h-dvh shrink-0 flex-col items-center justify-center gap-4 bg-black px-4 text-center text-white">
+    <section className="flex min-h-[100svh] flex-col items-center justify-center gap-4 bg-black px-4 text-center text-white">
       <h1 className="whitespace-nowrap text-[clamp(2.75rem,12vw,4.5rem)] font-black leading-none tracking-[-0.08em]">
         GRADUATION
       </h1>
@@ -145,7 +145,7 @@ function MobileHomeContent() {
   return (
     <section
       data-testid="HomeView"
-      className="flex min-h-dvh w-full flex-col overflow-y-auto bg-black text-white"
+      className="flex min-h-dvh w-full flex-col bg-black text-white"
     >
       <MobileMainTitle />
 
@@ -153,7 +153,7 @@ function MobileHomeContent() {
       <BreakTextSection />
       <Showcase startIndex={4} />
 
-      <div id="section-album" className="h-dvh shrink-0">
+      <div id="section-album" className="min-h-[100svh]">
         <CollectionIndex />
       </div>
 

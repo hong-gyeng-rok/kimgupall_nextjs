@@ -51,8 +51,8 @@ export default function ExhibitionTextSection({
       className={[
         "bg-black text-white md:shrink-0 md:snap-start",
         isEnding
-          ? "flex min-h-dvh flex-col justify-between px-6 py-16 md:px-12 md:py-20"
-          : "flex min-h-[100svh] items-center justify-center px-6 py-20 md:h-screen",
+          ? "flex min-h-dvh flex-col justify-between px-5 py-14 md:px-10 md:py-18 lg:px-12 lg:py-20"
+          : "flex min-h-svh items-center justify-center px-5 py-16 md:h-screen md:px-8 md:py-20 lg:px-10",
         className,
       ].join(" ")}
     >
@@ -63,7 +63,7 @@ export default function ExhibitionTextSection({
           <motion.p
             variants={itemMotion}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="text-sm tracking-[0.45em] text-white/45 md:text-base"
+            className="text-xs tracking-[0.38em] text-white/45 md:text-sm md:tracking-[0.42em] lg:text-base lg:tracking-[0.45em]"
           >
             {eyebrow}
           </motion.p>
@@ -75,12 +75,12 @@ export default function ExhibitionTextSection({
           className={[
             " font-black leading-[0.95] tracking-[-0.04em] ",
             isEnding
-              ? "text-4xl md:text-8xl mt-10"
-              : "text-6xl md:text-8xl ",
+              ? "mt-10 text-3xl md:text-6xl lg:text-8xl"
+              : "text-5xl md:text-7xl lg:text-8xl",
           ].join(" ")}
         >
           {titleLines.map((line) => (
-            <span key={line} className="block mt-4 ">
+            <span key={line} className="mt-4 block md:mt-5 lg:mt-6">
               {line}
             </span>
           ))}
@@ -90,7 +90,7 @@ export default function ExhibitionTextSection({
           <motion.p
             variants={itemMotion}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.24 }}
-            className="mx-auto mt-8 max-w-xl whitespace-pre-line text-lg leading-relaxed text-white/55 md:text-2xl"
+            className="mx-auto mt-7 max-w-xl whitespace-pre-line text-base leading-relaxed text-white/55 md:mt-8 md:text-xl lg:text-2xl"
           >
             {descriptionLines.join("\n")}
           </motion.p>
@@ -100,7 +100,7 @@ export default function ExhibitionTextSection({
           <motion.p
             variants={itemMotion}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.34 }}
-            className="mt-10 text-base tracking-[0.25em] text-white/60 md:text-xl"
+            className="mt-8 text-sm tracking-[0.2em] text-white/60 md:mt-10 md:text-lg md:tracking-[0.22em] lg:text-xl lg:tracking-[0.25em]"
           >
             {closingText}
           </motion.p>
@@ -113,7 +113,7 @@ export default function ExhibitionTextSection({
           whileInView="visible"
           viewport={{ once: false, amount: 0.2 }}
           transition={{ staggerChildren: 0.08, delayChildren: 0.45 }}
-          className="grid gap-6 text-center text-xs tracking-[0.2em] text-white/50 md:grid-cols-3 md:text-sm"
+          className="grid gap-5 text-center text-xs tracking-[0.18em] text-white/50 lg:grid-cols-3 md:gap-6 md:text-sm md:tracking-[0.2em]"
         >
           {contacts.map((contact) => (
             <motion.div key={contact.label} variants={itemMotion}>

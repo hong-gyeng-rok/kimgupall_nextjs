@@ -45,13 +45,13 @@ export default function MobileArtworkShowcase({
   if (items.length === 0) return null;
 
   return (
-    <section className="flex flex-col gap-5 space-y-7 bg-black px-2 py-10 text-white md:hidden">
+    <section className="flex flex-col gap-6 space-y-6 bg-black px-2 py-8 text-white md:hidden">
       {items.map((item) => {
         const isOpen = openId === item.id;
         const panelId = `showcase-panel-${item.id}`;
 
         return (
-          <article key={item.id} className="overflow-hidden bg-black px-5">
+          <article key={item.id} className="overflow-hidden bg-black px-3">
             <button
               type="button"
               onClick={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
@@ -74,13 +74,13 @@ export default function MobileArtworkShowcase({
                   className={`absolute inset-0 bg-black transition-opacity duration-300 ${isOpen ? "opacity-10" : "opacity-0"
                     }`}
                 />
-                <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black via-black/75 to-transparent" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-5">
+                <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black via-black/75 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4">
                   <div>
                     <p className="mb-2 text-xs font-bold tracking-[0.28em] text-white/55">
                       {item.number}
                     </p>
-                    <h3 className=" text-4xl font-sans font-bold leading-none tracking-[-0.04em] text-white">
+                    <h3 className="font-sans text-3xl font-bold leading-none tracking-[-0.04em] text-white">
                       {item.title}
                     </h3>
                   </div>
@@ -91,7 +91,7 @@ export default function MobileArtworkShowcase({
 
             <div
               id={panelId}
-              className={`grid overflow-hidden bg-black px-5 [overflow-anchor:none] transition-[grid-template-rows,padding,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] pb-8 pt-6 opacity-100" : "grid-rows-[0fr] pb-0 pt-0 opacity-0"
+              className={`grid overflow-hidden bg-black px-4 [overflow-anchor:none] transition-[grid-template-rows,padding,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] pb-7 pt-5 opacity-100" : "grid-rows-[0fr] pb-0 pt-0 opacity-0"
                 }`}
             >
               <div
@@ -99,19 +99,19 @@ export default function MobileArtworkShowcase({
                   }`}
               >
                 <section className="mb-8">
-                  <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white">
+                  <h4 className="mb-3 text-2xl font-black tracking-[-0.04em] text-white">
                     PROFILE
                   </h4>
-                  <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
+                  <div className="pl-3 pr-4 text-base leading-6 tracking-[0.05em] text-white/75">
                     {item.profile}
                   </div>
                 </section>
 
                 <section>
-                  <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white ">
+                  <h4 className="mb-3 text-2xl font-black tracking-[-0.04em] text-white">
                     MOTIF{item.motifTitle ? `: ${item.motifTitle}` : ""}
                   </h4>
-                  <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
+                  <div className="pl-3 pr-4 text-base leading-6 tracking-[0.05em] text-white/75">
                     {item.motif}
                   </div>
                 </section>

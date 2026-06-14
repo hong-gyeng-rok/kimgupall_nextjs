@@ -51,14 +51,14 @@ function useIsDesktop() {
 
 function MobileMainTitle() {
   return (
-    <section className="flex min-h-[100svh] flex-col items-center justify-center gap-4 bg-black px-4 text-center text-white">
-      <h1 className="whitespace-nowrap text-[clamp(2.75rem,12vw,4.5rem)] font-black leading-none tracking-[-0.08em]">
+    <section className="flex min-h-[100svh] flex-col items-center justify-center gap-3 bg-black px-4 text-center text-white md:gap-4">
+      <h1 className="whitespace-nowrap text-5xl font-black leading-none tracking-[-0.08em] md:text-7xl lg:text-8xl">
         GRADUATION
       </h1>
-      <p className="whitespace-nowrap text-[clamp(3rem,16vw,4.5rem)] font-black leading-none tracking-[-0.08em]">
+      <p className="whitespace-nowrap text-6xl font-black leading-none tracking-[-0.08em] md:text-7xl lg:text-8xl">
         2026
       </p>
-      <p className="whitespace-nowrap text-lg font-light italic leading-none text-white/70">
+      <p className="whitespace-nowrap text-base font-light italic leading-none text-white/70 md:text-lg lg:text-xl">
         ARTIST BY KIMGUPALL
       </p>
     </section>

@@ -28,9 +28,8 @@ function AccordionChevron({ isOpen }: { isOpen: boolean }) {
       fill="none"
       stroke="currentColor"
       strokeWidth={1.8}
-      className={`h-8 w-8 shrink-0 text-white transition-transform duration-300 ease-out ${
-        isOpen ? "rotate-180" : "rotate-0"
-      }`}
+      className={`h-8 w-8 shrink-0 text-white transition-transform duration-300 ease-out ${isOpen ? "rotate-180" : "rotate-0"
+        }`}
       aria-hidden="true"
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
@@ -46,7 +45,7 @@ export default function MobileArtworkShowcase({
   if (items.length === 0) return null;
 
   return (
-    <section className="block shrink-0 snap-start space-y-7 bg-black px-4 py-8 text-white md:hidden">
+    <section className="shrink-0 space-y-7 bg-black px-2 py-10 text-white md:hidden flex flex-col gap-5">
       {items.map((item) => {
         const isOpen = openId === item.id;
         const panelId = `showcase-panel-${item.id}`;
@@ -56,7 +55,7 @@ export default function MobileArtworkShowcase({
           Number(item.width) * Number(item.height) > 80_000_000;
 
         return (
-          <article key={item.id} className="overflow-hidden bg-black">
+          <article key={item.id} className="overflow-hidden bg-black px-5">
             <button
               type="button"
               onClick={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
@@ -72,18 +71,16 @@ export default function MobileArtworkShowcase({
                     src={item.image}
                     alt={item.alt || item.title}
                     fill
-                    className={`object-cover transition-transform duration-500 ease-out ${
-                      isOpen ? "scale-100" : "scale-[1.01]"
-                    }`}
+                    className={`object-cover transition-transform duration-500 ease-out ${isOpen ? "scale-100" : "scale-[1.01]"
+                      }`}
                     sizes="(max-width: 767px) 420px, 100vw"
                     quality={45}
                     placeholder="empty"
                   />
                 )}
                 <div
-                  className={`absolute inset-0 bg-black transition-opacity duration-300 ${
-                    isOpen ? "opacity-10" : "opacity-0"
-                  }`}
+                  className={`absolute inset-0 bg-black transition-opacity duration-300 ${isOpen ? "opacity-10" : "opacity-0"
+                    }`}
                 />
                 <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black via-black/75 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-5 p-5">
@@ -91,7 +88,7 @@ export default function MobileArtworkShowcase({
                     <p className="mb-2 text-xs font-bold tracking-[0.28em] text-white/55">
                       {item.number}
                     </p>
-                    <h3 className="[font-family:var(--font-kimsaeng)] text-3xl font-black leading-none tracking-[-0.04em] text-white">
+                    <h3 className=" text-4xl font-sans font-bold leading-none tracking-[-0.04em] text-white">
                       {item.title}
                     </h3>
                   </div>
@@ -102,28 +99,24 @@ export default function MobileArtworkShowcase({
 
             <div
               id={panelId}
-              className={`overflow-hidden bg-black px-5 transition-all duration-300 ease-out ${
-                isOpen ? "max-h-[1100px] pb-8 pt-6 opacity-100" : "max-h-0 pb-0 pt-0 opacity-0"
-              }`}
+              className={`overflow-hidden bg-black px-5 transition-all duration-300 ease-out ${isOpen ? "max-h-[1100px] pb-8 pt-6 opacity-100" : "max-h-0 pb-0 pt-0 opacity-0"
+                }`}
             >
-              <p className="mb-7 text-sm font-bold tracking-[0.24em] text-white/45">
-                {item.number}
-              </p>
 
               <section className="mb-8">
-                <h4 className="mb-3 text-2xl font-black tracking-[-0.04em] text-white">
+                <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white">
                   PROFILE
                 </h4>
-                <div className="text-[15px] leading-7 text-white/75">
+                <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
                   {item.profile}
                 </div>
               </section>
 
               <section>
-                <h4 className="mb-3 text-2xl font-black tracking-[-0.04em] text-white">
+                <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white ">
                   MOTIF{item.motifTitle ? `: ${item.motifTitle}` : ""}
                 </h4>
-                <div className="text-[15px] leading-7 text-white/75">
+                <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
                   {item.motif}
                 </div>
               </section>

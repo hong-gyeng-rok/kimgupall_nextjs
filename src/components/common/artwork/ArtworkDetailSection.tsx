@@ -36,7 +36,7 @@ export default function ArtworkDetailSection({
   const imageOrderClass = reversed ? "md:order-1" : "md:order-2";
 
   return (
-    <article className="flex justify-center items-center min-h-dvh shrink-0 snap-start bg-black px-6 py-12 text-white md:px-14 md:py-16">
+    <article className="flex justify-center items-center min-h-dvh shrink-0 bg-black px-6 py-12 text-white md:snap-start md:px-14 md:py-16">
       <motion.div
         initial="hidden"
         whileInView="visible"

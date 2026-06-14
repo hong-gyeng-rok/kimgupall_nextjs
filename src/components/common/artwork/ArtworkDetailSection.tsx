@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+import FallbackImage from "@/components/common/fallbackImage";
 
 type ArtworkDetailSectionProps = {
   logoText?: string;
@@ -9,6 +10,8 @@ type ArtworkDetailSectionProps = {
   title: string;
   image: string;
   alt: string;
+  width?: number | null;
+  height?: number | null;
   profile: ReactNode;
   motifTitle?: string;
   motif: ReactNode;
@@ -26,6 +29,8 @@ export default function ArtworkDetailSection({
   title,
   image,
   alt,
+  width,
+  height,
   profile,
   motif,
   reversed = false,
@@ -111,9 +116,14 @@ export default function ArtworkDetailSection({
         transition={{ duration: 0.8, ease: "easeOut" }}
         className={`order-1 flex items-center justify-center pb-10 md:pb-0 w-fit ${imageOrderClass}`}
       >
-        <img
+        <FallbackImage
           src={image}
           alt={alt}
+          width={width ?? 800}
+          height={height ?? 1000}
+          sizes="(min-width: 768px) 45vw, 100vw"
+          quality={60}
+          placeholder="empty"
           className="h-fit w-full object-contain md:max-h-[82dvh]"
         />
       </motion.div>

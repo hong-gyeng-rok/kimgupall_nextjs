@@ -50,10 +50,6 @@ export default function MobileArtworkShowcase({
         const isOpen = openId === item.id;
         const panelId = `showcase-panel-${item.id}`;
 
-        const isOversizedImage =
-          Boolean(item.width && item.height) &&
-          Number(item.width) * Number(item.height) > 80_000_000;
-
         return (
           <article key={item.id} className="overflow-hidden bg-black px-5">
             <button
@@ -64,20 +60,16 @@ export default function MobileArtworkShowcase({
               className="group block w-full text-left"
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden bg-neutral-950">
-                {isOversizedImage ? (
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.12),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.06),rgba(0,0,0,0.92))]" />
-                ) : (
-                  <FallbackImage
-                    src={item.image}
-                    alt={item.alt || item.title}
-                    fill
-                    className={`object-cover transition-transform duration-500 ease-out ${isOpen ? "scale-100" : "scale-[1.01]"
-                      }`}
-                    sizes="(max-width: 767px) 420px, 100vw"
-                    quality={45}
-                    placeholder="empty"
-                  />
-                )}
+                <FallbackImage
+                  src={item.image}
+                  alt={item.alt || item.title}
+                  fill
+                  className={`object-cover transition-transform duration-500 ease-out ${isOpen ? "scale-100" : "scale-[1.01]"
+                    }`}
+                  sizes="(max-width: 767px) 420px, 100vw"
+                  quality={45}
+                  placeholder="empty"
+                />
                 <div
                   className={`absolute inset-0 bg-black transition-opacity duration-300 ${isOpen ? "opacity-10" : "opacity-0"
                     }`}
@@ -99,27 +91,31 @@ export default function MobileArtworkShowcase({
 
             <div
               id={panelId}
-              className={`overflow-hidden bg-black px-5 transition-all duration-300 ease-out ${isOpen ? "max-h-[1100px] pb-8 pt-6 opacity-100" : "max-h-0 pb-0 pt-0 opacity-0"
+              className={`grid overflow-hidden bg-black px-5 [overflow-anchor:none] transition-[grid-template-rows,padding,opacity] duration-300 ease-out ${isOpen ? "grid-rows-[1fr] pb-8 pt-6 opacity-100" : "grid-rows-[0fr] pb-0 pt-0 opacity-0"
                 }`}
             >
+              <div
+                className={`min-h-0 overflow-hidden transition-[transform,opacity] duration-300 ease-out ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+                  }`}
+              >
+                <section className="mb-8">
+                  <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white">
+                    PROFILE
+                  </h4>
+                  <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
+                    {item.profile}
+                  </div>
+                </section>
 
-              <section className="mb-8">
-                <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white">
-                  PROFILE
-                </h4>
-                <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
-                  {item.profile}
-                </div>
-              </section>
-
-              <section>
-                <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white ">
-                  MOTIF{item.motifTitle ? `: ${item.motifTitle}` : ""}
-                </h4>
-                <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
-                  {item.motif}
-                </div>
-              </section>
+                <section>
+                  <h4 className="mb-3 text-3xl font-black tracking-[-0.04em] text-white ">
+                    MOTIF{item.motifTitle ? `: ${item.motifTitle}` : ""}
+                  </h4>
+                  <div className="text-md leading-6 tracking-[5%] text-white/75 pl-4 pr-5">
+                    {item.motif}
+                  </div>
+                </section>
+              </div>
             </div>
           </article>
         );

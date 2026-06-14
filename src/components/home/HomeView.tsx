@@ -153,7 +153,7 @@ function MobileHomeContent() {
       <BreakTextSection />
       <Showcase startIndex={4} />
 
-      <div id="section-album" className="min-h-[100svh]">
+      <div id="section-album" className="min-h-svh">
         <CollectionIndex />
       </div>
 

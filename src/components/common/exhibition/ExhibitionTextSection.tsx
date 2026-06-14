@@ -75,12 +75,12 @@ export default function ExhibitionTextSection({
           className={[
             " font-black leading-[0.95] tracking-[-0.04em] ",
             isEnding
-              ? "text-5xl md:text-8xl"
+              ? "text-4xl md:text-8xl mt-10"
               : "text-6xl md:text-8xl ",
           ].join(" ")}
         >
           {titleLines.map((line) => (
-            <span key={line} className="block mt-6 ">
+            <span key={line} className="block mt-4 ">
               {line}
             </span>
           ))}

@@ -51,7 +51,7 @@ function useIsDesktop() {
 
 function MobileMainTitle() {
   return (
-    <section className="flex min-h-[100svh] flex-col items-center justify-center gap-3 bg-black px-4 text-center text-white md:gap-4">
+    <section className="flex min-h-svh flex-col items-center justify-center gap-3 bg-black px-4 text-center text-white md:gap-4">
       <h1 className="whitespace-nowrap text-5xl font-black leading-none tracking-[-0.08em] md:text-7xl lg:text-8xl">
         GRADUATION
       </h1>

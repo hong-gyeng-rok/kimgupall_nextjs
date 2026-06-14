@@ -28,34 +28,34 @@ export default function MainTitleAnimation({ progress }: MainTitleAnimationProps
     >
       <motion.aside
         style={{ opacity: sidebarOpacity, x: sidebarX }}
-        className={`pointer-events-none fixed left-0 top-0 z-30 hidden h-dvh ${sidebarWidthClass} flex-col justify-between overflow-hidden md:flex md:border-r md:border-white/10 md:bg-black md:px-4 md:py-6 lg:px-5 lg:py-7`}
+        className={`pointer-events-none fixed left-0 top-0 z-30 hidden h-dvh ${sidebarWidthClass} flex-col justify-between overflow-hidden [container-type:inline-size] md:flex md:bg-black md:px-[clamp(0.5rem,1vw,1rem)] md:py-[clamp(1.5rem,1.9vw,1.75rem)]`}
         aria-hidden="true"
       >
         <motion.div
           style={{ opacity: sidebarBorderOpacity }}
-          className="absolute right-0 top-0 hidden h-full w-px bg-white/10 md:block"
+          className="absolute right-0 top-0 hidden h-full w-px  md:block "
         />
 
-        <div className="relative z-10 space-y-2 lg:space-y-3">
+        <div className="relative z-10 grid w-full justify-items-end gap-[clamp(0.5rem,5cqw,0.75rem)]">
           <motion.p
             style={{ y: yachaY, opacity: yachaOpacity }}
-            className="text-center [font-family:var(--font-kimsaeng)] text-3xl font-black leading-none text-white lg:text-4xl"
+            className="justify-self-center text-center [font-family:var(--font-kimsaeng)] text-[clamp(2rem,24cqw,2.25rem)] font-black leading-none text-white"
           >
             七罪宗
           </motion.p>
-          <p className="w-full whitespace-nowrap text-xl font-black uppercase leading-none tracking-[-0.1em] text-white lg:text-2xl">
+          <p className="max-w-full justify-self-end whitespace-nowrap text-right text-[clamp(1.25rem,16cqw,1.5rem)] font-black uppercase leading-none tracking-[-0.1em] text-white">
             GRADUATION
           </p>
-          <p className="text-right text-sm font-light leading-none tracking-[-0.04em] text-white/90 lg:text-base">
+          <p className="justify-self-end text-right text-[clamp(0.875rem,10.6cqw,1rem)] font-light leading-none tracking-[-0.04em] text-white/90">
             2026
           </p>
         </div>
 
-        <div className="relative z-10 text-left uppercase leading-none tracking-[-0.04em]">
-          <p className="text-sm font-light text-white/70 lg:text-base">
+        <div className="relative z-10 grid w-full justify-items-start gap-[clamp(0.25rem,2cqw,0.35rem)] uppercase leading-none tracking-[-0.04em]">
+          <p className="text-[clamp(0.875rem,10.6cqw,1rem)] font-light text-white/70">
             ARTIST BY
           </p>
-          <p className="mt-1 text-xl font-black lg:text-2xl">
+          <p className="text-[clamp(1.25rem,16cqw,1.5rem)] font-black">
             KIMGUPALL
           </p>
         </div>

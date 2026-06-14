@@ -90,7 +90,7 @@ export default function ArtworkDetailSection({
           <h3 className="text-3xl font-black tracking-tight md:text-3xl lg:text-4xl">
             PROFILE
           </h3>
-          <p className="mt-3 w-[86%] whitespace-pre-line px-6 text-base leading-relaxed text-white/80 md:w-[82%] md:px-6 md:text-base lg:mt-4 lg:w-[80%] lg:px-8 lg:text-lg">
+          <p className="mt-3 w-[86%] whitespace-pre-line px-6 text-base leading-relaxed text-white/80 md:w-[85%] md:px-6 md:text-base lg:mt-4 lg:w-[90%] lg:px-8 lg:text-lg">
             {profile}
           </p>
         </motion.div>
@@ -103,7 +103,7 @@ export default function ArtworkDetailSection({
           <h3 className="text-3xl font-black tracking-tight md:text-3xl lg:text-4xl">
             MOTIF: 도깨비
           </h3>
-          <p className="mt-3 w-[86%] whitespace-pre-line px-6 text-base leading-relaxed text-white/80 md:w-[82%] md:px-6 md:text-base lg:mt-4 lg:w-[80%] lg:px-8 lg:text-lg">
+          <p className="mt-3 w-[86%] whitespace-pre-line px-6 text-base leading-relaxed text-white/80 md:w-[85%] md:px-6 md:text-base lg:mt-4 lg:w-[90%] lg:px-8 lg:text-lg">
             {motif}
           </p>
         </motion.div>

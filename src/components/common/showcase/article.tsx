@@ -1,3 +1,5 @@
+import FallbackImage from "@/components/common/fallbackImage";
+
 type ArticleProps = {
   title: string;
   comment: string;
@@ -23,9 +25,14 @@ export default function Article({
           <div className="static inset-0 flex items-center-safe justify-center">
             <div>
               <div className="overflow-hidden rounded-2xl bg-black/10 shadow-xl">
-                <img
+                <FallbackImage
                   src={imageUrl}
                   alt={alt}
+                  width={800}
+                  height={1000}
+                  sizes="(max-width: 1023px) 50vw, 33vw"
+                  quality={60}
+                  placeholder="empty"
                   className="h-full w-full object-contain"
                 />
               </div>

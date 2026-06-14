@@ -114,9 +114,9 @@ function DesktopHomeContent() {
     <section
       ref={scrollContainerRef}
       data-testid="HomeView"
-      className="flex h-dvh w-full flex-col overflow-y-auto bg-none text-white snap-y snap-mandatory"
+      className="flex h-dvh w-full flex-col overflow-y-auto bg-none text-white md:snap-y md:snap-mandatory"
     >
-      <div ref={titleRef} className="h-[180dvh] shrink-0 snap-start">
+      <div ref={titleRef} className="h-dvh shrink-0 md:snap-start">
         <MainTitleAnimation progress={titleProgress} />
       </div>
 
@@ -132,7 +132,7 @@ function DesktopHomeContent() {
         <Showcase startIndex={4} />
       </OffsetSection>
 
-      <OffsetSection id="section-album" className="h-dvh shrink-0 snap-start">
+      <OffsetSection id="section-album" className="h-dvh shrink-0 md:snap-start">
         <CollectionIndex />
       </OffsetSection>
 

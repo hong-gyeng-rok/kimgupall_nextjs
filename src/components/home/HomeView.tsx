@@ -18,7 +18,10 @@ type OffsetSectionProps = {
 
 function OffsetSection({ children, id, className = "" }: OffsetSectionProps) {
   return (
-    <div id={id} className={`${DESKTOP_CONTENT_OFFSET_CLASS} ${className}`}>
+    <div
+      id={id}
+      className={`${DESKTOP_CONTENT_OFFSET_CLASS} min-w-0 overflow-x-clip ${className}`}
+    >
       {children}
     </div>
   );
@@ -114,7 +117,7 @@ function DesktopHomeContent() {
     <section
       ref={scrollContainerRef}
       data-testid="HomeView"
-      className="flex h-dvh w-full flex-col overflow-y-auto bg-none text-white md:snap-y md:snap-mandatory"
+      className="no-scrollbar flex h-dvh w-full flex-col overflow-x-clip overflow-y-auto bg-none text-white md:snap-y md:snap-mandatory"
     >
       <div ref={titleRef} className="h-dvh shrink-0 md:snap-start">
         <MainTitleAnimation progress={titleProgress} />
@@ -145,7 +148,7 @@ function MobileHomeContent() {
   return (
     <section
       data-testid="HomeView"
-      className="flex min-h-dvh w-full flex-col bg-black text-white"
+      className="flex min-h-dvh w-full flex-col overflow-x-clip bg-black text-white"
     >
       <MobileMainTitle />
 

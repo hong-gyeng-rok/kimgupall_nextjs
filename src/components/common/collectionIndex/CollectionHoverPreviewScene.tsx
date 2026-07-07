@@ -45,7 +45,7 @@ export default function CollectionHoverPreviewScene({
 
   return (
     <section
-      className="grid h-full w-full grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] items-center gap-8 px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1.1fr)] lg:gap-12 lg:px-14"
+      className="grid h-full w-full min-w-0 grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] items-center gap-8 overflow-x-clip px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1.1fr)] lg:gap-12 lg:px-14"
       onMouseLeave={() => setActiveCard(null)}
       aria-label="컬렉션 인덱스"
     >
@@ -84,12 +84,12 @@ export default function CollectionHoverPreviewScene({
           </div>
         </div>
 
-        <ul className="w-full">
+        <ul className="w-full min-w-0 overflow-x-clip">
           {cards.map((card, index) => {
             const isActive = activeCard?.id === card.id;
             const hasActive = Boolean(activeCard);
             const rowItemClassName = "group relative";
-            const rowHoverAreaClassName = "absolute right-0 top-0 z-0 h-full w-screen cursor-pointer";
+            const rowHoverAreaClassName = "absolute inset-y-0 left-0 right-0 z-0 cursor-pointer";
             const rowClassName = `relative z-10 flex min-h-[64px] w-full cursor-pointer items-center justify-between gap-4 border-b border-white/10 py-3 text-left transition-all duration-300 ease-out group-hover:border-white/35 group-hover:bg-white/[0.03] lg:min-h-[82px] lg:gap-6 lg:py-4 ${isActive
               ? "text-white"
               : hasActive

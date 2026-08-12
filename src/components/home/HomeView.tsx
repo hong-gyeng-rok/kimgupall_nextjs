@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useScroll } from "framer-motion";
 import StartupOverlay from "@/components/common/StartupOverlay";
 import CollectionIndex from "@/components/common/collectionIndex/CollectionIndex";
 import ExhibitionTextSection from "@/components/common/exhibition/ExhibitionTextSection";
-import GraduationCutoffHero from "@/components/common/hero/GraduationCutoffHero";
+import MainTitleAnimation from "@/components/common/title/MainTitleAnimation";
 import Showcase from "@/components/common/showcase/showcase";
 
 const DESKTOP_CONTENT_OFFSET_CLASS = "md:pl-[clamp(140px,11.5vw,174px)]";
@@ -100,13 +101,23 @@ function EndingTextSection() {
 }
 
 function DesktopHomeContent() {
+  const scrollContainerRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: titleProgress } = useScroll({
+    container: scrollContainerRef,
+    target: titleRef,
+    offset: ["start start", "end start"],
+  });
+
   return (
     <section
+      ref={scrollContainerRef}
       data-testid="HomeView"
       className="flex h-dvh w-full flex-col overflow-y-auto bg-none text-white md:snap-y md:snap-mandatory"
     >
-      <div className="h-dvh shrink-0 overflow-hidden md:snap-start">
-        <GraduationCutoffHero />
+      <div ref={titleRef} className="h-dvh shrink-0 overflow-hidden md:snap-start">
+        <MainTitleAnimation progress={titleProgress} />
       </div>
 
       <OffsetSection>

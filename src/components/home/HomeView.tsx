@@ -119,7 +119,7 @@ function DesktopHomeContent() {
       data-testid="HomeView"
       className="no-scrollbar flex h-dvh w-full flex-col overflow-x-clip overflow-y-auto bg-none text-white md:snap-y md:snap-mandatory"
     >
-      <div ref={titleRef} className="h-dvh shrink-0 md:snap-start">
+      <div ref={titleRef} className="h-dvh shrink-0 overflow-hidden md:snap-start">
         <MainTitleAnimation progress={titleProgress} />
       </div>
 

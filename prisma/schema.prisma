@@ -54,7 +54,11 @@ model Media {
   publicUrl    String   @map("public_url")
   storagePath  String?  @map("storage_path")
   title        String?
+  subtitle     String?  @db.VarChar(100)
   description  String?  @db.Text
+  profileMarkdown String? @map("profile_markdown") @db.Text
+  motifTitle      String? @map("motif_title") @db.VarChar(100)
+  motifMarkdown   String? @map("motif_markdown") @db.Text
   altText      String?  @map("alt_text")
   width        Int?     @db.SmallInt
   height       Int?     @db.SmallInt

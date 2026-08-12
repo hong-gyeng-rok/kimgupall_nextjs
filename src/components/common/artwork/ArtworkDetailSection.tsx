@@ -33,6 +33,7 @@ export default function ArtworkDetailSection({
   height,
   profile,
   motif,
+  motifTitle,
   reversed = false,
 }: ArtworkDetailSectionProps) {
   const textOrderClass = reversed
@@ -90,9 +91,9 @@ export default function ArtworkDetailSection({
           <h3 className="text-3xl font-black tracking-tight md:text-3xl lg:text-4xl">
             PROFILE
           </h3>
-          <p className="mt-3 w-[86%] whitespace-pre-line px-6 text-base leading-relaxed text-white/80 md:w-[85%] md:px-6 md:text-base lg:mt-4 lg:w-[90%] lg:px-8 lg:text-lg">
+          <div className="mt-3 w-[86%] px-6 text-base leading-relaxed text-white/80 md:w-[85%] md:px-6 md:text-base lg:mt-4 lg:w-[90%] lg:px-8 lg:text-lg">
             {profile}
-          </p>
+          </div>
         </motion.div>
 
         <motion.div
@@ -101,11 +102,11 @@ export default function ArtworkDetailSection({
           className="mt-6 lg:mt-8"
         >
           <h3 className="text-3xl font-black tracking-tight md:text-3xl lg:text-4xl">
-            MOTIF: 도깨비
+            MOTIF{motifTitle ? `: ${motifTitle}` : ""}
           </h3>
-          <p className="mt-3 w-[86%] whitespace-pre-line px-6 text-base leading-relaxed text-white/80 md:w-[85%] md:px-6 md:text-base lg:mt-4 lg:w-[90%] lg:px-8 lg:text-lg">
+          <div className="mt-3 w-[86%] px-6 text-base leading-relaxed text-white/80 md:w-[85%] md:px-6 md:text-base lg:mt-4 lg:w-[90%] lg:px-8 lg:text-lg">
             {motif}
-          </p>
+          </div>
         </motion.div>
       </motion.div>
 

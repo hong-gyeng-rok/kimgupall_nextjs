@@ -23,7 +23,7 @@ export default function GalleryImageModal({
           isOpen={selectedImage !== null}
           onRequestClose={onClose}
           className="flex flex-col w-screen h-screen items-center justify-center focus:outline-none gap-8"
-          overlayClassName="fixed inset-0 z-50 flex items-center justify-center bg-white/95 backdrop-blur-md animate-fade-in"
+          overlayClassName="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md animate-fade-in"
         >
           <ModalContent selectedImage={selectedImage} onClose={onClose} />
         </Modal>
@@ -74,7 +74,7 @@ function ModalContent({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="font-mono bg-white text-black border border-black px-10 py-3 rounded-full text-xl font-bold hover:bg-black hover:text-white transition-all duration-300 shadow-xl"
+        className="font-mono rounded-full border border-white bg-white px-10 py-3 text-xl font-bold text-black shadow-xl transition-all duration-300 active:scale-95"
         onClick={onClose}
       >
         CLOSE

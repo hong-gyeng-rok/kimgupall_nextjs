@@ -9,6 +9,7 @@ import MainTitleAnimation from "@/components/common/title/MainTitleAnimation";
 import Showcase from "@/components/common/showcase/showcase";
 
 const DESKTOP_CONTENT_OFFSET_CLASS = "md:pl-[clamp(140px,11.5vw,174px)]";
+const RESTORE_ALBUM_SECTION_KEY = "kimgupall:restore-section-album";
 
 type OffsetSectionProps = {
   children: ReactNode;
@@ -110,6 +111,28 @@ function DesktopHomeContent() {
     offset: ["start start", "end start"],
   });
 
+  useEffect(() => {
+    const shouldRestore =
+      window.sessionStorage.getItem(RESTORE_ALBUM_SECTION_KEY) === "true";
+
+    if (!shouldRestore) return;
+
+    const container = scrollContainerRef.current;
+    const target = document.getElementById("section-album");
+
+    if (!container || !target) return;
+
+    window.sessionStorage.removeItem(RESTORE_ALBUM_SECTION_KEY);
+
+    requestAnimationFrame(() => {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const targetTop = container.scrollTop + targetRect.top - containerRect.top;
+
+      container.scrollTo({ top: targetTop, behavior: "auto" });
+    });
+  }, []);
+
   return (
     <section
       ref={scrollContainerRef}
@@ -142,6 +165,23 @@ function DesktopHomeContent() {
 }
 
 function MobileHomeContent() {
+  useEffect(() => {
+    const shouldRestore =
+      window.sessionStorage.getItem(RESTORE_ALBUM_SECTION_KEY) === "true";
+
+    if (!shouldRestore) return;
+
+    const target = document.getElementById("section-album");
+
+    if (!target) return;
+
+    window.sessionStorage.removeItem(RESTORE_ALBUM_SECTION_KEY);
+
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ block: "start", behavior: "auto" });
+    });
+  }, []);
+
   return (
     <section
       data-testid="HomeView"

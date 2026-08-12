@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 import type { AlbumCard } from "@/types/album";
@@ -39,36 +40,83 @@ export default function CollectionHoverPreviewScene({
   cards,
   isLoading,
 }: CollectionHoverPreviewSceneProps) {
-  const [activeCard, setActiveCard] = useState<AlbumCard | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
 
   if (isLoading) return <CollectionHoverPreviewSkeleton />;
+  if (cards.length === 0) return null;
+
+  const activeCard = cards[Math.min(activeIndex, cards.length - 1)];
+  const activePage = Math.min(activeIndex, cards.length - 1);
+
+  const moveActiveCard = (direction: -1 | 1) => {
+    setSlideDirection(direction);
+    setActiveIndex((currentIndex) =>
+      (currentIndex + direction + cards.length) % cards.length,
+    );
+  };
+
+  const selectActiveCard = (nextIndex: number) => {
+    if (nextIndex === activePage) return;
+
+    setSlideDirection(nextIndex > activePage ? 1 : -1);
+    setActiveIndex(nextIndex);
+  };
 
   return (
     <section
-      className="grid h-full w-full grid-cols-[minmax(0,0.9fr)_minmax(360px,1.1fr)] items-center gap-8 px-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(420px,1.1fr)] lg:gap-12 lg:px-14"
-      onMouseLeave={() => setActiveCard(null)}
+      className="grid h-full w-full grid-cols-[72px_minmax(280px,0.9fr)_minmax(360px,1.1fr)_72px] items-center gap-6 px-6 lg:grid-cols-[88px_minmax(340px,0.9fr)_minmax(420px,1.1fr)_88px] lg:gap-8 lg:px-10"
       aria-label="컬렉션 인덱스"
     >
       <div className="flex h-full items-center justify-center">
-        <div
-          className={`relative aspect-[4/5] w-full max-w-[380px] overflow-hidden bg-white/[0.03] transition-all duration-500 ease-out lg:max-w-[440px] ${activeCard
-            ? "translate-y-0 scale-100 opacity-100"
-            : "translate-y-4 scale-95 opacity-0"
-            }`}
+        <button
+          type="button"
+          className="flex h-16 w-16 shrink-0 touch-manipulation items-center justify-center rounded-full border border-white bg-white text-4xl font-black leading-none text-black shadow-xl transition-all duration-300 active:scale-95 lg:h-18 lg:w-18"
+          onClick={() => moveActiveCard(-1)}
+          aria-label="이전 컬렉션 보기"
         >
-          {activeCard ? (
-            <FallbackImage
+          ‹
+        </button>
+      </div>
+
+      <div className="flex h-full flex-col items-center justify-center gap-6">
+        <div className="relative aspect-[4/5] w-full max-w-[380px] overflow-hidden bg-white/[0.03] transition-all duration-500 ease-out lg:max-w-[440px]">
+          <AnimatePresence initial={false} custom={slideDirection} mode="popLayout">
+            <motion.div
               key={activeCard.id}
-              src={activeCard.url}
-              alt={activeCard.alt}
-              fill
-              className="object-cover"
-              sizes={PREVIEW_IMAGE_SIZES}
-              quality={activeCard.isExternal ? 85 : 65}
-              priority={false}
-              placeholder="empty"
-            />
-          ) : null}
+              custom={slideDirection}
+              initial={(direction: 1 | -1) => ({
+                x: direction > 0 ? 80 : -80,
+                opacity: 0,
+                scale: 0.98,
+              })}
+              animate={{ x: 0, opacity: 1, scale: 1 }}
+              exit={(direction: 1 | -1) => ({
+                x: direction > 0 ? -80 : 80,
+                opacity: 0,
+                scale: 0.98,
+              })}
+              transition={{ duration: 0.42, ease: "easeOut" }}
+              className="absolute inset-0"
+            >
+              <FallbackImage
+                src={activeCard.url}
+                alt={activeCard.alt}
+                fill
+                className="object-cover"
+                sizes={PREVIEW_IMAGE_SIZES}
+                quality={activeCard.isExternal ? 85 : 65}
+                priority={false}
+                placeholder="empty"
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="flex items-center gap-3 text-xs font-semibold tracking-[0.24em] text-white/45">
+          <span>{String(activePage + 1).padStart(2, "0")}</span>
+          <span className="h-px w-10 bg-white/25" />
+          <span>{String(cards.length).padStart(2, "0")}</span>
         </div>
       </div>
 
@@ -86,85 +134,71 @@ export default function CollectionHoverPreviewScene({
 
         <ul className="w-full">
           {cards.map((card, index) => {
-            const isActive = activeCard?.id === card.id;
-            const hasActive = Boolean(activeCard);
-            const rowItemClassName = "group relative";
-            const rowHoverAreaClassName = "absolute right-0 top-0 z-0 h-full w-screen cursor-pointer";
-            const rowClassName = `relative z-10 flex min-h-[64px] w-full cursor-pointer items-center justify-between gap-4 border-b border-white/10 py-3 text-left transition-all duration-300 ease-out group-hover:border-white/35 group-hover:bg-white/[0.03] lg:min-h-[82px] lg:gap-6 lg:py-4 ${isActive
-              ? "text-white"
-              : hasActive
-                ? "text-white/35"
-                : "text-white/70"
+            const isActive = activePage === index;
+            const rowClassName = `relative z-10 flex min-h-[64px] w-full cursor-pointer touch-manipulation items-center justify-between gap-4 border-b py-3 text-left transition-all duration-300 ease-out active:scale-[0.99] lg:min-h-[82px] lg:gap-6 lg:py-4 ${isActive
+              ? "border-white/35 bg-white/[0.03] text-white"
+              : "border-white/10 text-white/35"
               }`;
-            const rowContent = (
-              <>
-                <span className="w-8 shrink-0 text-xs font-medium tabular-nums tracking-[0.2em] text-white/35 transition-colors duration-300 group-hover:text-white/60 lg:w-10 lg:tracking-[0.24em]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="ml-auto flex min-w-0 items-center justify-end gap-2 text-right transition-all duration-500 ease-out group-hover:translate-x-[-10px] lg:gap-3 lg:group-hover:translate-x-[-14px]">
-                  <span
-                    className={`relative h-7 w-7 shrink-0 transition-all duration-500 ease-out lg:h-9 lg:w-9 ${isActive
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-                      }`}
-                    aria-hidden="true"
-                  >
-                    <Image
-                      src="/Arrow-right-down.svg"
-                      alt=""
-                      fill
-                      className="object-contain"
-                      sizes="36px"
-                    />
-                  </span>
-                  <span className="min-w-0 text-2xl font-medium leading-none tracking-[-0.04em] transition-all duration-300 group-hover:font-black group-hover:text-white lg:text-5xl">
-                    {card.title}
-                  </span>
-                  <span
-                    className={`inline-block max-w-0 shrink-0 overflow-hidden whitespace-nowrap text-base font-medium uppercase tracking-[0.14em] opacity-0 transition-all duration-500 ease-out group-hover:max-w-24 group-hover:font-bold group-hover:opacity-100 lg:text-xl lg:tracking-[0.18em] lg:group-hover:max-w-32 ${isActive
-                      ? "max-w-32 translate-x-0 opacity-100"
-                      : "translate-x-2 group-hover:translate-x-0"
-                      }`}
-                  >
-                    작품 보기
-                  </span>
-                </span>
-              </>
-            );
-
-            if (card.isExternal) {
-              return (
-                <li
-                  key={card.id}
-                  className={rowItemClassName}
-                  onMouseEnter={() => setActiveCard(card)}
-                >
-                  <span className={rowHoverAreaClassName} aria-hidden="true" />
-                  <div className={rowClassName}>
-                    {rowContent}
-                  </div>
-                </li>
-              );
-            }
 
             return (
-              <li
-                key={card.id}
-                className={rowItemClassName}
-                onMouseEnter={() => setActiveCard(card)}
-              >
-                <span className={rowHoverAreaClassName} aria-hidden="true" />
-                <InternalLink
-                  href={getCollectionIndexHref(card)}
+              <li key={card.id} className="relative">
+                <button
+                  type="button"
                   className={rowClassName}
-                  ariaLabel={`${card.title} 작품 보기`}
+                  onClick={() => selectActiveCard(index)}
+                  aria-pressed={isActive}
                 >
-                  {rowContent}
-                </InternalLink>
+                  <span className={`w-8 shrink-0 text-xs font-medium tabular-nums tracking-[0.2em] transition-colors duration-300 lg:w-10 lg:tracking-[0.24em] ${isActive ? "text-white/60" : "text-white/35"}`}>
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className={`ml-auto flex min-w-0 items-center justify-end gap-2 text-right transition-all duration-500 ease-out lg:gap-3 ${isActive ? "translate-x-[-10px] lg:translate-x-[-14px]" : "translate-x-0"}`}>
+                    <span
+                      className={`relative h-7 w-7 shrink-0 transition-all duration-500 ease-out lg:h-9 lg:w-9 ${isActive
+                        ? "translate-x-0 opacity-100"
+                        : "-translate-x-2 opacity-0"
+                        }`}
+                      aria-hidden="true"
+                    >
+                      <Image
+                        src="/Arrow-right-down.svg"
+                        alt=""
+                        fill
+                        className="object-contain"
+                        sizes="36px"
+                      />
+                    </span>
+                    <span className={`min-w-0 text-2xl leading-none tracking-[-0.04em] transition-all duration-300 lg:text-5xl ${isActive ? "font-black text-white" : "font-medium"}`}>
+                      {card.title}
+                    </span>
+                  </span>
+                </button>
               </li>
             );
           })}
         </ul>
+
+        {activeCard.isExternal ? null : (
+          <div className="mt-8 flex justify-end">
+            <InternalLink
+              href={getCollectionIndexHref(activeCard)}
+              className="flex touch-manipulation items-center justify-center rounded-full border border-white bg-white px-10 py-3 font-mono text-xl font-bold text-black shadow-xl transition-all duration-300 active:scale-95"
+              ariaLabel={`${activeCard.title} 작품 보기`}
+            >
+              작품 보기
+            </InternalLink>
+          </div>
+        )}
+      </div>
+
+      <div className="flex h-full items-center justify-center">
+        <button
+          type="button"
+          className="flex h-16 w-16 shrink-0 touch-manipulation items-center justify-center rounded-full border border-white bg-white text-4xl font-black leading-none text-black shadow-xl transition-all duration-300 active:scale-95 lg:h-18 lg:w-18"
+          onClick={() => moveActiveCard(1)}
+          aria-label="다음 컬렉션 보기"
+        >
+          ›
+        </button>
       </div>
     </section>
   );

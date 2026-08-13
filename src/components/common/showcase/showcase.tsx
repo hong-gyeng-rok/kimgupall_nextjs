@@ -5,7 +5,7 @@ import ArtworkDetailSection from "@/components/common/artwork/ArtworkDetailSecti
 import SimpleMarkdown from "@/components/common/markdown/SimpleMarkdown";
 import MobileArtworkShowcase from "@/components/common/showcase/MobileArtworkShowcase";
 import { useCollectionImages } from "@/hooks/useImages";
-import { getPublicMediaUrl } from "@/lib/mediaUrl";
+import { resolveMediaUrl } from "@/lib/exhibitionCache/mediaUrl";
 
 type ShowcaseProps = {
   startIndex?: number;
@@ -44,7 +44,7 @@ export default function Showcase({ startIndex = 0, endIndex }: ShowcaseProps) {
 
   const showcaseItems = visibleImages
     .map((item, index) => {
-      const imageUrl = getPublicMediaUrl(item.publicUrl);
+      const imageUrl = resolveMediaUrl(item);
       const title = item.subtitle ?? item.title ?? "야차도";
       const alt = item.altText || item.subtitle || item.title || "작품 이미지";
 

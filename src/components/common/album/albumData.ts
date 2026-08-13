@@ -1,5 +1,8 @@
 import type { MediaType } from "@/hooks/useImages";
-import { getPublicMediaUrl } from "@/lib/mediaUrl";
+import {
+  resolveCollectionThumbnailUrl,
+  resolveMediaUrl,
+} from "@/lib/exhibitionCache/mediaUrl";
 import type { AlbumCard, OrderedAlbumCard } from "@/types/album";
 
 const toGalleryQuerySlug = (collectionSlug: string) =>
@@ -19,7 +22,7 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
     ) {
       collections.set(media.collection.slug, media.collection);
 
-      const previewUrl = getPublicMediaUrl(media.publicUrl);
+      const previewUrl = resolveMediaUrl(media);
       if (!previewUrl || media.type !== "IMAGE") return;
 
       const previewImages = collectionPreviewImages.get(media.collection.slug) ?? [];
@@ -35,7 +38,7 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
 
   const collectionCards = [...collections.values()]
     .reduce<OrderedAlbumCard[]>((cards, collection) => {
-      const thumbnailUrl = getPublicMediaUrl(collection.thumbnailUrl);
+      const thumbnailUrl = resolveCollectionThumbnailUrl(collection);
 
       if (!thumbnailUrl || collection.location !== "GALLERY") return cards;
 
@@ -62,14 +65,14 @@ export const buildAlbumCards = (medias: MediaType[] = []): AlbumCard[] => {
   const instagramCard: AlbumCard | null = instagramImage
     ? {
       id: instagramImage.id,
-      url: getPublicMediaUrl(instagramImage.publicUrl) ?? "",
+      url: resolveMediaUrl(instagramImage) ?? "",
       title: "INSTAGRAM",
       alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
       slug: null,
       isExternal: true,
       previewImages: [
         {
-          url: getPublicMediaUrl(instagramImage.publicUrl) ?? "",
+          url: resolveMediaUrl(instagramImage) ?? "",
           alt: instagramImage.altText ?? instagramImage.title ?? "INSTAGRAM QR",
         },
       ],

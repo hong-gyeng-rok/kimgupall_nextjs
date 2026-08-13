@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGalleryImages, MediaType } from "@/hooks/useImages";
 import GalleryImageModal from "@/components/common/gallery/GalleryImageModal";
 import GalleryMasonry from "@/components/common/gallery/GalleryMasonry";
@@ -25,6 +25,23 @@ export default function GalleryContents({
     refetch,
   } = useGalleryImages(collectionSlug);
   const [selectedImage, setSelectedImage] = useState<MediaType | null>(null);
+
+  useEffect(() => {
+    const closeModal = () => setSelectedImage(null);
+    const handleAndroidBack = (event: Event) => {
+      if (!selectedImage) return;
+      event.preventDefault();
+      setSelectedImage(null);
+    };
+
+    window.addEventListener("kimgupall:kiosk-reset", closeModal);
+    window.addEventListener("kimgupall:android-back", handleAndroidBack);
+
+    return () => {
+      window.removeEventListener("kimgupall:kiosk-reset", closeModal);
+      window.removeEventListener("kimgupall:android-back", handleAndroidBack);
+    };
+  }, [selectedImage]);
 
   const content = (() => {
     if (isLoading) {

@@ -1,9 +1,8 @@
-import { getPublicMediaUrl } from "@/lib/mediaUrl";
+import type { MediaType } from "@/hooks/useImages";
+import { resolveMediaUrl } from "@/lib/exhibitionCache/mediaUrl";
 
-
-export const getGalleryImageUrl = (path: string) => {
-  return getPublicMediaUrl(path) ?? "";
-};
+export const getGalleryImageUrl = (media: MediaType) =>
+  resolveMediaUrl(media) ?? "";
 
 export const galleryBreakpointColumns = {
   default: 4,

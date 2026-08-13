@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { AlbumCard } from "@/types/album";
 import FallbackImage from "../fallbackImage";
 import InternalLink from "../internalLink";
@@ -42,6 +42,19 @@ export default function CollectionHoverPreviewScene({
 }: CollectionHoverPreviewSceneProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
+
+  useEffect(() => {
+    const resetActiveCard = () => {
+      setSlideDirection(-1);
+      setActiveIndex(0);
+    };
+
+    window.addEventListener("kimgupall:kiosk-reset", resetActiveCard);
+
+    return () => {
+      window.removeEventListener("kimgupall:kiosk-reset", resetActiveCard);
+    };
+  }, []);
 
   if (isLoading) return <CollectionHoverPreviewSkeleton />;
   if (cards.length === 0) return null;
@@ -85,17 +98,22 @@ export default function CollectionHoverPreviewScene({
             <motion.div
               key={activeCard.id}
               custom={slideDirection}
-              initial={(direction: 1 | -1) => ({
-                x: direction > 0 ? 80 : -80,
-                opacity: 0,
-                scale: 0.98,
-              })}
-              animate={{ x: 0, opacity: 1, scale: 1 }}
-              exit={(direction: 1 | -1) => ({
-                x: direction > 0 ? -80 : 80,
-                opacity: 0,
-                scale: 0.98,
-              })}
+              variants={{
+                enter: (direction: 1 | -1) => ({
+                  x: direction > 0 ? 80 : -80,
+                  opacity: 0,
+                  scale: 0.98,
+                }),
+                center: { x: 0, opacity: 1, scale: 1 },
+                exit: (direction: 1 | -1) => ({
+                  x: direction > 0 ? -80 : 80,
+                  opacity: 0,
+                  scale: 0.98,
+                }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
               transition={{ duration: 0.42, ease: "easeOut" }}
               className="absolute inset-0"
             >

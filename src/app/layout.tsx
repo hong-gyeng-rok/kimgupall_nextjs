@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/providers/queryProvider";
 import localFont from "next/font/local";
-import { getSitePreviewImageUrl } from "@/lib/media";
 import { Analytics } from "@vercel/analytics/next";
+import ExhibitionRuntime from "@/components/exhibition/ExhibitionRuntime";
 
 const chosunGosu = localFont({
   src: "./fonts/ChosunCentennial.ttf",
@@ -35,7 +35,12 @@ const siteMetadata = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const previewImageUrl = await getSitePreviewImageUrl();
+  const previewImageUrl =
+    process.env.CAPACITOR_BUILD === "1"
+      ? null
+      : await import("@/lib/media").then(({ getSitePreviewImageUrl }) =>
+          getSitePreviewImageUrl(),
+        );
   const previewImages = previewImageUrl
     ? [
       {
@@ -81,7 +86,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${chosunGosu.variable} ${chungjuKimSaeng.variable} antialiased`}
       >
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <ExhibitionRuntime>{children}</ExhibitionRuntime>
+        </QueryProvider>
         <Analytics />
       </body>
     </html>

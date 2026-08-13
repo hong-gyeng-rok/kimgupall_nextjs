@@ -10,6 +10,10 @@ import Showcase from "@/components/common/showcase/showcase";
 
 const DESKTOP_CONTENT_OFFSET_CLASS = "md:pl-[clamp(140px,11.5vw,174px)]";
 const RESTORE_ALBUM_SECTION_KEY = "kimgupall:restore-section-album";
+const RESTORE_HOME_TOP_KEY = "kimgupall:restore-home-top";
+const SCROLL_HOME_TOP_EVENT = "kimgupall:scroll-home-top";
+const KIOSK_SCROLL_STATE_EVENT = "kimgupall:kiosk-scroll-state";
+
 
 type OffsetSectionProps = {
   children: ReactNode;
@@ -112,25 +116,68 @@ function DesktopHomeContent() {
   });
 
   useEffect(() => {
-    const shouldRestore =
-      window.sessionStorage.getItem(RESTORE_ALBUM_SECTION_KEY) === "true";
+    const dispatchScrollState = () => {
+      const container = scrollContainerRef.current;
 
-    if (!shouldRestore) return;
+      if (!container) return;
+
+      const distanceToBottom =
+        container.scrollHeight - container.clientHeight - container.scrollTop;
+
+      window.dispatchEvent(
+        new CustomEvent(KIOSK_SCROLL_STATE_EVENT, {
+          detail: {
+            isAtTop: container.scrollTop <= 24,
+            isAtBottom: distanceToBottom <= 24,
+          },
+        }),
+      );
+    };
+
+    const scrollToTop = () => {
+      scrollContainerRef.current?.scrollTo({ top: 0, behavior: "auto" });
+      window.sessionStorage.removeItem(RESTORE_HOME_TOP_KEY);
+      requestAnimationFrame(dispatchScrollState);
+    };
+
+    const restoreAlbumSection = () => {
+      const shouldRestore =
+        window.sessionStorage.getItem(RESTORE_ALBUM_SECTION_KEY) === "true";
+
+      if (!shouldRestore) return;
+
+      const container = scrollContainerRef.current;
+      const target = document.getElementById("section-album");
+
+      if (!container || !target) return;
+
+      window.sessionStorage.removeItem(RESTORE_ALBUM_SECTION_KEY);
+
+      requestAnimationFrame(() => {
+        const containerRect = container.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        const targetTop = container.scrollTop + targetRect.top - containerRect.top;
+
+        container.scrollTo({ top: targetTop, behavior: "auto" });
+        requestAnimationFrame(dispatchScrollState);
+      });
+    };
+
+    if (window.sessionStorage.getItem(RESTORE_HOME_TOP_KEY) === "true") {
+      requestAnimationFrame(scrollToTop);
+    } else {
+      restoreAlbumSection();
+      requestAnimationFrame(dispatchScrollState);
+    }
 
     const container = scrollContainerRef.current;
-    const target = document.getElementById("section-album");
+    container?.addEventListener("scroll", dispatchScrollState, { passive: true });
+    window.addEventListener(SCROLL_HOME_TOP_EVENT, scrollToTop);
 
-    if (!container || !target) return;
-
-    window.sessionStorage.removeItem(RESTORE_ALBUM_SECTION_KEY);
-
-    requestAnimationFrame(() => {
-      const containerRect = container.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      const targetTop = container.scrollTop + targetRect.top - containerRect.top;
-
-      container.scrollTo({ top: targetTop, behavior: "auto" });
-    });
+    return () => {
+      container?.removeEventListener("scroll", dispatchScrollState);
+      window.removeEventListener(SCROLL_HOME_TOP_EVENT, scrollToTop);
+    };
   }, []);
 
   return (
@@ -166,20 +213,39 @@ function DesktopHomeContent() {
 
 function MobileHomeContent() {
   useEffect(() => {
-    const shouldRestore =
-      window.sessionStorage.getItem(RESTORE_ALBUM_SECTION_KEY) === "true";
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      window.sessionStorage.removeItem(RESTORE_HOME_TOP_KEY);
+    };
 
-    if (!shouldRestore) return;
+    const restoreAlbumSection = () => {
+      const shouldRestore =
+        window.sessionStorage.getItem(RESTORE_ALBUM_SECTION_KEY) === "true";
 
-    const target = document.getElementById("section-album");
+      if (!shouldRestore) return;
 
-    if (!target) return;
+      const target = document.getElementById("section-album");
 
-    window.sessionStorage.removeItem(RESTORE_ALBUM_SECTION_KEY);
+      if (!target) return;
 
-    requestAnimationFrame(() => {
-      target.scrollIntoView({ block: "start", behavior: "auto" });
-    });
+      window.sessionStorage.removeItem(RESTORE_ALBUM_SECTION_KEY);
+
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ block: "start", behavior: "auto" });
+      });
+    };
+
+    if (window.sessionStorage.getItem(RESTORE_HOME_TOP_KEY) === "true") {
+      requestAnimationFrame(scrollToTop);
+    } else {
+      restoreAlbumSection();
+    }
+
+    window.addEventListener(SCROLL_HOME_TOP_EVENT, scrollToTop);
+
+    return () => {
+      window.removeEventListener(SCROLL_HOME_TOP_EVENT, scrollToTop);
+    };
   }, []);
 
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Masonry from "react-masonry-css";
 import type { MediaType } from "@/hooks/useImages";
@@ -15,8 +16,42 @@ export default function GalleryMasonry({
   images,
   onSelectImage,
 }: GalleryMasonryProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+
+    if (!container) return;
+
+    const updateBottomState = () => {
+      const distanceToBottom =
+        container.scrollHeight - container.clientHeight - container.scrollTop;
+
+      window.dispatchEvent(
+        new CustomEvent("kimgupall:kiosk-scroll-state", {
+          detail: {
+            isAtTop: container.scrollTop <= 24,
+            isAtBottom: distanceToBottom <= 24,
+          },
+        }),
+      );
+    };
+
+    updateBottomState();
+    container.addEventListener("scroll", updateBottomState, { passive: true });
+
+    return () => {
+      container.removeEventListener("scroll", updateBottomState);
+      window.dispatchEvent(
+        new CustomEvent("kimgupall:kiosk-scroll-state", {
+          detail: { isAtTop: true, isAtBottom: false },
+        }),
+      );
+    };
+  }, [images.length]);
+
   return (
-    <div className="min-h-0 w-full flex-1 overflow-y-auto no-scrollbar">
+    <div ref={scrollContainerRef} className="min-h-0 w-full flex-1 overflow-y-auto no-scrollbar">
       {images.length > 0 ? (
         <Masonry
           breakpointCols={galleryBreakpointColumns}

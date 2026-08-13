@@ -1,21 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
-import { Prisma } from "@prisma/client";
+import type { ExhibitionMedia } from "@/types/media";
+import { fetchRemoteMedia } from "@/lib/exhibitionCache/fetchRemoteMedia";
+import { loadCachedExhibition } from "@/lib/exhibitionCache/storage";
+import { isNativeExhibitionApp } from "@/lib/exhibitionCache/platform";
 
-// Prisma가 생성한 타입을 사용하여 DB 스키마와 100% 일치시킴
-// include: { collection: true } 옵션을 사용했으므로, 그에 맞는 타입을 가져옵니다.
-export type MediaType = Prisma.MediaGetPayload<{
-  include: { collection: true };
-}>;
+export type MediaType = ExhibitionMedia;
 
 // API 호출 함수
 const fetchImages = async (): Promise<MediaType[]> => {
-  const response = await fetch("/api/images");
-
-  if (!response.ok) {
-    throw new Error("이미지를 불러오는데 실패했습니다.");
+  if (isNativeExhibitionApp()) {
+    const cache = await loadCachedExhibition();
+    if (!cache) {
+      throw new Error("기기에 저장된 전시 데이터가 없습니다.");
+    }
+    return cache.media;
   }
 
-  return response.json();
+  return fetchRemoteMedia();
 };
 
 export const useImages = <T = MediaType[]>(

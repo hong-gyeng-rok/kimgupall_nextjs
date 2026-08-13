@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import KioskRuntime from "@/components/kiosk/KioskRuntime";
 
 interface PageShellProps {
   children: ReactNode;
@@ -26,6 +27,7 @@ export default function PageShell({
       )}
 
       <div className="relative z-10 min-h-dvh ">{children}</div>
+      <KioskRuntime />
     </main>
   );
 }

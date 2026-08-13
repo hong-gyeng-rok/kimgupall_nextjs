@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import { useState } from "react";
 import type { MediaType } from "@/hooks/useImages";
 import { getGalleryImageUrl } from "@/components/common/gallery/galleryUtils";
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 interface GalleryImageModalProps {
   selectedImage: MediaType | null;
@@ -58,13 +59,20 @@ function ModalContent({
 
         {/* eslint-disable-next-line @next/next/no-img-element -- Expanded view must use the original high-resolution file. */}
         <img
-          src={getGalleryImageUrl(selectedImage.publicUrl)}
+          src={getGalleryImageUrl(selectedImage)}
           alt={selectedImage.altText || selectedImage.title || "작품 이미지"}
           width={selectedImage.width ?? undefined}
           height={selectedImage.height ?? undefined}
           decoding="async"
           onLoad={() => setIsImageLoading(false)}
-          onError={() => setIsImageLoading(false)}
+          onError={(event) => {
+            const remoteUrl = getPublicMediaUrl(selectedImage.publicUrl);
+            if (remoteUrl && event.currentTarget.src !== remoteUrl) {
+              event.currentTarget.src = remoteUrl;
+              return;
+            }
+            setIsImageLoading(false);
+          }}
           className={`w-auto h-auto max-h-[80vh] object-contain shadow-2xl rounded-lg transition-opacity duration-300 ${
             isImageLoading ? "opacity-0" : "opacity-100"
           }`}

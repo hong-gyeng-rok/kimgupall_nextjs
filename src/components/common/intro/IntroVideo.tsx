@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useIntroImages } from "@/hooks/useImages";
 import { getPublicMediaUrl } from "@/lib/mediaUrl";
+import { resolvePosterUrl } from "@/lib/exhibitionCache/mediaUrl";
 
 const DEFAULT_WIDTH = 1300;
 const DEFAULT_HEIGHT = 500;
@@ -9,6 +10,7 @@ const INTRO_VIDEO_FRAME_CLASS =
 
 export default function IntroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasVideoError, setHasVideoError] = useState(false);
 
   const { data: medias, isLoading, isError, error } = useIntroImages();
 
@@ -17,6 +19,7 @@ export default function IntroVideo() {
     .sort((a, b) => b.orderIndex - a.orderIndex)[0];
 
   const introVideoSrc = getPublicMediaUrl(targetMedia?.publicUrl);
+  const posterUrl = resolvePosterUrl(targetMedia);
 
   const tryPlayVideo = useCallback(() => {
     const video = videoRef.current;
@@ -63,7 +66,7 @@ export default function IntroVideo() {
         aspectRatio: `${targetMedia?.width ?? DEFAULT_WIDTH} / ${targetMedia?.height ?? DEFAULT_HEIGHT}`,
       }}
     >
-      {introVideoSrc && (
+      {introVideoSrc && !hasVideoError ? (
         <video
           ref={videoRef}
           src={introVideoSrc}
@@ -77,7 +80,21 @@ export default function IntroVideo() {
           preload="auto"
           onLoadedData={tryPlayVideo}
           onCanPlay={tryPlayVideo}
+          onError={() => setHasVideoError(true)}
         />
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-black text-center text-sm text-white/60">
+          {posterUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Native cached poster URLs are not supported by next/image.
+            <img
+              src={posterUrl}
+              alt={targetMedia?.altText ?? "영상 포스터"}
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <p>오프라인에서는 영상을 재생할 수 없습니다.</p>
+          )}
+        </div>
       )}
     </div>
   );

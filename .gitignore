@@ -20,6 +20,7 @@
 /coverage
 /node_modules
 /out/
+/.capacitor-build/
 # debug
 # dependencies
 # env files (can opt-in for committing if needed)

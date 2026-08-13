@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { MediaType } from "@/hooks/useImages";
 import FallbackImage from "@/components/common/fallbackImage";
 import { getGalleryImageUrl } from "@/components/common/gallery/galleryUtils";
+import { getPublicMediaUrl } from "@/lib/mediaUrl";
 
 interface GalleryImageCardProps {
   image: MediaType;
@@ -26,7 +27,8 @@ export default function GalleryImageCard({
       aria-label={`${image.title || "작품"} 크게 보기`}
     >
       <FallbackImage
-        src={getGalleryImageUrl(image.publicUrl)}
+        src={getGalleryImageUrl(image)}
+        fallbackSrc={getPublicMediaUrl(image.publicUrl) ?? undefined}
         alt={image.altText || image.title || "작품 이미지"}
         width={image.width ?? 300}
         height={image.height ?? 400}

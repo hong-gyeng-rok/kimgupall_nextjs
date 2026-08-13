@@ -3,7 +3,7 @@
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import Image from "next/image";
 import type { MediaType } from "@/hooks/useImages";
-import { getPublicMediaUrl } from "@/lib/mediaUrl";
+import { resolveMediaUrl } from "@/lib/exhibitionCache/mediaUrl";
 
 const STEP_PROGRESS_START = 0.1;
 const STEP_PROGRESS_END = 0.9;
@@ -43,7 +43,7 @@ export function DrawingCourseStep({
       className="absolute inset-0 flex flex-col items-center justify-center sm:static"
     >
       <Image
-        src={getPublicMediaUrl(media.publicUrl) ?? ""}
+        src={resolveMediaUrl(media) ?? ""}
         alt={media.description ?? "sketch Image"}
         width={300}
         height={400}

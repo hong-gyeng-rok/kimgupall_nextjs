@@ -9,6 +9,7 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MediaType } from "@/hooks/useImages";
 import { getPublicMediaUrl } from "@/lib/mediaUrl";
+import { resolvePosterUrl } from "@/lib/exhibitionCache/mediaUrl";
 import { DrawingCourseProgressArrow } from "./DrawingCourseProgressArrow";
 import { DrawingCourseStep } from "./DrawingCourseStep";
 
@@ -33,6 +34,7 @@ export function DrawingCourseScene({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [progress, setProgress] = useState(0);
   const [shouldPlayVideo, setShouldPlayVideo] = useState(false);
+  const [hasVideoError, setHasVideoError] = useState(false);
 
   const arrowWidth = useTransform(
     scrollYProgress,
@@ -56,6 +58,7 @@ export function DrawingCourseScene({
       .sort((a, b) => a.orderIndex - b.orderIndex) ?? [];
   const yachaMvMedia = medias?.find((media) => media.type === "VIDEO");
   const drawingCourseVideoSrc = getPublicMediaUrl(yachaMvMedia?.publicUrl);
+  const drawingCoursePosterUrl = resolvePosterUrl(yachaMvMedia);
   const videoAspectRatio =
     yachaMvMedia?.width && yachaMvMedia.height
       ? `${yachaMvMedia.width} / ${yachaMvMedia.height}`
@@ -139,7 +142,7 @@ export function DrawingCourseScene({
                 className=" rounded-2xl overflow-hidden shadow-xl bg-black/10"
                 style={{ aspectRatio: videoAspectRatio }}
               >
-                {drawingCourseVideoSrc && (
+                {drawingCourseVideoSrc && !hasVideoError ? (
                   <video
                     ref={videoRef}
                     src={drawingCourseVideoSrc}
@@ -151,7 +154,21 @@ export function DrawingCourseScene({
                     preload="auto"
                     playsInline
                     onTimeUpdate={handleTimeUpdate}
+                    onError={() => setHasVideoError(true)}
                   />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center text-center text-sm text-white/60">
+                    {drawingCoursePosterUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- Native cached poster URLs are not supported by next/image.
+                      <img
+                        src={drawingCoursePosterUrl}
+                        alt={yachaMvMedia?.altText ?? "영상 포스터"}
+                        className="h-full w-full object-contain"
+                      />
+                    ) : (
+                      <p>오프라인에서는 영상을 재생할 수 없습니다.</p>
+                    )}
+                  </div>
                 )}
               </div>
 

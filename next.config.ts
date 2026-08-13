@@ -4,8 +4,15 @@ import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
 const projectRoot = dirname(fileURLToPath(import.meta.url));
+const isCapacitorBuild = process.env.CAPACITOR_BUILD === "1";
 
 const nextConfig: NextConfig = {
+  ...(isCapacitorBuild
+    ? {
+        output: "export" as const,
+        trailingSlash: true,
+      }
+    : {}),
   cacheMaxMemorySize: 0,
   turbopack: {
     root: projectRoot,
@@ -17,6 +24,7 @@ const nextConfig: NextConfig = {
     turbopackInputSourceMaps: false,
   },
   images: {
+    unoptimized: isCapacitorBuild,
     formats: ["image/avif", "image/webp"], // AVIF 우선 사용
     minimumCacheTTL: 60 * 60 * 24 * 30,
     deviceSizes: [320, 420, 640, 768, 1024, 1280, 1536],
